@@ -19,7 +19,7 @@ OBJ_DIR = ./objs
 INC_DIR = ./includes
 
 SRC_FILES = \
-			
+			p_main.c\
 
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

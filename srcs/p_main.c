@@ -1,4 +1,4 @@
-#include "../includes/minishell.h"
+#include "../includes/parser.h"
 
 int main(void)
 {
@@ -6,7 +6,7 @@ int main(void)
 
 	while (1)
 	{
-		input = readline("minishell> ");
+		input = readline("mini$ell> ");
 		if (!input)
 		{
 			printf("exit\n");

@@ -1,0 +1,23 @@
+{
+	readline
+	Memcheck:Leak
+	...
+	fun:readline
+	...
+}
+
+{
+	readline
+	Memcheck:Leak
+	...
+	fun:add_history
+	...
+}
+
+{
+	ignore_usr_bin
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	fun:*
+	obj:/usr/*
+}

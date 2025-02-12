@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bepoisso <bepoisso@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 08:08:11 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/02/12 10:37:27 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/02/12 21:46:15 by bepoisso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,10 @@
 # include <termios.h>
 /*used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
+/* Our includes */
+# include "parser.h"
+# include "exec.h"
+# include "../libft/includes/libft.h"
 
 # define BLUE "\033[0;34m"
 # define RED "\033[0;31m"

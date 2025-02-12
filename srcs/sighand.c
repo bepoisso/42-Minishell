@@ -1,4 +1,4 @@
-#include "../include/minishell.h"
+#include "../includes/minishell.h"
 
 /**
  * @brief Signal handler function for SIGINT (CTRL-C)

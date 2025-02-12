@@ -1,4 +1,3 @@
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -37,6 +36,10 @@
 # include <termios.h>
 /*used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
+/* Our includes */
+# include "parser.h"
+# include "exec.h"
+# include "../libft/includes/libft.h"
 
 # define BLUE "\033[0;34m"
 # define RED "\033[0;31m"

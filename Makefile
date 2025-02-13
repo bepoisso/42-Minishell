@@ -9,6 +9,7 @@ RESET = \033[0m
 NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR)
+LIBS= -lreadline -lhistory
 VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
@@ -18,8 +19,8 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = exec.c
-			
+SRC_FILES = \
+			exec.c\
 
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
@@ -30,7 +31,7 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-		@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+		@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LIBS)
 		@echo "Create Program		✅"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)

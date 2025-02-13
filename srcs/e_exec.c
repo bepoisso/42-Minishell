@@ -43,6 +43,20 @@ void	free_doubletab(char ***str)
 	}
 }
 
+static char	*check_cmd(char **env_list, char *cmd)
+{
+	char		*path;
+	char		**env_listcpy;
+
+	env_listcpy = env_list;
+	while (*env_listcpy)
+	{
+		path = ft_strjoin(*env_listcpy, cmd);
+		if (access(*env_listcpy, X_OK) == 0)
+			return (free_null((void **)&path), *env_listcpy);
+	}
+	return (NULL);
+}
 char	**extract_pass(char *cmd)
 {
 	char	*env;
@@ -61,7 +75,6 @@ char	**extract_pass(char *cmd)
 		*env_listcpy = ft_strjoin(*env_listcpy, "/");
 		if (!env_listcpy)
 			return (free_doubletab(&env_list), free_null((void *)&env), NULL);
-		printf("%s", *env_listcpy);
 		env_listcpy++;
 	}
 	return (env_list);
@@ -76,17 +89,22 @@ int main(int argc, char **argv)
 	extern char **environ;
 	int	status = 0;
 	pid_t	pid;
-	char *
-	
-	
-	extract_pass(argv[1]);
+	char **	full_path;
+	full_path = extract_pass(argv[1]);
+	if (!full_path)
+		return (1);
+	if (check_cmd(full_path, argv[1]))
+	{
+		free_doubletab(&full_path);
+		return (1);
+	}
 	pid = fork();
 	if (pid == -1)
 		perror("Error fork");
 	else if (pid == 0)
 	{
 		printf("deput du process fils");
-		execve("/bin/ls", argv + 1, environ);
+		execve(*full_path, argv + 1, environ);
 	}
 	else if (pid > 0)
 		waitpid(-1, &status, 0);

@@ -76,9 +76,10 @@ int main(int argc, char **argv)
 	extern char **environ;
 	int	status = 0;
 	pid_t	pid;
+	char *
 	
 	
-	//extract_pass(argv[1]);
+	extract_pass(argv[1]);
 	pid = fork();
 	if (pid == -1)
 		perror("Error fork");

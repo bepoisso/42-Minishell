@@ -18,7 +18,7 @@
 # include <sys/types.h>
 /*used for stat, lstat, fstat */
 # include <sys/stat.h>
-/*usedd to retrieve resource usage information(wait3, wait4)*/
+/*used to retrieve resource usage information(wait3, wait4)*/
 # include <sys/resource.h>
 /*used for open et les options de contrôle de fichier */
 # include <fcntl.h>

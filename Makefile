@@ -1,15 +1,15 @@
 #_________________COLORS_________________
 
-PURPLE = \033[0;35m
-YELLOW = \033[0;93m
-RESET = \033[0m
+PURPLE	= \033[0;35m
+YELLOW	= \033[0;93m
+RESET	= \033[0m
 
 #_________________VARIABLE_________________
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR)
-LIBS= -lreadline -lhistory
+CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR) -I./libft/includes
+LIBS= -lreadline -lhistory -L./libft -lft
 VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
@@ -19,8 +19,7 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = \
-			exec.c\
+SRC_FILES = e_exec.c\
 
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

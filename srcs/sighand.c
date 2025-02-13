@@ -81,9 +81,23 @@ siginfo_t {
 	int      si_fd;       File descriptor
 };
 */
+// % cc -g -lreadline sighand.c
 
 int	main(void)
 {
-	sig_handler();
+	//sig_handler(str);
+	char * str;
+	while (1)
+	{
+	str = readline("Enter a string: ");
+	if (!str)
+	{
+		printf("Exit\n");
+		break;
+	}
+	if (*str)
+		add_history(str);
+	printf("You entered: %s\n", str);
+	}
 	return (0);
 }

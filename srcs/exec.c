@@ -18,7 +18,7 @@
 	return (argc);
 } */
 
-/* void	free_null(void	**ptr)
+void	free_null(void	**ptr)
 {
 	if (ptr && *ptr)
 	{
@@ -65,7 +65,7 @@ char	**extract_pass(char *cmd)
 		env_listcpy++;
 	}
 	return (env_list);
-} */
+}
 
 /**
  * execution de la commande ls 

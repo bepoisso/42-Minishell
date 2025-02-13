@@ -18,7 +18,7 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = \
+SRC_FILES = exec.c
 			
 
 

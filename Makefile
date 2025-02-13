@@ -21,6 +21,8 @@ INC_DIR = ./includes
 
 SRC_FILES = \
 			p_main.c\
+			p_parser.c\
+			p_utils.c\
 
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

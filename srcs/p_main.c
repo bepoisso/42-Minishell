@@ -1,6 +1,6 @@
 #include "../includes/parser.h"
 
-int main(void)
+int main(int ac, char **av, char **env)
 {
 	char	*input;
 
@@ -14,7 +14,7 @@ int main(void)
 		}
 		if (*input)
 			add_history(input);
-		printf("Vous avex tapez : %s\n",input);
+		parser(input, env);
 		free(input);
 	}
 	return (0);

@@ -37,6 +37,7 @@
 /*used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
 /* Our includes */
+# include <stdbool.h>
 # include "parser.h"
 # include "exec.h"
 # include "../libft/includes/libft.h"

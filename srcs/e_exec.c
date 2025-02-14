@@ -52,8 +52,9 @@ static char	*check_cmd(char **env_list, char *cmd)
 	while (*env_listcpy)
 	{
 		path = ft_strjoin(*env_listcpy, cmd);
-		if (access(*env_listcpy, X_OK) == 0)
-			return (free_null((void **)&path), *env_listcpy);
+		if (access(path, X_OK) == 0)
+			return (free_null((void **)&path), path);
+		env_listcpy++;
 	}
 	return (NULL);
 }
@@ -93,7 +94,8 @@ int main(int argc, char **argv)
 	full_path = extract_pass(argv[1]);
 	if (!full_path)
 		return (1);
-	if (check_cmd(full_path, argv[1]))
+	char *cmd_path = check_cmd(full_path, argv[1]);
+	if (!cmd_path)
 	{
 		free_doubletab(&full_path);
 		return (1);
@@ -109,5 +111,8 @@ int main(int argc, char **argv)
 	else if (pid > 0)
 		waitpid(-1, &status, 0);
 	printf("retour dans le pere");
+	free_null((void *)&cmd_path);
+	free_doubletab(&full_path);
+	
 	return (argc);
 }

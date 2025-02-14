@@ -1,3 +1,4 @@
+
 #include "../includes/minishell.h"
 
 /**
@@ -9,12 +10,11 @@
  * 
  * @return void
  */
-void	sig_int_handler()
+void	sig_int_handler(void)
 {
 	printf(""BLUE"Signal CTRL-C received"RESET"\n");
 	exit (0);
 }
-
 
 /**
  * sigemptyset(&sa_int.sa_mask)
@@ -32,14 +32,13 @@ int	sig_handler(void)
 	struct sigaction	sa_quit;
 
 	sa_int.sa_flags = SA_RESTART | SA_SIGINFO;
-	sigemptyset(&sa_int.sa_mask);
+	sigemptyset(&sa_iemptynt.sa_mask);
 	sa_int.sa_handler = sig_int_handler;
 	if (sigaction(SIGINT, &sa_int, NULL) == -1)
-    {
-        perror("sigaction SIGINT");
-        exit(EXIT_FAILURE);
-    }
-	
+	{
+		perror("sigaction SIGINT");
+		exit(EXIT_FAILURE);
+	}
 	sa_quit.sa_flags = SA_RESTART | SA_SIGINFO;
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_handler = SIG_IGN;
@@ -52,10 +51,11 @@ int	sig_handler(void)
 		sleep(1);
 	return (0);
 }
+
 /*struct sigaction {
 	void     (*sa_handler)(int);
 	void     (*sa_sigaction)(int, siginfo_t *, void *);
-	sigset_t sa_mask;
+	sigset_t sa_mask;empty
 	int      sa_flags; SA_SIGINFO doit etre defini pour utiliser sa_sigaction
 	plutot que sa_handler
 };
@@ -85,19 +85,19 @@ siginfo_t {
 
 int	main(void)
 {
-	//sig_handler(str);
-	char * str;
+	char	*str;
+
 	while (1)
 	{
-	str = readline("Enter a string: ");
-	if (!str)
-	{
-		printf("Exit\n");
-		break;
-	}
-	if (*str)
-		add_history(str);
-	printf("You entered: %s\n", str);
+		str = readline("Enter a string: ");
+		if (!str)
+		{
+			printf("Exit\n");
+			break ;
+		}
+		if (*str)
+			add_history(str);
+		printf("You entered: %s\n", str);
 	}
 	return (0);
 }

@@ -10,7 +10,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR) -I./libft/includes
 LIBS= -lreadline -lhistory -L./libft -lft
-VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
+VALARGS = --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
 #_________________FILES_________________
@@ -19,8 +19,8 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = e_exec.c\
-
+SRC_FILES = e_exec.c \
+			e_free.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -49,7 +49,7 @@ fclean: clean
 
 re: fclean all
 
-val: re
+val: 
 		valgrind $(VALARGS) ./$(NAME)
 
 exec: re
@@ -57,5 +57,5 @@ exec: re
 
 debug: re
 		gdb -tui -q ./$(NAME)
-
-.PHONY: all clean fclean re
+	
+.PHONY: all clean fclean re val exec debug

@@ -10,10 +10,17 @@
  * 
  * @return void
  */
-void	sig_int_handler(void)
+/* void	sig_int_handler(void)
 {
 	printf(""BLUE"Signal CTRL-C received"RESET"\n");
 	exit (0);
+} */
+void	sig_handler(int signal)
+{
+	if (signal == SIGINT)
+		printf(RED"sigint recieved\n"RESET);
+	else if (signal == SIGQUIT)
+		printf("SIGQUIT recieved");
 }
 
 /**
@@ -26,7 +33,7 @@ void	sig_int_handler(void)
  *  blocked by default while your handler for SIGINT is running. You can then,
  *  if necessary, add specific signals to block using sigaddset.
  */
-int	sig_handler(void)
+/* int	sig_handler(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
@@ -42,6 +49,7 @@ int	sig_handler(void)
 	sa_quit.sa_flags = SA_RESTART | SA_SIGINFO;
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_handler = SIG_IGN;
+
 	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
 	{
 		perror("sigaction SIGQUIT");
@@ -50,7 +58,7 @@ int	sig_handler(void)
 	while (1)
 		sleep(1);
 	return (0);
-}
+} */
 
 /*struct sigaction {
 	void     (*sa_handler)(int);
@@ -87,6 +95,8 @@ int	main(void)
 {
 	char	*str;
 
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, sig_handler);
 	while (1)
 	{
 		str = readline("Enter a string: ");
@@ -98,6 +108,7 @@ int	main(void)
 		if (*str)
 			add_history(str);
 		printf("You entered: %s\n", str);
+		free(str);
 	}
 	return (0);
 }

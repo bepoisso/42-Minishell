@@ -29,14 +29,15 @@ static char	*check_cmd(char **env_list, char *cmd)
 		free_null((void *)&path);
 		env_listcpy++;
 	}
-	printf("command not found\n");
+	ft_putstr_fd("command not found\n", 2);
 	return (NULL);
 }
 
 /**
  * @brief Extracts and formats PATH environment variable into an array of paths
  * 
- * This function gets the PATH environment variable, splits it into individual paths,
+ * This function gets the PATH environment variable, splits it into individual
+ *  paths,
  * and adds a trailing slash to each path.
  * 
  * @return char** Array of paths with trailing slashes, NULL if:
@@ -89,7 +90,8 @@ char	**extract_paths(void)
  * @return Returns 0 on successful execution, -1 on fork failure
  *
  * @note Uses the global environ variable for environment variables
- * @note Parent process waits for any child process to terminate (waitpid with -1)
+ * @note Parent process waits for any child process to terminate
+ *  (waitpid with -1)
  */
 static int	exec_cmd(char *path, char **cmd)
 {
@@ -117,17 +119,17 @@ static int	exec_cmd(char *path, char **cmd)
  * 3. Executing the command if found
  *
  * @param argc Number of arguments (unused)
- * @param argv Array of command line arguments where argv[1] is the command to execute
+ * @param argv Array of command line arguments where argv[1] is
+ *  the command to execute
  * @return int Returns:
  *         - 0 on successful execution
  *         - 1 if path extraction fails or command is not found
  */
-int	main(int argc, char **argv)
+int	start_exec_cmd(char **argv)
 {
 	char	**cmd_path;
 	char	*full_path;
 
-	(void)argc;
 	cmd_path = NULL;
 	full_path = NULL;
 	cmd_path = extract_paths();
@@ -144,3 +146,5 @@ int	main(int argc, char **argv)
 /*valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
   ./minishell pwd */
+
+int	main(int argc, char **argv)

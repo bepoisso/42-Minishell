@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free2d.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bepoisso <bepoisso@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/19 12:19:29 by bepoisso          #+#    #+#             */
-/*   Updated: 2025/02/12 22:06:51 by bepoisso         ###   ########.fr       */
+/*   Created: 2025/02/17 14:02:01 by bepoisso          #+#    #+#             */
+/*   Updated: 2025/02/17 14:08:56 by bepoisso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/libft.h"
 
-void	free_2d(char **t)
+char	*ft_strndup(const char *s, size_t n)
 {
-	int	i;
+	char	*dup;
+	size_t	len;
+	size_t	i;
 
+	if (!s)
+		return (NULL);
+	len = ft_strlen(s);
+	if (n < len)
+		len = n;
+	dup = (char *)malloc(sizeof(char) * (len + 1));
+	if (!dup)
+		return (NULL);
 	i = 0;
-	while (t[i])
+	while (i < len)
 	{
-		free(t[i]);
+		dup[i] = s[i];
 		i++;
 	}
-	free(t);
+	dup[i] = '\0';
+	return (dup);
 }

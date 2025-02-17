@@ -8,9 +8,9 @@ RESET	= \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR) -I./libft/includes
+CFLAGS = -Wall -Wextra -g -I$(INC_DIR) #-Werror#
 LIBS= -lreadline -lhistory -L./libft -lft
-VALARGS = --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
+VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
 #_________________FILES_________________
@@ -20,7 +20,13 @@ OBJ_DIR = ./objs
 INC_DIR = ./includes
 
 SRC_FILES = e_exec.c \
-			e_free.c
+			p_main.c\
+			p_parser.c\
+			p_utils.c\
+			p_error.c\
+			p_token.c\
+			p_quote.c\
+			e_free.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
@@ -38,13 +44,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR)
+		@make -C ./libft
 
 clean:
 		@rm -rf $(OBJ_DIR)
+		@make clean -C ./libft
 		@echo "Clean Program Objs	✅"
 
 fclean: clean
 		@rm -f $(NAME)
+		@make fclean -C ./libft
 		@echo "Clean Program		✅"
 
 re: fclean all

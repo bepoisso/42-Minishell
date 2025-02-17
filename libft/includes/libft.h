@@ -6,7 +6,7 @@
 /*   By: bepoisso <bepoisso@student.42perpignan.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/17 23:05:05 by bepoisso          #+#    #+#             */
-/*   Updated: 2025/02/12 22:14:08 by bepoisso         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:02:19 by bepoisso         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 //__________My_Own__________
 void	free_2d(char **t);
+char	*ft_strndup(const char *s, size_t n);
 //____________________
 
 #endif

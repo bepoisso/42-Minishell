@@ -1,13 +1,32 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+<<<<<<< HEAD
 /*			used for printf, perror */
+=======
+/* 
+INDEX	TYPE	DESCRIPTION
+1		infile	infile
+2		outfile	outfile
+3		<		redir infile replace
+4		>		redir outfile replace
+5		<<		redir infile append
+6		<<		redir outfile append
+7		|		pipe
+8		$		variable
+9		cmd		commande
+10		args	commande args
+*/
+
+/*used for printf, perror */
+>>>>>>> bef3458dc8c6ee43a6f32f284d782b71876190d2
 # include <stdio.h>
 /*			used for malloc, free, exit, getenv */
 # include <stdlib.h>
 /*			used for access, fork, read, write, close, getcwd, chdir, execve, dup, dup2,
  pipe, isatty, ttyname, ttyslot */
 # include <unistd.h>
+<<<<<<< HEAD
 /*			used for strerror */
 # include <string.h>
 /*			used for errno (used with perror, strerror) */
@@ -15,6 +34,9 @@
 /*			used for wait, waitpid, wait3, wait4*/
 # include <sys/wait.h>
 /*			used for system types (fork, wait, etc.)*/
+=======
+/*used for stres (fork, wait, etc.)*/
+>>>>>>> bef3458dc8c6ee43a6f32f284d782b71876190d2
 # include <sys/types.h>
 /*			used for stat, lstat, fstat */
 # include <sys/stat.h>
@@ -36,9 +58,15 @@
 # include <termios.h>
 /*			used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
+<<<<<<< HEAD
 /*			used for bool type*/
 # include <stdbool.h>
 /*			Our includes */
+=======
+
+/* Our includes */
+# include <stdbool.h>
+>>>>>>> bef3458dc8c6ee43a6f32f284d782b71876190d2
 # include "parser.h"
 # include "exec.h"
 # include "../libft/includes/libft.h"

@@ -1,19 +1,5 @@
 #include "../includes/parser.h"
 
-/* 
-INDEX	TYPE	DESCRIPTION
-1		infile	infile
-2		outfile	outfile
-3		<		redir infile replace
-4		>		redir outfile replace
-5		<<		redir infile append
-6		<<		redir outfile append
-7		|		pipe
-8		$		variable
-9		cmd		commande
-10		args	commande args
-*/
-
 t_token	*create_token(char *value)
 {
 	t_token	*new;
@@ -50,6 +36,16 @@ void	add_token(t_token **tokens, char *value)
 	free(value);
 }
 
+/**
+ * tokenizer - Tokenizes a given string into a list of tokens.
+ * @s: The input string to be tokenized.
+ *
+ * This function takes an input string and splits it into tokens based on
+ * spaces, tabs, and quotes. It handles quoted substrings as single tokens.
+ * The resulting tokens are stored in a linked list of t_token structures.
+ *
+ * Return: A pointer to the head of the linked list of tokens.
+ */
 t_token	*tokenizer(char *s)
 {
 	int		i;

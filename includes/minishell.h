@@ -1,6 +1,20 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/* 
+INDEX	TYPE	DESCRIPTION
+1		infile	infile
+2		outfile	outfile
+3		<		redir infile replace
+4		>		redir outfile replace
+5		<<		redir infile append
+6		<<		redir outfile append
+7		|		pipe
+8		$		variable
+9		cmd		commande
+10		args	commande args
+*/
+
 /*used for printf, perror */
 # include <stdio.h>
 /*used for malloc, free, exit, getenv */
@@ -8,13 +22,7 @@
 /*used for access, fork, read, write, close, getcwd, chdir, execve, dup, dup2,
  pipe, isatty, ttyname, ttyslot */
 # include <unistd.h>
-/*used for strerror */
-# include <string.h>
-/*used for errno (used with perror, strerror) */
-# include <errno.h>
-/*used for wait, waitpid, wait3, wait4*/
-# include <sys/wait.h>
-/*used for system types (fork, wait, etc.)*/
+/*used for stres (fork, wait, etc.)*/
 # include <sys/types.h>
 /*used for stat, lstat, fstat */
 # include <sys/stat.h>
@@ -36,6 +44,7 @@
 # include <termios.h>
 /*used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
+
 /* Our includes */
 # include <stdbool.h>
 # include "parser.h"

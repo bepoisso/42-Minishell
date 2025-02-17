@@ -125,21 +125,19 @@ static int	exec_cmd(char *path, char **cmd)
  *         - 0 on successful execution
  *         - 1 if path extraction fails or command is not found
  */
-int	start_exec_cmd(char **argv)
+int	start_exec_cmd(t_cmd *cmd)
 {
 	char	**cmd_path;
-	char	*full_path;
 
 	cmd_path = NULL;
-	full_path = NULL;
 	cmd_path = extract_paths();
 	if (!cmd_path)
 		return (1);
-	full_path = check_cmd(cmd_path, argv[1]);
-	if (!full_path)
+	cmd->path_cmd = check_cmd(cmd_path, cmd->cmd[0]);
+	if (!cmd->path_cmd)
 		return (free_doubletab(&cmd_path), 1);
-	exec_cmd(full_path, &argv[1]);
-	free_null((void *)&full_path);
+	exec_cmd(cmd->path_cmd, cmd->cmd);
+	free_null((void *)&cmd->path_cmd);
 	free_doubletab(&cmd_path);
 	return (0);
 }
@@ -148,3 +146,32 @@ int	start_exec_cmd(char **argv)
   ./minishell pwd */
 
 int	main(int argc, char **argv)
+{
+	t_cmd	*command;
+
+	command = malloc(sizeof(t_cmd));
+	if (!command)
+		return (1);
+	command->cmd = malloc(sizeof(char *) * 3);
+	if (!command->cmd)
+	{
+		free(command);
+		return (1);
+	}
+	if (argc < 2)
+	{
+		free(command->cmd);
+		free(command);
+		return (write(2, "NO ARGS\n", 8));
+	}
+	command->cmd[0] = ft_strdup(argv[1]);
+	command->cmd[1] = argc > 2 ? ft_strdup(argv[2]) : NULL;
+	command->cmd[2] = NULL;
+	start_exec_cmd(command);
+	free(command->cmd[0]);
+	if (command->cmd[1])
+		free(command->cmd[1]);
+	free(command->cmd);
+	free(command);
+	return (0);
+}

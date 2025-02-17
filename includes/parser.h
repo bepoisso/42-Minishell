@@ -4,25 +4,15 @@
 # include "minishell.h"
 
 /* 
-	Struct for the main things
-*/
-typedef struct s_base
-{
-	char	*infile;
-	char	*outfile;
-	t_cmd *cmd;
-	t_token	*token;
-}	t_base;
-
-/* 
 	Struct for the cmd
 */
 typedef struct s_cmd
 {
-	char	**cmd1;
-	char	*path_cmd1;
-	bool	bulitin;
+	char	**cmd;
+	char	*path_cmd;
+	bool	builtin;
 	struct s_cmd *next;
+	struct s_cmd *prev;
 }	t_cmd;
 
 /* 
@@ -34,5 +24,21 @@ typedef struct s_token
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
+
+/* 
+	Struct for the main things
+*/
+typedef struct s_base
+{
+	char	*infile;
+	char	*outfile;
+	int		exit_code;
+	t_cmd *cmd;
+	t_token	*token;
+}	t_base;
+
+
+void	ft_error(char *s, int code, t_base base);
+void	parser(char *str, char **env);
 
 #endif

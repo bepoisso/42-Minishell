@@ -4,9 +4,11 @@ int main(int ac, char **av, char **env)
 {
 	char	*input;
 
+	(void)ac;
+	(void)av;
 	while (1)
 	{
-		input = readline("mini$ell> ");
+		input = readline("minishell> ");
 		if (!input)
 		{
 			printf("exit\n");

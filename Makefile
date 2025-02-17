@@ -8,8 +8,8 @@ RESET = \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I$(INC_DIR)
-LIBS= -lreadline -lhistory
+CFLAGS = -Wall -Wextra -g -I$(INC_DIR) #-Werror#
+LIBS= -lreadline -lhistory -L./libft -lft
 VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
@@ -23,6 +23,9 @@ SRC_FILES = \
 			p_main.c\
 			p_parser.c\
 			p_utils.c\
+			p_error.c\
+			p_token.c\
+			p_quote.c\
 
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
@@ -41,13 +44,16 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR)
+		@make -C ./libft
 
 clean:
 		@rm -rf $(OBJ_DIR)
+		@make clean -C ./libft
 		@echo "Clean Program Objs	✅"
 
 fclean: clean
 		@rm -f $(NAME)
+		@make fclean -C ./libft
 		@echo "Clean Program		✅"
 
 re: fclean all

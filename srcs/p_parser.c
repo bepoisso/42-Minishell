@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../includes/minishell.h"
 
 void	init_base(t_base *base)
 {
@@ -17,7 +17,7 @@ void	init_base(t_base *base)
 	}
 } */
 
-void	parser(char *str, char **env)
+t_token	*parser(char *str, char **env)
 {
 	int		i;
 	char	*start;
@@ -30,7 +30,8 @@ void	parser(char *str, char **env)
 	check = false;
 	init_base(&base);
 	if (open_quote(str) != 0)
-		return (ft_error("ERROR\nopen quote", 1, base));
+		return (ft_error("ERROR\nopen quote", 1, base), NULL);
 	tokens = tokenizer(str);
 	print_tokens(tokens);
+	return (tokens);
 }

@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../includes/minishell.h"
 
 int	check_quote(char c, char *str, int *i)
 {

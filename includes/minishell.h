@@ -1,6 +1,14 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/*			used for bool type*/
+# include <stdbool.h>
+
+/*			Our includes */
+# include "../libft/includes/libft.h"
+# include "parser.h"
+# include "exec.h"
+
 /* 
 INDEX	TYPE	DESCRIPTION
 1		infile	infile
@@ -50,12 +58,6 @@ INDEX	TYPE	DESCRIPTION
 # include <termios.h>
 /*			used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
-/*			used for bool type*/
-# include <stdbool.h>
-/*			Our includes */
-# include "parser.h"
-# include "exec.h"
-# include "../libft/includes/libft.h"
 
 # define BLUE "\033[0;34m"
 # define RED "\033[0;31m"

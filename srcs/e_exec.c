@@ -135,7 +135,7 @@ int	start_exec_cmd(t_cmd *cmd)
 		return (1);
 	cmd->path_cmd = check_cmd(cmd_path, cmd->cmd[0]);
 	if (!cmd->path_cmd)
-		return (free_doubletab(&cmd_path), 1);
+		return (free_doubletab(&cmd_path), 1); //AJOUT GESTION ERREUR
 	exec_cmd(cmd->path_cmd, cmd->cmd);
 	free_null((void *)&cmd->path_cmd);
 	free_doubletab(&cmd_path);

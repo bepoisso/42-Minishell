@@ -20,7 +20,7 @@ typedef struct s_cmd
 */
 typedef struct s_token
 {
-	int				token;
+	int				id;
 	char			*data;
 	struct s_token	*next;
 	struct s_token	*prev;

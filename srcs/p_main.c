@@ -20,9 +20,11 @@ int main(int ac, char **av, char **env)
 			add_history(input);
 		parser(input, &base);
 		identify_token(&base);
-		// create_base()
+		base.cmds = parsing_cmd(&base);
 		// exec();
 		print_tokens(base.token);
+		printf("\n\n\n");
+		print_cmd(&base);
 		free(input);
 	}
 	return (0);

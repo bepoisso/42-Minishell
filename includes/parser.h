@@ -31,8 +31,6 @@ typedef struct s_token
 */
 typedef struct s_base
 {
-	char	*infile;
-	char	*outfile;
 	int		exit_code;
 	t_cmd	*cmd;
 	t_token	*token;

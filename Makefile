@@ -20,13 +20,14 @@ OBJ_DIR = ./objs
 INC_DIR = ./includes
 
 SRC_FILES = e_exec.c \
-			p_main.c\
+			e_free.c\
+			sighand.c\
+#			p_main.c\
 			p_parser.c\
 			p_utils.c\
 			p_error.c\
 			p_token.c\
 			p_quote.c\
-			e_free.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

@@ -81,7 +81,7 @@ void	print_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
-		printf("Token: [%s]\n", tokens->data);
+		printf("Token: [%d] [%s]\n", tokens->id, tokens->data);
 		tokens = tokens->next;
 	}
 }

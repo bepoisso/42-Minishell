@@ -20,8 +20,9 @@ typedef struct s_cmd
 */
 typedef struct s_token
 {
-	int				token;
+	int				id;
 	char			*data;
+	bool			literal;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
@@ -37,11 +38,12 @@ typedef struct s_base
 }	t_base;
 
 
-void	ft_error(char *s, int code, t_base base);
-t_token	*parser(char *str, char **env);
+void	ft_error(char *s, int code, t_base *base);
+void	parser(char *str, t_base *base);
 t_token	*tokenizer(char *s);
 void	print_tokens(t_token *tokens);
 int		open_quote(char *str);
 int		skip_quote(char *s, int	i);
+void	identify_token(t_base *base);
 
 #endif

@@ -18,7 +18,6 @@ INDEX	TYPE	DESCRIPTION
 5		<<		redir infile append
 6		<<		redir outfile append
 7		|		pipe
-8		$		variable
 9		cmd		commande
 10		args	commande args
 */

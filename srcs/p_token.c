@@ -1,4 +1,4 @@
-#include "../includes/parser.h"
+#include "../includes/minishell.h"
 
 t_token	*create_token(char *value)
 {
@@ -33,7 +33,6 @@ void	add_token(t_token **tokens, char *value)
 		temp->next = new;
 		new->prev = temp;
 	}
-	free(value);
 }
 
 /**
@@ -51,11 +50,13 @@ t_token	*tokenizer(char *s)
 	int		i;
 	int		start;
 	t_token	*tokens;
+	bool	quote;
 
 	i = 0;
 	tokens = NULL;
 	while (s[i])
 	{
+		quote = false;
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;
 		if (!s[i])
@@ -63,13 +64,15 @@ t_token	*tokenizer(char *s)
 		start = i;
 		if (s[i] == '"' || s[i] == '\'')
 		{
-			i = skip_quote(s, i);
+			i = skip_quote(s, i) - 1;
+			quote = true;
 			start++;
 		}
 		else
 			while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '"' && s[i] != '\'')
 				i++;
 		add_token(&tokens, ft_strndup(s + start, i - start));
+			i += (int)quote;
 	}
 	return (tokens);
 }

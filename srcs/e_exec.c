@@ -145,7 +145,7 @@ int	start_exec_cmd(t_cmd *cmd)
  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
   ./minishell pwd */
 
-int	main(int argc, char **argv)
+/* int	main(int argc, char **argv)
 {
 	t_cmd	*command;
 
@@ -174,4 +174,4 @@ int	main(int argc, char **argv)
 	free(command->cmd);
 	free(command);
 	return (0);
-}
+} */

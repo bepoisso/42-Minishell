@@ -32,7 +32,7 @@ typedef struct s_token
 typedef struct s_base
 {
 	int		exit_code;
-	t_cmd	*cmd;
+	t_cmd	*cmds;
 	t_token	*token;
 }	t_base;
 

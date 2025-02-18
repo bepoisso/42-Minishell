@@ -2,20 +2,20 @@
 #include "../includes/minishell.h"
 
 /**
- * Checks if a command exists in the PATH environment variable
- * and returns the full path to the command if found.
+ * Checks if a base exists in the PATH environment variable
+ * and returns the full path to the base if found.
  *
  * @param env_list Array of possible paths to search in
- * @param cmd Command to search for
+ * @param cmd base to search for
  *
- * @return Full path to the command if found and executable,
- *         NULL if command not found or not executable.
- *         Prints "command not found" to stdout if command not found.
+ * @return Full path to the base if found and executable,
+ *         NULL if base not found or not executable.
+ *         Prints "base not found" to stdout if base not found.
  *
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-static char	*check_cmd(char **env_list, char *cmd)
+static char	*check_cmd(char **env_list, t_base *base)
 {
 	char	*path;
 	char	**env_listcpy;
@@ -23,13 +23,12 @@ static char	*check_cmd(char **env_list, char *cmd)
 	env_listcpy = env_list;
 	while (*env_listcpy)
 	{
-		path = ft_strjoin(*env_listcpy, cmd);
+		path = ft_strjoin(*env_listcpy, base->cmds->cmd[0]);
 		if (access(path, X_OK) == 0)
 			return (path);
 		free_null((void *)&path);
 		env_listcpy++;
 	}
-	ft_putstr_fd("command not found\n", 2);
 	return (NULL);
 }
 
@@ -77,16 +76,16 @@ char	**extract_paths(void)
 }
 
 /**
- * @brief Executes a command in a child process
+ * @brief Executes a base in a child process
  *
- * Creates a child process using fork() and executes the specified command
+ * Creates a child process using fork() and executes the specified base
  * using execve(). The parent process waits for the child to complete.
  * La variable environ est définie et initialisée dans la bibliothèque C (libc).
  * Elle est automatiquement configurée par le système lors du démarrage de votre
  * programme pour contenir l'ensemble des variables d'environnement du processus
  * en cours.
  * @param path The full path to the executable
- * @param cmd Array of strings containing the command and its arguments
+ * @param cmd Array of strings containing the base and its arguments
  * @return Returns 0 on successful execution, -1 on fork failure
  *
  * @note Uses the global environ variable for environment variables
@@ -111,21 +110,16 @@ static int	exec_cmd(char *path, char **cmd)
 }
 
 /**
- * @brief Main function that handles command execution process
+ * @brief Starts the execution of a base.
  *
- * This function manages the execution flow of commands by:
- * 1. Extracting PATH environment variable
- * 2. Checking if command exists in PATH
- * 3. Executing the command if found
+ * This function extracts the paths, checks the base, and executes it.
+ * It also handles the necessary memory management for the base paths.
  *
- * @param argc Number of arguments (unused)
- * @param argv Array of command line arguments where argv[1] is
- *  the command to execute
- * @return int Returns:
- *         - 0 on successful execution
- *         - 1 if path extraction fails or command is not found
+ * @param cmd A pointer to the base structure containing the base to be executed.
+ * 
+ * @return Returns 0 on success, or 1 on failure.
  */
-int	start_exec_cmd(t_cmd *cmd)
+int	start_exec_cmd(t_base *base)
 {
 	char	**cmd_path;
 
@@ -133,11 +127,11 @@ int	start_exec_cmd(t_cmd *cmd)
 	cmd_path = extract_paths();
 	if (!cmd_path)
 		return (1);
-	cmd->path_cmd = check_cmd(cmd_path, cmd->cmd[0]);
-	if (!cmd->path_cmd)
-		return (free_doubletab(&cmd_path), 1); //AJOUT GESTION ERREUR
-	exec_cmd(cmd->path_cmd, cmd->cmd);
-	free_null((void *)&cmd->path_cmd);
+	base->cmds->path_cmd = check_cmd(cmd_path, base);
+	if (!base->cmds->path_cmd)
+		return (ft_error("bash: basee: base not found\n", 127, *base), free_doubletab(&cmd_path), 127);
+	exec_cmd(base->cmds->path_cmd, base->cmds);
+	free_null((void *)&base->cmds->path_cmd);
 	free_doubletab(&cmd_path);
 	return (0);
 }
@@ -145,33 +139,39 @@ int	start_exec_cmd(t_cmd *cmd)
  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
   ./minishell pwd */
 
-/* int	main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_cmd	*command;
+	t_base	*base;
 
-	command = malloc(sizeof(t_cmd));
-	if (!command)
+	base = malloc(sizeof(t_base));
+	if (!base)
 		return (1);
-	command->cmd = malloc(sizeof(char *) * 3);
-	if (!command->cmd)
+	base->cmds = malloc(sizeof(t_cmd));
+	if (!base->cmds)
 	{
-		free(command);
+		free(base);
+		return (1);
+	}
+	base->cmds->cmd = malloc(sizeof(char *) * 2);
+	if (!base->cmds->cmd)
+	{
+		free(base);
 		return (1);
 	}
 	if (argc < 2)
 	{
-		free(command->cmd);
-		free(command);
+		free(base->cmds->cmd);
+		free(base);
 		return (write(2, "NO ARGS\n", 8));
 	}
-	command->cmd[0] = ft_strdup(argv[1]);
-	command->cmd[1] = argc > 2 ? ft_strdup(argv[2]) : NULL;
-	command->cmd[2] = NULL;
-	start_exec_cmd(command);
-	free(command->cmd[0]);
-	if (command->cmd[1])
-		free(command->cmd[1]);
-	free(command->cmd);
-	free(command);
+	base->cmds->cmd[0] = ft_strdup(argv[1]);
+	//base->cmds->cmd[1] = argc > 2 ? ft_strdup(argv[2]) : NULL;
+	base->cmds->cmd[1] = NULL;
+	start_exec_cmd(base);
+	free(base->cmds->cmd[0]);
+	if (base->cmds->cmd[1])
+		free(base->cmds->cmd[1]);
+	free(base->cmds->cmd);
+	free(base);
 	return (0);
-} */
+}

@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 
 /**
@@ -15,7 +14,7 @@
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-static char	*check_cmd(char **env_list, t_base *base)
+static char	*check_cmd(char **env_list, t_cmd *cmd)
 {
 	char	*path;
 	char	**env_listcpy;
@@ -23,7 +22,7 @@ static char	*check_cmd(char **env_list, t_base *base)
 	env_listcpy = env_list;
 	while (*env_listcpy)
 	{
-		path = ft_strjoin(*env_listcpy, base->cmds->cmd[0]);
+		path = ft_strjoin(*env_listcpy, cmd->cmd[0]);
 		if (access(path, X_OK) == 0)
 			return (path);
 		free_null((void *)&path);
@@ -119,7 +118,7 @@ static int	exec_cmd(char *path, char **cmd)
  * 
  * @return Returns 0 on success, or 1 on failure.
  */
-int	start_exec_cmd(t_base *base)
+int	start_exec_cmd(t_cmd *cmd)
 {
 	char	**cmd_path;
 
@@ -127,19 +126,20 @@ int	start_exec_cmd(t_base *base)
 	cmd_path = extract_paths();
 	if (!cmd_path)
 		return (1);
-	base->cmds->path_cmd = check_cmd(cmd_path, base);
-	if (!base->cmds->path_cmd)
-		return (ft_error("bash: basee: base not found\n", 127, *base), free_doubletab(&cmd_path), 127);
-	exec_cmd(base->cmds->path_cmd, base->cmds);
-	free_null((void *)&base->cmds->path_cmd);
+	cmd->path_cmd = check_cmd(cmd_path, cmd);
+	if (!cmd->path_cmd)
+		return (ft_printf("Command '%s' not found\n", cmd->cmd[0])
+			, free_doubletab(&cmd_path)
+			, free_null((void *)&cmd->path_cmd), 127);
+	exec_cmd(cmd->path_cmd, cmd->cmd);
+	free_null((void *)&cmd->path_cmd);
 	free_doubletab(&cmd_path);
 	return (0);
 }
 /*valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
   ./minishell pwd */
-
-int	main(int argc, char **argv)
+/* int	main(int argc, char **argv)
 {
 	t_base	*base;
 
@@ -152,26 +152,27 @@ int	main(int argc, char **argv)
 		free(base);
 		return (1);
 	}
-	base->cmds->cmd = malloc(sizeof(char *) * 2);
+	base->cmds->cmd = malloc(sizeof(char *) * 3);
 	if (!base->cmds->cmd)
 	{
+		free(base->cmds);
 		free(base);
 		return (1);
 	}
 	if (argc < 2)
 	{
 		free(base->cmds->cmd);
+		free(base->cmds);
 		free(base);
 		return (write(2, "NO ARGS\n", 8));
 	}
 	base->cmds->cmd[0] = ft_strdup(argv[1]);
-	//base->cmds->cmd[1] = argc > 2 ? ft_strdup(argv[2]) : NULL;
-	base->cmds->cmd[1] = NULL;
-	start_exec_cmd(base);
-	free(base->cmds->cmd[0]);
-	if (base->cmds->cmd[1])
-		free(base->cmds->cmd[1]);
-	free(base->cmds->cmd);
-	free(base);
+	base->cmds->cmd[1] = ft_strdup(argv[2]);
+	base->cmds->cmd[2] = NULL;
+
+	start_exec_cmd(base->cmds);
+	free_doubletab(&base->cmds->cmd);
+	free_null((void **)&base->cmds);
+	free_null((void **)&base);
 	return (0);
-}
+} */

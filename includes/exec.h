@@ -11,9 +11,11 @@ void	free_doubletab(char ***str);
 void	free_null(void	**ptr);
 
 /**			e_exec.c */
-int		start_exec_cmd(t_base *base);
+int		start_exec_cmd(t_cmd *cmd);
 
 /**			handler.c */
 void	sig_handler(int signal);
+
+/**         e_errors.c */
 
 #endif

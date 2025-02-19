@@ -3,7 +3,7 @@
 /**Idem a what next mais dans l'autre sens
  * 
  */
-static int	what_before(t_token *act_tok, t_base *base, int i)
+int	what_before(t_token *act_tok, t_base *base, int i)
 {
 	t_token	*tokencpy;
 
@@ -29,7 +29,7 @@ static int	what_before(t_token *act_tok, t_base *base, int i)
  * check si il y aune redirection avant la commande et gere les
  *  redirections et pipes si il y en as
  */
-static int	what_after(t_token *act_tok, t_base *base, int i)
+int	what_after(t_token *act_tok, t_base *base, int i)
 {
 	t_token	*tokencpy;
 

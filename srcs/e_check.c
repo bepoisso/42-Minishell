@@ -1,6 +1,37 @@
 #include "../includes/minishell.h"
 
 /**
+ * Checks if a base exists in the PATH environment variable
+ * and returns the full path to the base if found.
+ *
+ * @param env_list Array of possible paths to search in
+ * @param cmd base to search for
+ *
+ * @return Full path to the base if found and executable,
+ *         NULL if base not found or not executable.
+ *         Prints "base not found" to stdout if base not found.
+ *
+ * @note Dynamically allocates memory for the path string.
+ *       Caller must free the returned string when no longer needed.
+ */
+char	*check_cmd(char **env_list, t_cmd *cmd)
+{
+	char	*path;
+	char	**env_listcpy;
+
+	env_listcpy = env_list;
+	while (*env_listcpy)
+	{
+		path = ft_strjoin(*env_listcpy, cmd->cmd[0]);
+		if (access(path, X_OK) == 0)
+			return (path);
+		free_null((void *)&path);
+		env_listcpy++;
+	}
+	return (NULL);
+}
+
+/**
  * @brief Checks the existence and accessibility of a file.
  *
  * This function attempts to open a file based on the specified type and
@@ -19,7 +50,7 @@
  * @return int Returns 0 if the file check is successful, or 1 if an error
  *  occurs.
  */
-int	file_check(char *file, int type, t_base base)
+int	file_check(char *file, int type, t_base *base)
 {
 	int	fd;
 

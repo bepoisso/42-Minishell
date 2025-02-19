@@ -30,7 +30,7 @@ t_token	*parser(char *str, char **env)
 	check = false;
 	init_base(&base);
 	if (open_quote(str) != 0)
-		return (ft_error("ERROR\nopen quote", 1, base), NULL);
+		return (ft_error("ERROR\nopen quote", 1, &base), NULL);
 	tokens = tokenizer(str);
 	print_tokens(tokens);
 	return (tokens);

@@ -50,7 +50,7 @@ char	*check_cmd(char **env_list, t_cmd *cmd)
  * @return int Returns 0 if the file check is successful, or 1 if an error
  *  occurs.
  */
-int	file_check(char *file, int type, t_base *base)
+int	filechk(char *file, int type, t_base *base)
 {
 	int	fd;
 
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	}
 
 	int type = atoi(argv[2]);
-	int ret = file_check(argv[1], type, base);
+	int ret = filechk(argv[1], type, base);
 
 	if (ret == 0)
 		printf("Vérification du fichier réussie.\n");

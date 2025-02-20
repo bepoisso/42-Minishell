@@ -100,8 +100,8 @@ int	start_exec_cmd(t_cmd *cmd)
 		return (ft_printf("Command '%s' not found\n", cmd->cmd[0])
 			, free_doubletab(&cmd_path)
 			, free_null((void *)&cmd->path_cmd), 127);
-	exec_cmd(cmd->path_cmd, cmd->cmd);
-	free_null((void *)&cmd->path_cmd);
+	//exec_cmd(cmd->path_cmd, cmd->cmd);
+	//free_null((void *)&cmd->path_cmd);
 	free_doubletab(&cmd_path);
 	return (0);
 }

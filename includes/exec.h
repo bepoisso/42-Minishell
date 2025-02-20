@@ -18,7 +18,7 @@ void	sig_handler(int signal);
 
 /**			e_check.c */
 char	*check_cmd(char **env_list, t_cmd *cmd);
-int		file_check(char *file, int type, t_base *base);
+int		filechk(char *file, int type, t_base *base);
 
 /**			e_tolkien */
 int		sauron(t_base *base);

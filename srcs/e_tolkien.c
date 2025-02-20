@@ -1,25 +1,30 @@
 #include "../includes/minishell.h"
 
 /**
- * @brief Counts the number of pipe tokens in the token list.
+ * @brief Counts the number of pipes in the token list and updates the pipe indices.
  *
- * This function iterates through the linked list of tokens in the base structure
- * and counts the number of tokens with an ID of 7, which represents a pipe.
- * The count is stored in the base structure's count_pipe member.
+ * This function iterates through the linked list of tokens in the base structure,
+ * counts the number of tokens with an ID of 7 (representing pipes), and updates
+ * the pipe index for each pipe token. The total count of pipes is stored in the
+ * base structure.
  *
- * @param base Pointer to the base structure containing the token list.
- * @return The number of pipe tokens in the token list.
+ * @param base Pointer to the base structure containing the token list and pipe count.
+ * @return The total number of pipes found in the token list.
  */
 static int	count_pipe(t_base *base)
 {
 	t_token	*tokencpy;
 
 	base->count_pipe = 0;
+	base->pipes_index = 0;
 	tokencpy = base->token;
 	while (tokencpy)
 	{
 		if (tokencpy->id == 7)
+		{
+			tokencpy->index_pipe = base->count_pipe;
 			base->count_pipe++;
+		}
 		tokencpy = tokencpy->next;
 	}
 	return (base->count_pipe);
@@ -86,27 +91,22 @@ static int	**create_pipe(t_base *base)
 int	sauron(t_base *base)
 {
 	t_cmd	*actual_cmd;
-	t_token	*act_tok;
+	t_token	*tok;
 
-		base->pipes = create_pipe(base);
+	base->pipes = create_pipe(base);
 	base->path_list = extract_paths();
 	actual_cmd = base->cmds;
-	act_tok = base->token;
-	while (act_tok)
+	tok = base->token;
+	while (tok)
 	{
-		/* if (act_tok->id == 3 && file_check(act_tok->next->data, 1, base) == 1)
-			return (free_doubletab(&base->path_list), 1);
-		if (act_tok->id == 5 && file_check(act_tok->next->data, 1, base) == 1)
-			return (free_doubletab(&base->path_list), 1);
-		if (act_tok->id == 4 && file_check(act_tok->next->data, 2, base) == 1)
-			return (free_doubletab(&base->path_list), 1);
-		if (act_tok->id == 6 && file_check(act_tok->next->data, 2, base) == 1)
-			return (free_doubletab(&base->path_list), 1); */
-		if (act_tok && act_tok->id == 9)
-				prepare_exec(actual_cmd, act_tok, base);
-		act_tok = act_tok->next;
+		if (tok->id >= 3 && tok->id <= 6)
+			file_redir();
+		else if (tok && tok->id == 9)
+			prepare_exec(actual_cmd, tok, base);
+		tok = tok->next;
 	}
 	close_fds(1, 1, -1, base);
 	free_doubletab(&base->path_list);
+	ree_null((void *)&actual_cmd->path_cmd);
 	return (0);
 }

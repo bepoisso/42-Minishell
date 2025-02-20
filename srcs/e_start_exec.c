@@ -86,13 +86,21 @@ void	close_fds(int keep_open, int in, int out, t_base *base)
 /**
  * Fonction close_fd a ecrire
  * gestion des erreurs a faire
+ * mettre actual_cmd->path_cmd a NULL et init des structures
  */
 int	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 {
-	pid_t	pid;
-	int		redir_in;
-	int		redir_out;
+	pid_t		pid;
+	int			redir_in;
+	int			redir_out;
+	int			status;
+	extern char	**environ;
 
+	status= 0;
+	actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
+	if (!actual_cmd->path_cmd)
+		return (ft_printf("Command '%s' not found\n", actual_cmd->cmd[0])
+			, free_null((void *)&actual_cmd->path_cmd), 127);
 	pid = fork();
 	if (pid == -1)
 		return (1);
@@ -104,6 +112,9 @@ int	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 		redir_out = what_after(act_tok, base, base->pipes_index);
 		if (redir_out == 0)
 			close_fds(0, 1, -1, base);
+		execve(actual_cmd->path_cmd, actual_cmd->cmd[0], environ);
 	}
+	else if (pid > 0)
+		waitpid(-1, &status, 0);//A CORRIGER POUR GESTION DE L'ATTENTE EN FONCTION DU NB DE FORK?
 	return (0);
 }

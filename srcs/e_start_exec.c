@@ -18,7 +18,8 @@ int	what_before(t_token *act_tok, t_base *base)
 				return (printf("redirect outfile"), 2);
 			if (tokencpy->id == 7)
 				return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
-				, close(base->pipes[act_tok->index_pipe][0]), 1);
+				, close(base->pipes[act_tok->index_pipe][0])
+					, close_fds(act_tok->index_pipe, 1, 0, base), 1);
 		}
 		tokencpy = tokencpy->prev;
 	}
@@ -39,15 +40,17 @@ int	what_after(t_token *act_tok, t_base *base)
 		if (tokencpy->id >= 3 && tokencpy->id <= 7)
 		{
 			if (tokencpy->id == 3 || tokencpy->id == 5)
-				return (printf("redirect infile"), 3);
+				return (close_fds(-1, 1, 1, base), 3);
 			if (tokencpy->id == 4 || tokencpy->id == 6)
-				return (printf("redirect outfile"), 2);
+				return (close_fds(-1, 1, 1, base), 2);
 			if (tokencpy->id == 7)
 				return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
-				, close(base->pipes[act_tok->index_pipe][1]), 1);
+				, close(base->pipes[act_tok->index_pipe][1])
+					, close_fds(act_tok->index_pipe, 0, 1, base), 1);
 		}
 		tokencpy = tokencpy->next;
 	}
+	close_fds(-1, 1, 1, base);
 	return (0);
 }
 
@@ -86,9 +89,6 @@ void	close_fds(int keep_open, int in, int out, t_base *base)
 void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 {
 	pid_t		pid;
-	int			redir_in;
-	int			redir_out;
-	int			mem_error;
 	extern char	**environ;
 
 	pid = fork();
@@ -105,22 +105,12 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 			ft_printf("Bash : Command '%s' not found\n", actual_cmd->cmd[0]);
 			clean_exit(base, 127);
 		}
-		redir_in = what_before(act_tok->prev, base);
-		if (redir_in != 1)
-			close_fds(-1, 1, 0, base);
-		else
-			close_fds(act_tok->index_pipe, 1, 1, base);
-		redir_out = what_after(act_tok->next, base);
-		if (redir_out != 1)
-			close_fds(-1, 0, 1, base);
-		else
-			close_fds(act_tok->index_pipe, 1, 1, base);
+		what_before(act_tok->prev, base);
+		what_after(act_tok->next, base);
 		execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
-		mem_error = errno;
-		if (mem_error)
-			clean_exit(base, mem_error);
+		if (errno)
+			clean_exit(base, errno);
 		close_fds(1, 1, -1, base);
 		clean_exit(base, 0);
 	}
 }
-

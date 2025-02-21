@@ -5,6 +5,7 @@ void	free_n_tabint(int **tabint, int n)
 	while (n > 0)
 	{
 		n--;
+		printf("pipe %d efface", n);
 		free_null((void **)&tabint[n]);
 	}
 	free(tabint);
@@ -44,6 +45,7 @@ void	free_token_list(t_token *tk)
 void	free_base(t_base *base)
 {
 	free_n_tabint(base->pipes, base->count_pipe);
+	base->pipes = NULL;
 	free_doubletab(&base->path_list);
 	free_token_list(base->token);
 	base->token = NULL;
@@ -59,8 +61,8 @@ void	free_base(t_base *base)
 void	clean_exit(t_base *base, int exit_code)
 {
 	(void)base;
-	free_base(base);
-	printf("exit code :%d", exit_code);
+	printf(GREEN "\texit code :%d\n "RESET, exit_code);
 	base->exit_code = exit_code;
+	free_base(base);
 	exit (exit_code);
 }

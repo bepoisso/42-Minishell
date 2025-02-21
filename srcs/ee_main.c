@@ -154,7 +154,8 @@ int main(int argc, char **argv)
         fprintf(stderr, "Usage: %s command [args] | command [args] | ...\n", argv[0]);
         return 1;
     }
-
+    signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
     // Parse des arguments en tokens
     t_token *token_list = parse_tokens(argc, argv);
 
@@ -212,14 +213,14 @@ int main(int argc, char **argv)
 
 
     /* Libération des ressources allouées pour les tokens */
-    t_token *next_tok;
+  /*   t_token *next_tok;
     while (token_list) {
         next_tok = token_list->next;
         free(token_list->data);
         free(token_list);
         token_list = next_tok;
     }
-    /* Libération de la liste des commandes */
+   
     t_cmd *next_cmd;
     while (cmd_list) {
         int i = 0;
@@ -232,5 +233,5 @@ int main(int argc, char **argv)
         free(cmd_list);
         cmd_list = next_cmd;
     }
-    return 0;
+    return 0; */
 }

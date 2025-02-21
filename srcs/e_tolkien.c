@@ -1,5 +1,15 @@
 #include "../includes/minishell.h"
 
+/**----------------------------------------------------------------------------
+ * sauron veille sur ses precieux anneaux
+ * je gere seulement les pipes....desole je n'avance pas bien vite :p
+ * mais, il y a un mais, je pense les gerer bien car il n'y a aucune
+ *  fuite memoire, et tous les fd sont ferme...il y en a un petit paquet
+ *  pourtant.
+ * j'ai demade au chat de me faire un jolie main, il a bien assure, donc en 
+ * theorie, il te suffit dans ton main, d'invoquer Sauron et hop
+ * je m'occuperai des redir le weekend prochain, ou en rentrant
+ *---------------------------------------------------------------------------*/
 /**
  * @brief Counts the number of pipes in the token list and updates the pipe
  *  indices.
@@ -60,31 +70,34 @@ static int	count_pipe(t_base *base)
  *         In case of failure, the function also frees any allocated memory
  *         and prints an error message.
  */
-static int	**create_pipe(t_base *base)
+static void	create_pipe(t_base *base)
 {
-	int	**pipes;
 	int	i;
 
 	i = 0;
-	pipes = NULL;
 	base->count_pipe = count_pipe(base);
-	pipes = ft_calloc(base->count_pipe, sizeof(int *));
+	base->pipes = ft_calloc(base->count_pipe, sizeof(int *));
 	while (i < base->count_pipe)
 	{
-		pipes[i] = ft_calloc(2, sizeof(int));
-		if (!pipes[i])
-			return (free_n_tabint(pipes, i + 1), NULL);
+		base->pipes[i] = ft_calloc(2, sizeof(int));
+		if (!base->pipes[i])
+		{
+			free_n_tabint(base->pipes, i + 1);
+			return ;
+		}
 		i++;
 	}
 	i = 0;
 	while (i < base->count_pipe)
 	{
-		if (pipe(pipes[i]) == -1)
-			return (free_n_tabint(pipes, base->count_pipe),
-				perror("Error : Creating pipe\n"), NULL);
+		if (pipe(base->pipes[i]) == -1)
+		{
+			free_n_tabint(base->pipes, base->count_pipe);
+			perror("Error : Creating pipe\n");
+			return ;
+		}
 		i++;
 	}
-	return (pipes);
 }
 
 //A AJOUTER DANS LE PARSER
@@ -99,7 +112,7 @@ int	sauron(t_base *base)
 	t_cmd	*actual_cmd;
 	t_token	*tok;
 
-	base->pipes = create_pipe(base);
+	create_pipe(base);
 	base->path_list = extract_paths();
 	base->count_forks = count_forks(base);
 	actual_cmd = base->cmds;

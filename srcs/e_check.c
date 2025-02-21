@@ -30,6 +30,7 @@ int	wait_rings(t_base *base)
 			printf("process finished with exit status %d\n", base->exit_code);
 		}
 	}
+	free_base(base);
 	return (0);
 }
 

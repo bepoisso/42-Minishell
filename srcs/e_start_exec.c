@@ -1,26 +1,26 @@
 #include "../includes/minishell.h"
 
 /**Idem a what next mais dans l'autre sens
- * 
+ * pipes geres reste infile outfile
  */
-int	what_before(t_token *act_tok, t_base *base, int i)
+int	what_before(t_token *act_tok, t_base *base)
 {
 	t_token	*tokencpy;
 
 	tokencpy = act_tok;
-	while (tokencpy->prev)
+	while (tokencpy)
 	{
 		if (tokencpy->id >= 3 && tokencpy->id <= 7)
 		{
 			if (tokencpy->id == 3 || tokencpy->id == 5)
-				return (printf("redirect infile"), 3);//a faire
+				return (printf("redirect infile"), 3);
 			if (tokencpy->id == 4 || tokencpy->id == 6)
-				return (printf("redirect outfile"), 2);//a faire
+				return (printf("redirect outfile"), 2);
 			if (tokencpy->id == 7)
-				return (dup2(base->pipes[act_tok->index_pipe][1], STDIN_FILENO)
-					, close(base->pipes[i - 1][1]), 1);
-			tokencpy = tokencpy->prev;
+				return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
+				, close(base->pipes[act_tok->index_pipe][0]), 1);
 		}
+		tokencpy = tokencpy->prev;
 	}
 	return (0);
 }
@@ -29,24 +29,24 @@ int	what_before(t_token *act_tok, t_base *base, int i)
  * check si il y aune redirection avant la commande et gere les
  *  redirections et pipes si il y en as
  */
-int	what_after(t_token *act_tok, t_base *base, int i)
+int	what_after(t_token *act_tok, t_base *base)
 {
 	t_token	*tokencpy;
 
 	tokencpy = act_tok;
-	while (act_tok->next)
+	while (tokencpy)
 	{
 		if (tokencpy->id >= 3 && tokencpy->id <= 7)
 		{
 			if (tokencpy->id == 3 || tokencpy->id == 5)
-				return (printf("redirect infile"), 3);//a faire
+				return (printf("redirect infile"), 3);
 			if (tokencpy->id == 4 || tokencpy->id == 6)
-				return (printf("redirect outfile"), 2);//a faire
+				return (printf("redirect outfile"), 2);
 			if (tokencpy->id == 7)
 				return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
-					, base->pipes_index++, 1);
-			tokencpy = tokencpy->prev;
+				, close(base->pipes[act_tok->index_pipe][1]), 1);
 		}
+		tokencpy = tokencpy->next;
 	}
 	return (0);
 }
@@ -55,7 +55,7 @@ int	what_after(t_token *act_tok, t_base *base, int i)
  * le premier parametre est l'index dans le tableau de pipes du fd a conserver
  * si il est a -1 on efface tout
  * les second et troisiemes parametres indiquent si il faut supprimer le in, le
- * out, les deux ou aucun.
+ * out, les deux ou aucun. 1 pour supprimer, 0 conserver
  * le troisieme parametre est la base, pour recuperer le tableau de pipes
  */
 void	close_fds(int keep_open, int in, int out, t_base *base)
@@ -65,14 +65,7 @@ void	close_fds(int keep_open, int in, int out, t_base *base)
 	i = 0;
 	while (i < base->count_pipe)
 	{
-		if (i == keep_open)
-		{
-			if (in)
-				close(base->pipes[i][0]);
-			if (out)
-				close(base->pipes[i][1]);
-		}
-		else
+		if (i != keep_open)
 		{
 			if (in)
 				close(base->pipes[i][0]);
@@ -84,37 +77,50 @@ void	close_fds(int keep_open, int in, int out, t_base *base)
 }
 
 /**
- * Fonction close_fd a ecrire
+ * actual_cmd->path_cmd A FREE A LA FIN !!!!!!
  * gestion des erreurs a faire
- * mettre actual_cmd->path_cmd a NULL et init des structures
+ * mettre actual_cmd->path_cmd a NULL et init des structures au depart 
+ * CHANGER POUR FONCTION QUI PRINT DANS FD2
+ * fonction a raccourcir
  */
-int	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
+void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 {
 	pid_t		pid;
 	int			redir_in;
 	int			redir_out;
-	int			status;
+	int			mem_error;
 	extern char	**environ;
 
-	status= 0;
-	actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
-	if (!actual_cmd->path_cmd)
-		return (ft_printf("Command '%s' not found\n", actual_cmd->cmd[0])
-			, free_null((void *)&actual_cmd->path_cmd), 127);
 	pid = fork();
 	if (pid == -1)
-		return (1);
+	{
+		perror("Error create fork\n");
+		clean_exit(base, -1);
+	}
 	if (pid == 0)
 	{
-		redir_in = what_before(act_tok, base, base->pipes_index);
-		if (redir_in == 0)
-			close_fds(1, 0, -1, base);
-		redir_out = what_after(act_tok, base, base->pipes_index);
-		if (redir_out == 0)
-			close_fds(0, 1, -1, base);
-		execve(actual_cmd->path_cmd, actual_cmd->cmd[0], environ);
+		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
+		if (!actual_cmd->path_cmd)
+		{
+			ft_printf("Bash : Command '%s' not found\n", actual_cmd->cmd[0]);
+			clean_exit(base, 127);
+		}
+		redir_in = what_before(act_tok->prev, base);
+		if (redir_in != 1)
+			close_fds(-1, 1, 0, base);
+		else
+			close_fds(act_tok->index_pipe, 1, 1, base);
+		redir_out = what_after(act_tok->next, base);
+		if (redir_out != 1)
+			close_fds(-1, 0, 1, base);
+		else
+			close_fds(act_tok->index_pipe, 1, 1, base);
+		execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
+		mem_error = errno;
+		if (mem_error)
+			clean_exit(base, mem_error);
+		close_fds(1, 1, -1, base);
+		clean_exit(base, 0);
 	}
-	else if (pid > 0)
-		waitpid(-1, &status, 0);//A CORRIGER POUR GESTION DE L'ATTENTE EN FONCTION DU NB DE FORK?
-	return (0);
 }
+

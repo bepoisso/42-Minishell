@@ -1,14 +1,18 @@
 #include "../includes/minishell.h"
 
 /**
- * @brief Counts the number of pipes in the token list and updates the pipe indices.
+ * @brief Counts the number of pipes in the token list and updates the pipe
+ *  indices.
  *
- * This function iterates through the linked list of tokens in the base structure,
- * counts the number of tokens with an ID of 7 (representing pipes), and updates
- * the pipe index for each pipe token. The total count of pipes is stored in the
- * base structure.
+ * This function iterates through the linked list of tokens in the base
+ *  structure,
+ * counts the number of tokens with an ID of 7 (representing pipes),
+ *  and updates
+ * the pipe index for each pipe token. The total count of pipes is stored
+ *  in the base structure.
  *
- * @param base Pointer to the base structure containing the token list and pipe count.
+ * @param base Pointer to the base structure containing the token list and
+ *  pipe count.
  * @return The total number of pipes found in the token list.
  */
 static int	count_pipe(t_base *base)
@@ -16,7 +20,6 @@ static int	count_pipe(t_base *base)
 	t_token	*tokencpy;
 
 	base->count_pipe = 0;
-	base->pipes_index = 0;
 	tokencpy = base->token;
 	while (tokencpy)
 	{
@@ -66,7 +69,6 @@ static int	**create_pipe(t_base *base)
 	pipes = NULL;
 	base->count_pipe = count_pipe(base);
 	pipes = ft_calloc(base->count_pipe, sizeof(int *));
-	base->pipes_index = 0;
 	while (i < base->count_pipe)
 	{
 		pipes[i] = ft_calloc(2, sizeof(int));
@@ -79,15 +81,19 @@ static int	**create_pipe(t_base *base)
 	{
 		if (pipe(pipes[i]) == -1)
 			return (free_n_tabint(pipes, base->count_pipe),
-				perror("Error : Creating pipe\n")
-					, NULL);
+				perror("Error : Creating pipe\n"), NULL);
 		i++;
 	}
 	return (pipes);
 }
+
 //A AJOUTER DANS LE PARSER
-/* if (base->token->id == 7) //si la commande commence par un | rien ne se fait A AJOUTER AU PARSING
-		return (free_exec(base), ft_error("bash: syntax error near unexpected token `|'", 2, base), 1); */
+/**if (base->token->id == 7)
+*si la commande commence par un | rien ne se fait A AJOUTER AU PARSING
+*		return (free_exec(base), 
+ft_error("bash: syntax error near unexpected token `|'", 2, base), 1);
+message a afficher dans ce cas
+*/
 int	sauron(t_base *base)
 {
 	t_cmd	*actual_cmd;
@@ -95,18 +101,21 @@ int	sauron(t_base *base)
 
 	base->pipes = create_pipe(base);
 	base->path_list = extract_paths();
+	base->count_forks = count_forks(base);
 	actual_cmd = base->cmds;
 	tok = base->token;
 	while (tok)
 	{
-		if (tok->id >= 3 && tok->id <= 6)
-			file_redir();
-		else if (tok && tok->id == 9)
+		/* if (tok->id >= 3 && tok->id <= 6)
+			printf("") */
+			//file_redir();
+		if (tok && tok->id == 9)
 			prepare_exec(actual_cmd, tok, base);
 		tok = tok->next;
 	}
-	close_fds(1, 1, -1, base);
-	free_doubletab(&base->path_list);
-	ree_null((void *)&actual_cmd->path_cmd);
+	close_fds(-1, 1, 1, base);
+	wait_rings(base);
+	//free_cmd_list(base->cmds);
+	//free_token_list(base->token);
 	return (0);
 }

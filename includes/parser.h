@@ -36,20 +36,19 @@ typedef struct s_token
 typedef struct s_base
 {
 	int				exit_code;
+	int				count_forks;
 	int				count_pipe;
 	int				**pipes;
-	int				pipes_index;
 	char			**path_list;
 	t_cmd			*cmds;
 	t_token			*token;
 }	t_base;
-
 
 void	ft_error(char *s, int code, t_base *base);
 t_token	*parser(char *str, char **env);
 t_token	*tokenizer(char *s);
 void	print_tokens(t_token *tokens);
 int		open_quote(char *str);
-int		skip_quote(char *s, int	i);
+int		skip_quote(char *s, int i);
 
 #endif

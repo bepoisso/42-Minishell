@@ -1,6 +1,58 @@
 #include "../includes/minishell.h"
 
 /**
+ * wait_rings - Waits for all child processes to finish and updates
+ *  the exit code.
+ * @base: Pointer to the base structure containing the count of forks
+ *  and exit code.
+ *
+ * This function waits for all child processes to finish by calling waitpid
+ *  in a loop.
+ * It decrements the count of forks each time a child process finishes and
+ *  updates exit code in the base structure based on the status of the finished
+ *  process.
+ *
+ * Return: Always returns 0.
+ */
+int	wait_rings(t_base *base)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	while (i < base->count_forks)
+	{
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+		{
+			i++;
+			base->exit_code = WEXITSTATUS(status);
+			printf("process finished with exit status %d\n", base->exit_code);
+		}
+	}
+	return (0);
+}
+
+/**
+ * fonction qui compte les forks pour permettre a sauron d'attendre tous les
+ *  processus enfant a l'aide d'une boucle et de la fonction waitpid(-1) qui va
+ *  decrementer le compteur base->count_forks jusqu'a 0
+ */
+int	count_forks(t_base *base)
+{
+	t_token	*tokcpy;
+
+	tokcpy = base->token;
+	while (tokcpy)
+	{
+		if (tokcpy->id == 9)
+			base->count_forks ++;
+		tokcpy = tokcpy->next;
+	}
+	return (base->count_forks);
+}
+
+/**
  * Checks if a base exists in the PATH environment variable
  * and returns the full path to the base if found.
  *
@@ -14,7 +66,7 @@
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-char	*check_cmd(char **env_list, t_cmd *cmd)
+char	*check_cmd(char **env_list, char *cmd)
 {
 	char	*path;
 	char	**env_listcpy;
@@ -22,7 +74,7 @@ char	*check_cmd(char **env_list, t_cmd *cmd)
 	env_listcpy = env_list;
 	while (*env_listcpy)
 	{
-		path = ft_strjoin(*env_listcpy, cmd->cmd[0]);
+		path = ft_strjoin(*env_listcpy, cmd);
 		if (access(path, X_OK) == 0)
 			return (path);
 		free_null((void *)&path);

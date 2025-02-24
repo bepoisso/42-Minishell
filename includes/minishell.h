@@ -18,7 +18,6 @@ INDEX	TYPE	DESCRIPTION
 5		<<		redir infile append
 6		<<		redir outfile append
 7		|		pipe
-8		$		variable
 9		cmd		commande
 10		args	commande args
 */
@@ -64,6 +63,7 @@ INDEX	TYPE	DESCRIPTION
 # define GREEN "\033[0;32m"
 # define YELLOW "\033[0;33m"
 # define CYAN "\033[0;36m"
+# define VIOLET "\033[0;35m"
 # define RESET "\033[0m"
 
 #endif

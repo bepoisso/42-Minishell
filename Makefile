@@ -10,7 +10,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -Wall -Wextra -g -I$(INC_DIR) #-Werror#
 LIBS= -lreadline -lhistory -L./libft -lft
-VALARGS = --supressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
+VALARGS = --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes
 MAKEFLAGS += --no-print-directory
 
 #_________________FILES_________________
@@ -26,14 +26,17 @@ SRC_FILES = e_check.c\
 			e_free2.c\
 			e_start_exec.c\
 			e_tolkien.c\
-			e_main.c\
 			sighand.c\
 			p_parser.c\
 			p_utils.c\
 			p_error.c\
 			p_token.c\
 			p_quote.c\
-			#p_main.c
+			p_init.c\
+			p_cmd.c\
+			p_main.c\
+			p_header.c\
+			#e_free.c\#
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

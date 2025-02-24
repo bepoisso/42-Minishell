@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_token	*create_token(char *value)
+t_token	*create_token(char *value, bool literal)
 {
 	t_token	*new;
 
@@ -8,19 +8,20 @@ t_token	*create_token(char *value)
 	if (!new)
 		return (NULL);
 	new->data = value;
+	new->literal = literal;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);
 }
 
-void	add_token(t_token **tokens, char *value)
+void	add_token(t_token **tokens, char *value, bool literal)
 {
 	t_token	*new;
 	t_token	*temp;
 
 	if (!value)
 		return ;
-	new = create_token(value);
+	new = create_token(value, literal);
 	if (!new)
 		return;
 	if (!*tokens)
@@ -35,6 +36,29 @@ void	add_token(t_token **tokens, char *value)
 	}
 }
 
+int	start_pipe(char *s, t_base *base)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
+	i++;
+	if (s[i])
+	{
+		if (s[i] == '|' && s[i + 1] == '|')
+			return (ft_error("minishell: syntax error near unexpected token `||'", 2, base), 1);
+		else if (s[i] == '|')
+			return (ft_error("minishell: syntax error near unexpected token `|'\n", 2, base), 1);
+		else if (s[i] == '&' && s[i + 1] == '&')
+			return (ft_error("minishell: syntax error near unexpected token `&&'", 2, base), 1);
+		else if (s[i] == '&')
+			return (ft_error("minishell: syntax error near unexpected token `&'\n", 2, base), 1);
+		else if (s[i] == ':' || s[i] == '!')
+			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
+	}
+	return (0);
+}
+
 /**
  * tokenizer - Tokenizes a given string into a list of tokens.
  * @s: The input string to be tokenized.
@@ -45,15 +69,19 @@ void	add_token(t_token **tokens, char *value)
  *
  * Return: A pointer to the head of the linked list of tokens.
  */
-t_token	*tokenizer(char *s)
+t_token	*tokenizer(char *s, t_base *base)
 {
 	int		i;
 	int		start;
 	t_token	*tokens;
 	bool	quote;
+	bool	literal;
 
 	i = 0;
+	literal = false;
 	tokens = NULL;
+	if (start_pipe(s, base))
+		return (tokens);
 	while (s[i])
 	{
 		quote = false;
@@ -64,6 +92,8 @@ t_token	*tokenizer(char *s)
 		start = i;
 		if (s[i] == '"' || s[i] == '\'')
 		{
+			if (s[i] == '\'')
+				literal = true;
 			i = skip_quote(s, i) - 1;
 			quote = true;
 			start++;
@@ -71,7 +101,7 @@ t_token	*tokenizer(char *s)
 		else
 			while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '"' && s[i] != '\'')
 				i++;
-		add_token(&tokens, ft_strndup(s + start, i - start));
+		add_token(&tokens, ft_strndup(s + start, i - start), literal);
 			i += (int)quote;
 	}
 	return (tokens);
@@ -81,7 +111,7 @@ void	print_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
-		printf("Token: [%s]\n", tokens->data);
+		printf("Token: id : [%d] [%d] [%s]\n", tokens->id, tokens->literal, tokens->data);
 		tokens = tokens->next;
 	}
 }

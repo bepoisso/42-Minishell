@@ -26,6 +26,7 @@ typedef struct s_token
 	int				id;
 	char			*data;
 	int				index_pipe;
+	bool			literal;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;

@@ -122,7 +122,7 @@ int	filechk(char *file, int type, t_base *base)
 		perror("Permission denied\n");
 		return (ft_error("", 1, base), 1);
 	}
-	return (0);
+	return (fd);
 }
 
 /* #include <stdio.h>

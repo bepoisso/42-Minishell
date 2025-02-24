@@ -119,16 +119,13 @@ int	sauron(t_base *base)
 	tok = base->token;
 	while (tok)
 	{
-		/* if (tok->id >= 3 && tok->id <= 6)
-			printf("") */
-			//file_redir();
+		/* if (tok->id == 8)
+			handle_env(actual_cmd, tok, base); */
 		if (tok && tok->id == 9)
 			prepare_exec(actual_cmd, tok, base);
 		tok = tok->next;
 	}
 	close_fds(-1, 1, 1, base);
 	wait_rings(base);
-	//free_cmd_list(base->cmds);
-	//free_token_list(base->token);
 	return (0);
 }

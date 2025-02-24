@@ -10,24 +10,24 @@ int	what_before(t_token *act_tok, t_base *base)
 	tokencpy = act_tok;
 	while (tokencpy)
 	{
-		if (tokencpy->id >= 3 && tokencpy->id <= 7)
+		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
-			if (tokencpy->id == 3 || tokencpy->id == 5)
-				return (printf("redirect infile"), 3);
-			if (tokencpy->id == 4 || tokencpy->id == 6)
-				return (printf("redirect outfile"), 2);
-			if (tokencpy->id == 7)
-				return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
-				, close(base->pipes[act_tok->index_pipe][0])
-					, close_fds(act_tok->index_pipe, 1, 0, base), 1);
+			close_fds(-1, 1, 1, base);
+			if (file_redir(act_tok->next, base))
+				return (1);
+
 		}
+		else if (tokencpy->id == 7)
+			return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
+			, close(base->pipes[act_tok->index_pipe][0])
+				, close_fds(act_tok->index_pipe, 1, 0, base), 1);
 		tokencpy = tokencpy->prev;
 	}
 	return (0);
 }
 
 /**
- * check si il y aune redirection avant la commande et gere les
+ * check si il y une redirection avant la commande et gere les
  *  redirections et pipes si il y en as
  */
 int	what_after(t_token *act_tok, t_base *base)
@@ -37,17 +37,17 @@ int	what_after(t_token *act_tok, t_base *base)
 	tokencpy = act_tok;
 	while (tokencpy)
 	{
-		if (tokencpy->id >= 3 && tokencpy->id <= 7)
+		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
-			if (tokencpy->id == 3 || tokencpy->id == 5)
-				return (close_fds(-1, 1, 1, base), 3);
-			if (tokencpy->id == 4 || tokencpy->id == 6)
-				return (close_fds(-1, 1, 1, base), 2);
-			if (tokencpy->id == 7)
-				return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
-				, close(base->pipes[act_tok->index_pipe][1])
-					, close_fds(act_tok->index_pipe, 0, 1, base), 1);
+			close_fds(-1, 1, 1, base);
+			if (file_redir(act_tok->next, base))
+				return (1);
+
 		}
+		else if (tokencpy->id == 7)
+			return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
+			, close(base->pipes[act_tok->index_pipe][1])
+				, close_fds(act_tok->index_pipe, 0, 1, base), 1);
 		tokencpy = tokencpy->next;
 	}
 	close_fds(-1, 1, 1, base);
@@ -102,12 +102,16 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
 		if (!actual_cmd->path_cmd)
 		{
-			ft_printf("Bash : Command '%s' not found\n", actual_cmd->cmd[0]);
+			ft_printf("%s: Command not found\n", act_tok->data);
 			clean_exit(base, 127);
 		}
 		what_before(act_tok->prev, base);
 		what_after(act_tok->next, base);
 		execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
+		/* if (actual_cmd->builtin)
+			//handle_builtin();//fonction gestion builtin
+		else
+			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
 		if (errno)
 			clean_exit(base, errno);
 		close_fds(1, 1, -1, base);

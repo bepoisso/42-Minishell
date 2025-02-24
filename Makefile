@@ -21,6 +21,7 @@ INC_DIR = ./includes
 
 SRC_FILES = e_check.c\
 			e_exec.c\
+			e_file_redir.c\
 			e_free.c\
 			e_free2.c\
 			e_start_exec.c\

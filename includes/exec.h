@@ -47,6 +47,6 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base);
 void	close_fds(int keep_open, int in, int out, t_base *base);
 
 /**			e_file_redir.c */
-int		file_redir(t_cmd *actual_cmd, t_token *tok, t_base *base);
+int		file_redir(t_token *tok, t_base *base);
 
 #endif

@@ -22,7 +22,7 @@ void	add_cmd(t_cmd **cmds, char **value)
 		return ;
 	new = create_cmd(value);
 	if (!new)
-		return;
+		return ;
 	if (!*cmds)
 		*cmds = new;
 	else
@@ -42,9 +42,9 @@ int	count_args(t_token *token)
 
 	current = token;
 	count = 0;
-	while(current && current->id != 9)
+	while (current && current->id != 9)
 		current = current->next;
-	if (current && current->id	== 9)
+	if (current && current->id == 9)
 		count++;
 	if (current && current->next)
 		current = current->next;
@@ -75,13 +75,12 @@ void	print_cmd(t_base *base)
 		}
 		current = current->next;
 	}
-	
 }
 
 t_cmd	*parsing_cmd(t_base *base)
 {
 	t_cmd	*cmds;
-	t_token *tokens;
+	t_token	*tokens;
 	char	**value;
 	int		i;
 
@@ -89,20 +88,19 @@ t_cmd	*parsing_cmd(t_base *base)
 	cmds = NULL;
 	while (tokens)
 	{
-		i = 0;
+		i = -1;
 		value = malloc(sizeof(char *) * (count_args(tokens) + 1));
 		if (!value)
 			return (NULL);
 		while (tokens && (tokens->id == 9 || tokens->id == 10))
 		{
-			value[i] = ft_strdup(tokens->data);
+			value[++i] = ft_strdup(tokens->data);
 			tokens = tokens->next;
-			i++;
 		}
-		value[i] = NULL;
+		value[++i] = NULL;
 		if (value[0])
 			add_cmd(&cmds, value);
-		if (tokens && (tokens->id != 9 || tokens->id != 10))
+		if (tokens && tokens->id != 9 && tokens->id != 10)
 			tokens = tokens->next;
 	}
 	return (cmds);

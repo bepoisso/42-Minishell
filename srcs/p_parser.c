@@ -6,6 +6,6 @@ void	parser(char *str, t_base *base)
 
 	if (open_quote(str) != 0)
 		return (ft_error("ERROR\nopen quote", 1, base));
-	tokens = tokenizer(str);
+	tokens = tokenizer(str, base);
 	base->token = tokens;
 }

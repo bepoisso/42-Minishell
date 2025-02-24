@@ -35,6 +35,27 @@ void	add_token(t_token **tokens, char *value)
 	}
 }
 
+int	start_pipe(char *s, t_base *base)
+{
+	int	i;
+
+	i = 0;
+	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
+	i++;
+	if (s[i])
+	{
+		if (s[i] == '|' && s[i + 1] == '|')
+			return (ft_error("minishell: syntax error near unexpected token `||'", 2, base), 1);
+		else if (s[i] == '|')
+			return (ft_error("minishell: syntax error near unexpected token `|'\n", 2, base), 1);
+		else if (s[i] == '&' && s[i + 1] == '&')
+			return (ft_error("minishell: syntax error near unexpected token `&&'", 2, base), 1);
+		else if (s[i] == '&')
+			return (ft_error("minishell: syntax error near unexpected token `&'\n", 2, base), 1);
+	}
+	return (0);
+}
+
 /**
  * tokenizer - Tokenizes a given string into a list of tokens.
  * @s: The input string to be tokenized.
@@ -45,7 +66,7 @@ void	add_token(t_token **tokens, char *value)
  *
  * Return: A pointer to the head of the linked list of tokens.
  */
-t_token	*tokenizer(char *s)
+t_token	*tokenizer(char *s, t_base *base)
 {
 	int		i;
 	int		start;
@@ -54,6 +75,8 @@ t_token	*tokenizer(char *s)
 
 	i = 0;
 	tokens = NULL;
+	if (start_pipe(s, base))
+		return (tokens);
 	while (s[i])
 	{
 		quote = false;

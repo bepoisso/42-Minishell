@@ -71,3 +71,19 @@ void	chenechepa(t_base *base)
 	// create_cmd()
 
 }
+
+void	pipe_counter(t_base *base)
+{
+	int		count;
+	t_token	*current;
+
+	count = 0;
+	current = base->token;
+	while (current)
+	{
+		if (current->id == 7)
+			count++;
+		current = current->next;
+	}
+	base->count_pipe = count;
+}

@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 
 /**
@@ -18,9 +17,10 @@
 void	sig_handler(int signal)
 {
 	if (signal == SIGINT)
-		printf(RED"sigint recieved\n"RESET);
-	else if (signal == SIGQUIT)
-		printf("SIGQUIT recieved");
+	{
+		printf(RED"\nCTRL-C received"RESET"\n");
+		exit (0);
+	}
 }
 
 /**
@@ -91,12 +91,12 @@ siginfo_t {
 */
 // % cc -g -lreadline sighand.c
 
-int	main(void)
+/* int	main(void)
 {
 	char	*str;
 
 	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		str = readline("Enter a string: ");
@@ -111,4 +111,4 @@ int	main(void)
 		free(str);
 	}
 	return (0);
-}
+} */

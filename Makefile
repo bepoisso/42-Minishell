@@ -19,8 +19,14 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = e_exec.c \
-			p_main.c\
+SRC_FILES = e_check.c\
+			e_exec.c\
+			e_free.c\
+			e_free2.c\
+			e_start_exec.c\
+			e_tolkien.c\
+			e_main.c\
+			sighand.c\
 			p_parser.c\
 			p_utils.c\
 			p_error.c\

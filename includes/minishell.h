@@ -26,8 +26,8 @@ INDEX	TYPE	DESCRIPTION
 # include <stdio.h>
 /*			used for malloc, free, exit, getenv */
 # include <stdlib.h>
-/*			used for access, fork, read, write, close, getcwd, chdir, execve, dup, dup2,
- pipe, isatty, ttyname, ttyslot */
+/*			used for access, fork, read, write, close, getcwd,
+ chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot */
 # include <unistd.h>
 /*			used for strerror */
 # include <string.h>

@@ -53,6 +53,8 @@ int	start_pipe(char *s, t_base *base)
 			return (ft_error("minishell: syntax error near unexpected token `&&'", 2, base), 1);
 		else if (s[i] == '&')
 			return (ft_error("minishell: syntax error near unexpected token `&'\n", 2, base), 1);
+		else if (s[i] == ':' || s[i] == '!')
+			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
 	}
 	return (0);
 }

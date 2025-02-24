@@ -8,6 +8,7 @@ int main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	ft_memset(&base, 0, sizeof(t_base));
+	header();
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -22,10 +23,10 @@ int main(int ac, char **av, char **env)
 		identify_token(&base);
 		pipe_counter(&base);
 		base.cmds = parsing_cmd(&base);
-		// exec();
-		print_tokens(base.token);
-		printf("\n\n\n");
-		print_cmd(&base);
+		sauron(&base);
+		// print_tokens(base.token);
+		// printf("\n\n\n");
+		// print_cmd(&base);
 		free(input);
 	}
 	return (0);

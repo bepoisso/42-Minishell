@@ -57,5 +57,6 @@ int		get_op_token(char *data);
 t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
 void	pipe_counter(t_base *base);
+void	header(void);
 
 #endif

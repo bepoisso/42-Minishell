@@ -107,6 +107,7 @@ int	filechk(char *file, int type, t_base *base)
 {
 	int	fd;
 
+	fd = 0;
 	if (type == 1)
 	{
 		fd = open(file, O_RDONLY);

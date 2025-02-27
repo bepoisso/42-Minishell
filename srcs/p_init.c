@@ -65,6 +65,43 @@ void	identify_token(t_base *base)
 	}
 }
 
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i])
+	{
+		if (s1[i] != s2[i])
+			return (0);
+		i++;
+	}
+	if (s1[i] != s2[i])
+		return (0);
+	return (1);
+}
+
+void	identify_builtin(t_cmd *cmd)
+{
+	t_cmd	*current;
+
+	current = cmd;
+	while (current)
+	{
+		if (ft_strcmp("echo", current->cmd[0])
+			|| ft_strcmp("cd", current->cmd[0])
+			|| ft_strcmp("pwd", current->cmd[0])
+			|| ft_strcmp("export", current->cmd[0])
+			|| ft_strcmp("unset", current->cmd[0])
+			|| ft_strcmp("env", current->cmd[0])
+			|| ft_strcmp("exit", current->cmd[0]))
+			current->builtin = true;
+		else
+			current->builtin = false;
+		current = current->next;
+	}
+}
+
 void	chenechepa(t_base *base)
 {
 	// idenify_token()

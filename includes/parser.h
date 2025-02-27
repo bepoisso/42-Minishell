@@ -58,5 +58,6 @@ t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
 void	pipe_counter(t_base *base);
 void	header(void);
+void	identify_builtin(t_cmd *cmd);
 
 #endif

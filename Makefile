@@ -35,7 +35,6 @@ SRC_FILES = e_check.c\
 			p_cmd.c\
 			p_main.c\
 			p_header.c\
-			#e_free.c\#
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

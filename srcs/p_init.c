@@ -65,22 +65,6 @@ void	identify_token(t_base *base)
 	}
 }
 
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i])
-	{
-		if (s1[i] != s2[i])
-			return (0);
-		i++;
-	}
-	if (s1[i] != s2[i])
-		return (0);
-	return (1);
-}
-
 void	identify_builtin(t_cmd *cmd)
 {
 	t_cmd	*current;
@@ -102,13 +86,6 @@ void	identify_builtin(t_cmd *cmd)
 	}
 }
 
-void	chenechepa(t_base *base)
-{
-	// idenify_token()
-	// create_cmd()
-
-}
-
 void	pipe_counter(t_base *base)
 {
 	int		count;
@@ -119,7 +96,10 @@ void	pipe_counter(t_base *base)
 	while (current)
 	{
 		if (current->id == 7)
+		{
 			count++;
+			current->index_pipe = count;
+		}
 		current = current->next;
 	}
 	base->count_pipe = count;

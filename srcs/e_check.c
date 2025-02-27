@@ -27,7 +27,7 @@ int	wait_rings(t_base *base)
 		{
 			i++;
 			base->exit_code = WEXITSTATUS(status);
-			printf("process finished with exit status %d\n", base->exit_code);
+			// printf("process finished with exit status %d\n", base->exit_code);
 		}
 	}
 	free_base(base);

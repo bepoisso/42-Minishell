@@ -70,10 +70,8 @@ static int	count_pipe(t_base *base)
  *         In case of failure, the function also frees any allocated memory
  *         and prints an error message.
  */
-static void	create_pipe(t_base *base)
+static void	create_pipe(t_base *base, int i)
 {
-	int	i;
-
 	i = 0;
 	base->count_pipe = count_pipe(base);
 	base->pipes = ft_calloc(base->count_pipe, sizeof(int *));
@@ -112,7 +110,7 @@ int	sauron(t_base *base)
 	t_cmd	*actual_cmd;
 	t_token	*tok;
 
-	create_pipe(base);
+	create_pipe(base, 0);
 	base->path_list = extract_paths();
 	base->count_forks = count_forks(base);
 	actual_cmd = base->cmds;

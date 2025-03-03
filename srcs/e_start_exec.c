@@ -15,7 +15,6 @@ int	what_before(t_token *act_tok, t_base *base)
 			cls_pipes(-1, 1, 1, base);
 			if (file_redir(tokencpy, base))
 				return (1);
-
 		}
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[tokencpy->index_pipe][0], STDIN_FILENO)
@@ -42,7 +41,6 @@ int	what_after(t_token *act_tok, t_base *base)
 			cls_pipes(-1, 1, 1, base);
 			if (file_redir(tokencpy, base))
 				return (1);
-
 		}
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[tokencpy->index_pipe][1], STDOUT_FILENO)
@@ -99,7 +97,6 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 	}
 	if (pid == 0)
 	{
-		
 		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
 		if (!actual_cmd->path_cmd)
 		{

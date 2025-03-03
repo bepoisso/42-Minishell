@@ -76,6 +76,7 @@ void	print_cmd(t_base *base)
 		}
 		current = current->next;
 	}
+	current = base->cmds;
 }
 
 t_cmd	*parsing_cmd(t_base *base)

@@ -5,7 +5,6 @@ void	free_n_tabint(int **tabint, int n)
 	while (n > 0)
 	{
 		n--;
-		printf("pipe %d efface", n);
 		free_null((void **)&tabint[n]);
 	}
 	free(tabint);

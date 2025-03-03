@@ -20,8 +20,8 @@ int	file_redir(t_token *tok, t_base *base)
 	tmp = tok;
 	if (tmp->id == 3)
 	{
-		write(1,"A\n", 2);
-		fd_in = filechk(tmp->data, 1, base);
+		//write(2,"A\n", 2);
+		fd_in = filechk(tmp->next->data, 1, base);
 		if (fd_in < 0)
 			return (1);
 		dup2(fd_in, STDIN_FILENO);
@@ -29,8 +29,8 @@ int	file_redir(t_token *tok, t_base *base)
 	}
 	else if (tmp->id == 5)
 	{
-		write(1,"B\n", 2);
-		fd_in = filechk(tmp->data, 1, base);
+		//write(2,"B\n", 2);
+		fd_in = filechk(tmp->next->data, 1, base);
 		if (fd_in < 0)
 			return (1);
 		dup2(fd_in, STDIN_FILENO);
@@ -38,16 +38,16 @@ int	file_redir(t_token *tok, t_base *base)
 	}
 	if (tmp->id == 4)
 	{
-		write(1,"C\n", 2);
-		fd_out = filechk(tmp->data, 2, base);
+		//write(2,"C\n", 2);
+		fd_out = filechk(tmp->next->data, 2, base);
 		if (fd_out < 0)
 			return (1);
 		dup2(fd_out, STDOUT_FILENO);
 	}
 	else if (tmp->id == 6)
 	{
-		write(1,"D\n", 2);
-		fd_out = filechk(tmp->data, 3, base);
+		//write(2,"D\n", 2);
+		fd_out = filechk(tmp->next->data, 3, base);
 		if (fd_out < 0)
 			return (1);
 		dup2(fd_out, STDOUT_FILENO);

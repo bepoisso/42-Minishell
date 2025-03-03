@@ -122,7 +122,10 @@ int	sauron(t_base *base)
 		/* if (tok->id == 8)
 			handle_env(actual_cmd, tok, base); */
 		if (tok && tok->id == 9)
+		{
 			prepare_exec(actual_cmd, tok, base);
+			actual_cmd = actual_cmd->next;
+		}
 		tok = tok->next;
 	}
 	cls_pipes(-1, 1, 1, base);

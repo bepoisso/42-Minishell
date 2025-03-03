@@ -13,14 +13,14 @@ int	what_before(t_token *act_tok, t_base *base)
 		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
 			cls_pipes(-1, 1, 1, base);
-			if (file_redir(act_tok->next, base))
+			if (file_redir(tokencpy, base))
 				return (1);
 
 		}
 		else if (tokencpy->id == 7)
-			return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
-			, close(base->pipes[act_tok->index_pipe][0])
-				, cls_pipes(act_tok->index_pipe, 1, 0, base), 1);
+			return (dup2(base->pipes[tokencpy->index_pipe][0], STDIN_FILENO)
+			, close(base->pipes[tokencpy->index_pipe][1])
+				, cls_pipes(tokencpy->index_pipe, 1, 0, base), 1);
 		tokencpy = tokencpy->prev;
 	}
 	return (0);
@@ -40,14 +40,14 @@ int	what_after(t_token *act_tok, t_base *base)
 		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
 			cls_pipes(-1, 1, 1, base);
-			if (file_redir(act_tok->next, base))
+			if (file_redir(tokencpy, base))
 				return (1);
 
 		}
 		else if (tokencpy->id == 7)
-			return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
-			, close(base->pipes[act_tok->index_pipe][1])
-				, cls_pipes(act_tok->index_pipe, 0, 1, base), 1);
+			return (dup2(base->pipes[tokencpy->index_pipe][1], STDOUT_FILENO)
+			, close(base->pipes[tokencpy->index_pipe][0])
+				, cls_pipes(tokencpy->index_pipe, 0, 1, base), 1);
 		tokencpy = tokencpy->next;
 	}
 	cls_pipes(-1, 1, 1, base);
@@ -99,6 +99,7 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 	}
 	if (pid == 0)
 	{
+		
 		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
 		if (!actual_cmd->path_cmd)
 		{

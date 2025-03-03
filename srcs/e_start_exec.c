@@ -12,7 +12,7 @@ int	what_before(t_token *act_tok, t_base *base)
 	{
 		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
-			close_fds(-1, 1, 1, base);
+			cls_pipes(-1, 1, 1, base);
 			if (file_redir(act_tok->next, base))
 				return (1);
 
@@ -20,7 +20,7 @@ int	what_before(t_token *act_tok, t_base *base)
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[tokencpy->index_pipe][1], STDIN_FILENO)
 			, close(base->pipes[act_tok->index_pipe][0])
-				, close_fds(act_tok->index_pipe, 1, 0, base), 1);
+				, cls_pipes(act_tok->index_pipe, 1, 0, base), 1);
 		tokencpy = tokencpy->prev;
 	}
 	return (0);
@@ -39,7 +39,7 @@ int	what_after(t_token *act_tok, t_base *base)
 	{
 		if (tokencpy->id >= 3 && tokencpy->id <= 6)
 		{
-			close_fds(-1, 1, 1, base);
+			cls_pipes(-1, 1, 1, base);
 			if (file_redir(act_tok->next, base))
 				return (1);
 
@@ -47,10 +47,10 @@ int	what_after(t_token *act_tok, t_base *base)
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[act_tok->index_pipe][0], STDOUT_FILENO)
 			, close(base->pipes[act_tok->index_pipe][1])
-				, close_fds(act_tok->index_pipe, 0, 1, base), 1);
+				, cls_pipes(act_tok->index_pipe, 0, 1, base), 1);
 		tokencpy = tokencpy->next;
 	}
-	close_fds(-1, 1, 1, base);
+	cls_pipes(-1, 1, 1, base);
 	return (0);
 }
 
@@ -61,7 +61,7 @@ int	what_after(t_token *act_tok, t_base *base)
  * out, les deux ou aucun. 1 pour supprimer, 0 conserver
  * le troisieme parametre est la base, pour recuperer le tableau de pipes
  */
-void	close_fds(int keep_open, int in, int out, t_base *base)
+void	cls_pipes(int keep_open, int in, int out, t_base *base)
 {
 	int	i;
 
@@ -114,7 +114,7 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
 		if (errno)
 			clean_exit(base, errno);
-		close_fds(1, 1, -1, base);
+		cls_pipes(1, 1, -1, base);
 		clean_exit(base, 0);
 	}
 }

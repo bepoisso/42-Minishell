@@ -125,7 +125,7 @@ int	sauron(t_base *base)
 			prepare_exec(actual_cmd, tok, base);
 		tok = tok->next;
 	}
-	close_fds(-1, 1, 1, base);
+	cls_pipes(-1, 1, 1, base);
 	wait_rings(base);
 	return (0);
 }

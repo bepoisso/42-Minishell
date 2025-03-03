@@ -116,12 +116,11 @@ int	filechk(char *file, int type, t_base *base)
 		}
 	}
 	else if (type == 2)
-		fd = open(file, O_CREAT);
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (type == 3)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-	{
-		perror("Permission denied\n");
-		return (ft_error("", 1, base), 1);
-	}
+		return (perror("Permission denied\n"), ft_error("", 1, base), 1);
 	return (fd);
 }
 

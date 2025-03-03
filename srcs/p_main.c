@@ -21,7 +21,7 @@ int main(int ac, char **av, char **env)
 			add_history(input);
 		parser(input, &base);
 		identify_token(&base);
-		pipe_counter(&base);
+		//pipe_counter(&base);
 		base.cmds = parsing_cmd(&base);
 		sauron(&base);
 		// print_tokens(base.token);

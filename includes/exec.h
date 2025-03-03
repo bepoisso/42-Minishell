@@ -16,6 +16,9 @@
  *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup 
  * ./minishell pwd
  * 
+ * cat < input.txt | sort > out.txt
+ * cat < input.txt | sort > out.txt | cat Cette commande n'affiche rien dans
+ *  bash mais fonction sous zsh
  */
 
 /**			free.c */
@@ -44,7 +47,7 @@ int		sauron(t_base *base);
 
 /**			e_start_exec.c */
 void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base);
-void	close_fds(int keep_open, int in, int out, t_base *base);
+void	cls_pipes(int keep_open, int in, int out, t_base *base);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);

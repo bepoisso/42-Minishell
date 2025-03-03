@@ -13,32 +13,44 @@
  */
 int	file_redir(t_token *tok, t_base *base)
 {
-	int	fd;
+	int	fd_in;
+	int	fd_out;
+	t_token	*tmp;
 
-	if (tok->id == 3)
+	tmp = tok;
+	if (tmp->id == 3)
 	{
-		fd = filechk(tok->data, 1, base);
-		if (fd < 0)
+		write(1,"A\n", 2);
+		fd_in = filechk(tmp->data, 1, base);
+		if (fd_in < 0)
 			return (1);
-		//dup2()
+		dup2(fd_in, STDIN_FILENO);
+		tmp = tmp->next;		
 	}
-	else if (tok->id == 5)
+	else if (tmp->id == 5)
 	{
-		fd = filechk(tok->data, 1, base);
-		if (fd < 0)
+		write(1,"B\n", 2);
+		fd_in = filechk(tmp->data, 1, base);
+		if (fd_in < 0)
 			return (1);
+		dup2(fd_in, STDIN_FILENO);
+		tmp = tmp->next;		
 	}
-	else if (tok->id == 4)
+	if (tmp->id == 4)
 	{
-		fd = filechk(tok->data, 2, base);
-		if (fd < 0)
+		write(1,"C\n", 2);
+		fd_out = filechk(tmp->data, 2, base);
+		if (fd_out < 0)
 			return (1);
+		dup2(fd_out, STDOUT_FILENO);
 	}
-	else if (tok->id == 6)
+	else if (tmp->id == 6)
 	{
-		fd = filechk(tok->data, 2, base);
-		if (fd < 0)
+		write(1,"D\n", 2);
+		fd_out = filechk(tmp->data, 3, base);
+		if (fd_out < 0)
 			return (1);
+		dup2(fd_out, STDOUT_FILENO);
 	}
 	return(0);
 }

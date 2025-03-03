@@ -21,7 +21,6 @@ int main(int ac, char **av)
 			add_history(input);
 		parser(input, &base);
 		identify_token(&base);
-		pipe_counter(&base);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
 		sauron(&base);

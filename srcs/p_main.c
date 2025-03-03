@@ -23,10 +23,10 @@ int main(int ac, char **av)
 		identify_token(&base);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
+		print_tokens(base.token);
+		printf("\n\n\n");
+		print_cmd(&base);
 		sauron(&base);
-		// print_tokens(base.token);
-		// printf("\n\n\n");
-		// print_cmd(&base);
 		free(input);
 	}
 	return (0);

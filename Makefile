@@ -34,7 +34,7 @@ SRC_FILES = e_check.c\
 			p_quote.c\
 			p_init.c\
 			p_cmd.c\
-			e_main.c\
+			p_main.c\
 			p_header.c\
 			d_print_struct.c\
 

@@ -207,7 +207,10 @@ int main(int argc, char **argv)
        Cette fonction devra gérer la création des forks, la configuration des pipes,
        et l'exécution des commandes en fonction de la liste de commandes et de tokens.
     */
-    sauron(&base);
+   print_tokens(base.token);
+   printf("\n\n");
+   print_cmd(&base);
+  //  sauron(&base);
 /*     print base.cmds->cmd;
     base.cmds->next */
 

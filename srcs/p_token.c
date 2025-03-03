@@ -7,7 +7,7 @@ t_token	*create_token(char *value, bool literal)
 	new = malloc(sizeof(t_token));
 	if (!new)
 		return (NULL);
-	new->data = value;
+	new->data = ft_strdup(value);
 	new->literal = literal;
 	new->next = NULL;
 	new->prev = NULL;
@@ -34,6 +34,7 @@ void	add_token(t_token **tokens, char *value, bool literal)
 		temp->next = new;
 		new->prev = temp;
 	}
+	free(value);
 }
 
 int	start_pipe(char *s, t_base *base)

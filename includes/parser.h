@@ -58,5 +58,8 @@ t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
 void	pipe_counter(t_base *base);
 void	header(void);
+void	identify_builtin(t_cmd *cmd);
+int		ft_strcmp(char *s1, char *s2);
+void	display_base(t_base *base);
 
 #endif

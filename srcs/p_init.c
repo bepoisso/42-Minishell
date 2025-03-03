@@ -65,11 +65,25 @@ void	identify_token(t_base *base)
 	}
 }
 
-void	chenechepa(t_base *base)
+void	identify_builtin(t_cmd *cmd)
 {
-	// idenify_token()
-	// create_cmd()
+	t_cmd	*current;
 
+	current = cmd;
+	while (current)
+	{
+		if (ft_strcmp("echo", current->cmd[0])
+			|| ft_strcmp("cd", current->cmd[0])
+			|| ft_strcmp("pwd", current->cmd[0])
+			|| ft_strcmp("export", current->cmd[0])
+			|| ft_strcmp("unset", current->cmd[0])
+			|| ft_strcmp("env", current->cmd[0])
+			|| ft_strcmp("exit", current->cmd[0]))
+			current->builtin = true;
+		else
+			current->builtin = false;
+		current = current->next;
+	}
 }
 
 void	pipe_counter(t_base *base)
@@ -82,7 +96,10 @@ void	pipe_counter(t_base *base)
 	while (current)
 	{
 		if (current->id == 7)
+		{
 			count++;
+			current->index_pipe = count;
+		}
 		current = current->next;
 	}
 	base->count_pipe = count;

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-int main(int ac, char **av, char **env)
+int main(int ac, char **av)
 {
 	char	*input;
 	t_base	base;
@@ -21,12 +21,12 @@ int main(int ac, char **av, char **env)
 			add_history(input);
 		parser(input, &base);
 		identify_token(&base);
-		//pipe_counter(&base);
 		base.cmds = parsing_cmd(&base);
+		identify_builtin(base.cmds);
+		print_tokens(base.token);
+		printf("\n\n\n");
+		print_cmd(&base);
 		sauron(&base);
-		// print_tokens(base.token);
-		// printf("\n\n\n");
-		// print_cmd(&base);
 		free(input);
 	}
 	return (0);

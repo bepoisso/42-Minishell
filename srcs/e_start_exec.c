@@ -5,23 +5,23 @@
  */
 int	what_before(t_token *act_tok, t_base *base)
 {
-	t_token	*tokencpy;
+	t_token	*actual;
 
-	tokencpy = act_tok;
-	while (tokencpy)
+	actual = act_tok;
+	while (actual)
 	{
-		if (tokencpy->id >= 3 && tokencpy->id <= 6)
+		if (actual->id >= 3 && actual->id <= 6)
 		{
 			cls_pipes(-1, 1, 1, base);
-			if (file_redir(tokencpy, base))
+			if (file_redir(actual, base))
 				return (1);
 			return (0);
 		}
-		else if (tokencpy->id == 7)
-			return (dup2(base->pipes[tokencpy->index_pipe][0], STDIN_FILENO)
-			, close(base->pipes[tokencpy->index_pipe][1])
-				, cls_pipes(tokencpy->index_pipe, 1, 0, base), 1);
-		tokencpy = tokencpy->prev;
+		else if (actual->id == 7)
+			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
+			, close(base->pipes[actual->index_pipe][1])
+				, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+		actual = actual->prev;
 	}
 	return (0);
 }
@@ -32,23 +32,23 @@ int	what_before(t_token *act_tok, t_base *base)
  */
 int	what_after(t_token *act_tok, t_base *base)
 {
-	t_token	*tokencpy;
+	t_token	*actual;
 
-	tokencpy = act_tok;
-	while (tokencpy)
+	actual = act_tok;
+	while (actual)
 	{
-		if (tokencpy->id >= 3 && tokencpy->id <= 6)
+		if (actual->id >= 3 && actual->id <= 6)
 		{
 			cls_pipes(-1, 1, 1, base);
-			if (file_redir(tokencpy, base))
+			if (file_redir(actual, base))
 				return (1);
 			return (0);
 		}
-		else if (tokencpy->id == 7)
-			return (dup2(base->pipes[tokencpy->index_pipe][1], STDOUT_FILENO)
-			, close(base->pipes[tokencpy->index_pipe][0])
-				, cls_pipes(tokencpy->index_pipe, 0, 1, base), 1);
-		tokencpy = tokencpy->next;
+		else if (actual->id == 7)
+			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
+			, close(base->pipes[actual->index_pipe][0])
+				, cls_pipes(actual->index_pipe, 1, 0, base), 0);
+		actual = actual->next;
 	}
 	cls_pipes(-1, 1, 1, base);
 	return (0);

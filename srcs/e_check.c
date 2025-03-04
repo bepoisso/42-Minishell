@@ -110,6 +110,32 @@ int	filechk(t_token *token, int type, t_base *base)
 	if (token)
 		file = token->data;
 	else
+		return (ft_error("bash: syntax error near unexpected token\n", 1, base)
+			, -1);
+	fd = 0;
+	if (type == 3)
+		fd = open(file, O_RDONLY);
+	//if (type == 5)
+		//fd = heredoc(base);A FAIRE
+	else if (type == 4)
+		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (type == 6)
+		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1 && errno == EACCES)
+		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
+	if (fd == -1 && errno == ENOENT)
+		return (ft_error("No such file or directory\n", 1, base), -1);
+	return (fd);
+}
+
+/* int	filechk(t_token *token, int type, t_base *base)
+{
+	int		fd;
+	char	*file;
+
+	if (token)
+		file = token->data;
+	else
 		return (ft_error("bash: syntax error near unexpected token\n", 1, base), -1);
 	fd = 0;
 	if (type == 1)
@@ -127,7 +153,7 @@ int	filechk(t_token *token, int type, t_base *base)
 	if (fd == -1 && errno == EACCES)
 		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
 	return (fd);
-}
+} */
 
 /* #include <stdio.h>
 #include <stdlib.h>

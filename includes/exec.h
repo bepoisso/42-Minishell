@@ -12,7 +12,8 @@
  * info threads
  * set non-stop on : si multithread, permet de continuer apres un point d'arret
  *  plutot que d'arreter
- * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup ./minishell 
+ * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
+ *   --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
  * 
  * < infile sort > outfile.txt commande de test
  * cat < infile.txt | sort > out.txt

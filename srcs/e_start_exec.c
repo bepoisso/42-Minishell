@@ -15,6 +15,7 @@ int	what_before(t_token *act_tok, t_base *base)
 			cls_pipes(-1, 1, 1, base);
 			if (file_redir(tokencpy, base))
 				return (1);
+			return (0);
 		}
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[tokencpy->index_pipe][0], STDIN_FILENO)
@@ -41,6 +42,7 @@ int	what_after(t_token *act_tok, t_base *base)
 			cls_pipes(-1, 1, 1, base);
 			if (file_redir(tokencpy, base))
 				return (1);
+			return (0);
 		}
 		else if (tokencpy->id == 7)
 			return (dup2(base->pipes[tokencpy->index_pipe][1], STDOUT_FILENO)
@@ -80,7 +82,6 @@ void	cls_pipes(int keep_open, int in, int out, t_base *base)
 /**
  * actual_cmd->path_cmd A FREE A LA FIN !!!!!!
  * gestion des erreurs a faire
- * mettre actual_cmd->path_cmd a NULL et init des structures au depart 
  * CHANGER POUR FONCTION QUI PRINT DANS FD2
  * fonction a raccourcir
  */
@@ -88,6 +89,7 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 {
 	pid_t		pid;
 	extern char	**environ;
+	int a, b;
 
 	pid = fork();
 	if (pid == -1)
@@ -103,9 +105,10 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 			ft_printf("%s: Command not found\n", act_tok->data);
 			clean_exit(base, 127);
 		}
-		what_before(act_tok->prev, base);
-		what_after(act_tok->next, base);
-		execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
+		a = what_before(act_tok->prev, base);
+		b = what_after(act_tok->next, base);
+		if (!a && !b)
+			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
 		/* if (actual_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin
 		else

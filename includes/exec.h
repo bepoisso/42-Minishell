@@ -11,10 +11,11 @@
  * inferior nb bascule sur le fork nb
  * info threads
  * set non-stop on : si multithread, permet de continuer apres un point d'arret
- *  plutot aue d'arreter
+ *  plutot que d'arreter
  * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup ./minishell 
  * 
- * cat < input.txt | sort > out.txt
+ * < infile sort > outfile.txt commande de test
+ * cat < infile.txt | sort > out.txt
  * cat < input.txt | sort > out.txt | cat Cette commande n'affiche rien dans
  *  bash mais fonction sous zsh
  */
@@ -37,7 +38,7 @@ void	sig_handler(int signal);
 /**			e_check.c */
 int		wait_rings(t_base *base);
 char	*check_cmd(char **env_list, char *cmd);
-int		filechk(char *file, int type, t_base *base);
+int		filechk(t_token *token, int type, t_base *base);
 int		count_forks(t_base *base);
 
 /**			e_tolkien */

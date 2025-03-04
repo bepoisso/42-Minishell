@@ -102,17 +102,22 @@ char	*check_cmd(char **env_list, char *cmd)
  * @return int Returns 0 if the file check is successful, or 1 if an error
  *  occurs.
  */
-int	filechk(char *file, int type, t_base *base)
+int	filechk(t_token *token, int type, t_base *base)
 {
-	int	fd;
+	int		fd;
+	char	*file;
 
+	if (token)
+		file = token->data;
+	else
+		return (ft_error("bash: syntax error near unexpected token\n", 1, base), -1);
 	fd = 0;
 	if (type == 1)
 	{
 		fd = open(file, O_RDONLY);
 		{
-			if (errno == ENOENT)
-				return (ft_error("No such file or directory\n", 1, base), 1);
+			if (fd == -1 && errno == ENOENT)
+				return (ft_error("No such file or directory\n", 1, base), -1);
 		}
 	}
 	else if (type == 2)
@@ -120,7 +125,7 @@ int	filechk(char *file, int type, t_base *base)
 	else if (type == 3)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), 1);
+		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
 	return (fd);
 }
 

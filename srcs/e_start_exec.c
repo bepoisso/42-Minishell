@@ -18,9 +18,12 @@ int	what_before(t_token *act_tok, t_base *base)
 			return (0);
 		}
 		else if (actual->id == 7)
+		{
+			ft_printf(BLUE"index %s: %d\n"RESET, actual->data, actual->index_pipe);
 			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
 			, close(base->pipes[actual->index_pipe][1])
-				, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+			, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+		}
 		actual = actual->prev;
 	}
 	return (0);
@@ -33,7 +36,7 @@ int	what_before(t_token *act_tok, t_base *base)
 int	what_after(t_token *act_tok, t_base *base)
 {
 	t_token	*actual;
-
+	
 	actual = act_tok;
 	while (actual)
 	{
@@ -41,13 +44,16 @@ int	what_after(t_token *act_tok, t_base *base)
 		{
 			cls_pipes(-1, 1, 1, base);
 			if (file_redir(actual, base))
-				return (1);
+			return (1);
 			return (0);
 		}
 		else if (actual->id == 7)
+		{
+			ft_printf(GREEN"index %s: %d\n"RESET, actual->data, actual->index_pipe);
 			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
 			, close(base->pipes[actual->index_pipe][0])
 				, cls_pipes(actual->index_pipe, 1, 0, base), 0);
+		}
 		actual = actual->next;
 	}
 	cls_pipes(-1, 1, 1, base);
@@ -108,13 +114,18 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 		a = what_before(act_tok->prev, base);
 		b = what_after(act_tok->next, base);
 		if (!a && !b)
+		{
+			ft_putstr_fd("child\n", 2);
+			ft_putstr_fd(actual_cmd->cmd[0], 2);
+			ft_putstr_fd("\n", 2);
 			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
+		}
 		/* if (actual_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin
 		else
 			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
-		if (errno)
-			clean_exit(base, errno);
+	/* 	if (errno)
+		clean_exit(base, errno); */
 		cls_pipes(1, 1, -1, base);
 		clean_exit(base, 0);
 	}

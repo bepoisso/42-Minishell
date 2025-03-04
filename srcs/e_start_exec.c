@@ -22,7 +22,7 @@ int	what_before(t_token *act_tok, t_base *base)
 			ft_printf(BLUE"index %s: %d\n"RESET, actual->data, actual->index_pipe);
 			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
 			, close(base->pipes[actual->index_pipe][1])
-			, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+			, cls_pipes(actual->index_pipe, 1, 0, base), 0);
 		}
 		actual = actual->prev;
 	}
@@ -52,7 +52,7 @@ int	what_after(t_token *act_tok, t_base *base)
 			ft_printf(GREEN"index %s: %d\n"RESET, actual->data, actual->index_pipe);
 			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
 			, close(base->pipes[actual->index_pipe][0])
-				, cls_pipes(actual->index_pipe, 1, 0, base), 0);
+				, cls_pipes(actual->index_pipe, 0, 1, base), 0);
 		}
 		actual = actual->next;
 	}

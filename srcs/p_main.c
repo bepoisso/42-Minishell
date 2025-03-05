@@ -23,11 +23,11 @@ int main(int ac, char **av)
 		identify_token(&base);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
-		printf("-----------------------------------------\n");
+/* 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");
 		print_cmd(&base);
-		printf("-----------------------------------------\n\n");
+		printf("-----------------------------------------\n\n"); */
 		sauron(&base);
 		free(input);
 	}

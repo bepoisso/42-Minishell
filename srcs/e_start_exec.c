@@ -127,12 +127,7 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 			clean_exit(base, 127);
 		}
 		if (!what_before(act_tok->prev, base) && !what_after(act_tok->next, base))
-		{
-			ft_putstr_fd("child\n", 2);
-			ft_putstr_fd(actual_cmd->cmd[0], 2);
-			ft_putstr_fd("\n", 2);
-			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
-		}
+			base->exit_code = execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
 		/* if (actual_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin
 		else
@@ -140,6 +135,6 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 	/* 	if (errno)
 		clean_exit(base, errno); */
 		cls_pipes(1, 1, -1, base);
-		clean_exit(base, 0);
+		clean_exit(base, base->exit_code);
 	}
 }

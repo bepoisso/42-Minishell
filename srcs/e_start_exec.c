@@ -10,6 +10,22 @@
  * @param base Pointer to the base structure containing pipe information.
  * @return int Returns 1 if there is an error in file redirection, otherwise 0.
  */
+static void debug_pipe(t_token *actual, t_base *base, int fd_closed)
+{
+	ft_putnbr_fd(getpid(), 2);
+	ft_putstr_fd(BLUE" pipe nb ", 2);
+	ft_putnbr_fd(actual->index_pipe, 2);
+	ft_putstr_fd(" fd0= [", 2);
+	ft_putnbr_fd(base->pipes[actual->index_pipe][0], 2);
+	ft_putstr_fd("] fd1= [", 2);
+	ft_putnbr_fd(base->pipes[actual->index_pipe][1], 2);
+	ft_putstr_fd("]  closed :[", 2);
+	ft_putnbr_fd(fd_closed, 2);
+	ft_putstr_fd("]\n"RESET, 2);
+
+}
+
+
 static int	what_before(t_token *act_tok, t_base *base)
 {
 	t_token	*actual;
@@ -26,10 +42,9 @@ static int	what_before(t_token *act_tok, t_base *base)
 		}
 		else if (actual->id == 7)
 		{
-			write(2,"pipe detected\n", 14);
+			debug_pipe(actual, base, base->pipes[actual->index_pipe][1]);
 			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
-			, close(base->pipes[actual->index_pipe][1])
-			, cls_pipes(actual->index_pipe, 1, 0, base), 0);
+			, cls_pipes(-1, 1, 0, base), 0);
 		}
 		actual = actual->prev;
 	}
@@ -67,9 +82,9 @@ static int	what_after(t_token *act_tok, t_base *base)
 		}
 		else if (actual->id == 7)
 		{
+			debug_pipe(actual, base, base->pipes[actual->index_pipe][0]);
 			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
-			, close(base->pipes[actual->index_pipe][0])
-				, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+			, cls_pipes(-1, 0, 1, base), 0);
 		}
 		actual = actual->next;
 	}
@@ -135,6 +150,7 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
 	/* 	if (errno)
 		clean_exit(base, errno); */
+		write(2, "POUET\n", 6);
 		cls_pipes(1, 1, -1, base);
 		clean_exit(base, base->exit_code);
 	}

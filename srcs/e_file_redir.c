@@ -24,6 +24,7 @@ int	file_redir(t_token *tok, t_base *base)
 		if (fd < 0)
 			return (1);
 		dup2(fd, STDIN_FILENO);
+		close(fd);
 	}
 	if (tmp->id == 4 || tmp->id == 6)
 	{
@@ -32,6 +33,7 @@ int	file_redir(t_token *tok, t_base *base)
 		if (fd < 0)
 			return (1);
 		dup2(fd, STDOUT_FILENO);
+		close(fd);
 	}
 	return (0);
 }

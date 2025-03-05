@@ -19,6 +19,7 @@ int	file_redir(t_token *tok, t_base *base)
 	tmp = tok;
 	if (tmp->id == 3 || tmp->id == 5)
 	{
+		write(2,"redir in detected\n", 18);
 		fd = filechk(tmp->next, tmp->id, base);
 		if (fd < 0)
 			return (1);
@@ -26,6 +27,7 @@ int	file_redir(t_token *tok, t_base *base)
 	}
 	if (tmp->id == 4 || tmp->id == 6)
 	{
+		write(2,"redir out detected\n", 19);
 		fd = filechk(tmp->next, tmp->id, base);
 		if (fd < 0)
 			return (1);

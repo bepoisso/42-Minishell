@@ -72,7 +72,7 @@ static int	count_pipe(t_base *base)
  */
 static void	create_pipe(t_base *base, int i)
 {
-	i = 0;
+	int fd = 0;
 	base->count_pipe = count_pipe(base);
 	base->pipes = ft_calloc(base->count_pipe, sizeof(int *));
 	while (i < base->count_pipe)
@@ -88,7 +88,11 @@ static void	create_pipe(t_base *base, int i)
 	i = 0;
 	while (i < base->count_pipe)
 	{
-		if (pipe(base->pipes[i]) == -1)
+		fd = pipe(base->pipes[i]);
+		ft_putstr_fd("created fd ", 2);
+		ft_putnbr_fd(fd, 2);
+		ft_putstr_fd("\n", 2);
+		if ( fd == -1)
 		{
 			free_n_tabint(base->pipes, base->count_pipe);
 			perror("Error : Creating pipe\n");

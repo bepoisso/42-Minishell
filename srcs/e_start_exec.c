@@ -26,6 +26,7 @@ static int	what_before(t_token *act_tok, t_base *base)
 		}
 		else if (actual->id == 7)
 		{
+			write(2,"pipe detected\n", 14);
 			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
 			, close(base->pipes[actual->index_pipe][1])
 			, cls_pipes(actual->index_pipe, 1, 0, base), 0);

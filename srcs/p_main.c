@@ -1,33 +1,27 @@
 #include "../includes/minishell.h"
 
-int main(int ac, char **av)
+int main(void)
 {
 	char	*input;
 	t_base	base;
 
-	(void)ac;
-	(void)av;
 	ft_memset(&base, 0, sizeof(t_base));
 	header();
 	while (1)
 	{
 		input = readline("minishell> ");
 		if (!input)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*input)
-			add_history(input);
+			return (ft_printf("exit\n"), 0);
+		add_history(input);
 		parser(input, &base);
 		identify_token(&base);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
-/* 		printf("-----------------------------------------\n");
+ 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");
 		print_cmd(&base);
-		printf("-----------------------------------------\n\n"); */
+		printf("-----------------------------------------\n\n");
 		sauron(&base);
 		free(input);
 	}

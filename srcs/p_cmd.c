@@ -58,27 +58,6 @@ int	count_args(t_token *token)
 	return (count);
 }
 
-void	print_cmd(t_base *base)
-{
-	t_cmd	*current;
-	int		i;
-
-	current = base->cmds;
-	while (current)
-	{
-		i = 0;
-		printf("\nCMD : %s\n", current->cmd[i]);
-		i++;
-		while (current->cmd[i])
-		{
-			printf("arg : %s\n", current->cmd[i]);
-			i++;
-		}
-		current = current->next;
-	}
-	current = base->cmds;
-}
-
 t_cmd	*parsing_cmd(t_base *base)
 {
 	t_cmd	*cmds;

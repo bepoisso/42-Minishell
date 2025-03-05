@@ -93,3 +93,33 @@ void display_base(t_base *base)
     printf("========================================\n");
 }
 
+void	print_tokens(t_token *tokens)
+{
+	while (tokens)
+	{
+		printf("Token: id : [%d] [%d] [%s]\n", tokens->id, tokens->literal, tokens->data);
+		tokens = tokens->next;
+	}
+}
+
+void	print_cmd(t_base *base)
+{
+	t_cmd	*current;
+	int		i;
+
+	current = base->cmds;
+	while (current)
+	{
+		i = 0;
+		printf("\nCMD : %s\n", current->cmd[i]);
+		i++;
+		while (current->cmd[i])
+		{
+			printf("arg : %s\n", current->cmd[i]);
+			i++;
+		}
+		current = current->next;
+	}
+	current = base->cmds;
+}
+

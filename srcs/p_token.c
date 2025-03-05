@@ -79,12 +79,12 @@ t_token	*tokenizer(char *s, t_base *base)
 	bool	literal;
 
 	i = 0;
-	literal = false;
 	tokens = NULL;
 	if (start_pipe(s, base))
 		return (tokens);
 	while (s[i])
 	{
+		literal = false;
 		quote = false;
 		while (s[i] == ' ' || s[i] == '\t')
 			i++;
@@ -100,19 +100,12 @@ t_token	*tokenizer(char *s, t_base *base)
 			start++;
 		}
 		else
+		{
 			while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '"' && s[i] != '\'')
 				i++;
+		}
 		add_token(&tokens, ft_strndup(s + start, i - start), literal);
 			i += (int)quote;
 	}
 	return (tokens);
-}
-
-void	print_tokens(t_token *tokens)
-{
-	while (tokens)
-	{
-		printf("Token: id : [%d] [%d] [%s]\n", tokens->id, tokens->literal, tokens->data);
-		tokens = tokens->next;
-	}
 }

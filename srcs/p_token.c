@@ -70,7 +70,7 @@ int	start_pipe(char *s, t_base *base)
  *
  * Return: A pointer to the head of the linked list of tokens.
  */
-t_token	*tokenizer(char *s, t_base *base)
+/* t_token	*tokenizer(char *s, t_base *base)
 {
 	int		i;
 	int		start;
@@ -106,6 +106,68 @@ t_token	*tokenizer(char *s, t_base *base)
 		}
 		add_token(&tokens, ft_strndup(s + start, i - start), literal);
 			i += (int)quote;
+	}
+	return (tokens);
+} */
+
+int	ft_isspace(char c)
+{
+	if ((c >= 7 && c <= 13) || c == 32)
+		return (1);
+	return (0);
+}
+
+int	ft_isop(char c)
+{
+	if (c == '|' || c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+t_token	*tokenizer(char *s, t_base *base)
+{
+	int		i;
+	int		start;
+	t_token	*tokens;
+	bool	literal;
+
+	tokens = NULL;
+	i = 0;
+	if (start_pipe(s, base))
+		return (tokens);
+	while (ft_isspace(s[i]))
+		i++;
+	if (!s[i])
+		return (tokens);
+	while (s[i])
+	{
+		literal = false;
+		if (ft_isspace(s[i]))
+		{
+			start = i;
+			while (ft_isspace(s[i]))
+				i++;
+		}
+		else if (ft_isop(s[i]))
+		{
+			start = i;
+			while (ft_isop(s[i]))
+				i++;
+		}
+		else if (s[i] == '"' || s[i] == '\'')
+		{
+			if (s[i] == '\'')
+				literal = true;
+			start = i;
+			i += skip_quote(s, i) - 1;
+		}
+		else
+		{
+			start = i;
+			while(ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i]) && s[i] != '\'' && s[i] != '"')
+				i++;
+		}
+		add_token(&tokens, ft_strndup(s + start, i - start), literal);
 	}
 	return (tokens);
 }

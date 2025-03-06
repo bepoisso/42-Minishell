@@ -16,7 +16,7 @@ int	get_redir_io(char *data)
 int	get_op_token(char *data)
 {
 	if (!data || !*data)
-		return (0);
+		return (-2);
 	if (ft_strncmp(data, "<<", 2) == 0)
 		return (5);
 	if (ft_strncmp(data, ">>", 2) == 0)
@@ -27,7 +27,9 @@ int	get_op_token(char *data)
 		return (4);
 	if (ft_strncmp(data, "|", 1) == 0)
 		return (7);
-	return (0);
+	if (ft_isspace(*data))
+		return (0);
+	return (-1);
 }
 
 void	identify_token(t_base *base)
@@ -42,9 +44,9 @@ void	identify_token(t_base *base)
 	while (current)
 	{
 		current->id = get_op_token(current->data);
-		if (current->id >= 3 && current->id <= 6)
+		if ((current->id >= 3 && current->id <= 6))
 			redir = 1;
-		if (!current->id)
+		if (current->id == -1)
 		{
 			if (redir == 1)
 			{

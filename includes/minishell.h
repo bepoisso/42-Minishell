@@ -11,6 +11,7 @@
 
 /* 
 INDEX	TYPE	DESCRIPTION
+0		space	ignore
 1		infile	infile
 2		outfile	outfile
 3		<		redir infile replace

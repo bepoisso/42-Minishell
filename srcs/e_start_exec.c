@@ -101,17 +101,18 @@ void	cls_pipes(int keep_open, int in, int out, t_base *base)
 }
 
 /**
- * actual_cmd->path_cmd A FREE A LA FIN !!!!!!
+ * act_cmd->path_cmd A FREE A LA FIN !!!!!!
  * gestion des erreurs a faire
  * CHANGER POUR FONCTION QUI PRINT DANS FD2
  * fonction a raccourcir
  */
-void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
+void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 {
 	pid_t		pid;
 	extern char	**environ;
 
 	pid = fork();
+	base->pid_last = pid;
 	if (pid == -1)
 	{
 		perror("Error create fork\n");
@@ -121,18 +122,17 @@ void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
 	{
 		what_before(act_tok->prev, base);
 		what_after(act_tok->next, base);
-		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
-		if (!actual_cmd->path_cmd)
+		act_cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
+		if (!act_cmd->path_cmd)
 			clean_exit(base, 127);
-		base->exit_code = execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
-		/* if (actual_cmd->builtin)
+		base->exit_code = execve(act_cmd->path_cmd, act_cmd->cmd, environ);
+		/* if (act_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin
 		else
-			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
+			execve(act_cmd->path_cmd, act_cmd->cmd, environ); */
 	/* 	if (errno)
 		clean_exit(base, errno); */
 		write(2, "POUET\n", 6);
-		cls_pipes(1, 1, -1, base);
 		clean_exit(base, base->exit_code);
 	}
 }

@@ -19,7 +19,6 @@ int	file_redir(t_token *tok, t_base *base)
 	tmp = tok;
 	if (tmp->id == 3 || tmp->id == 5)
 	{
-		write(2,"redir in detected\n", 18);
 		fd = filechk(tmp->next, tmp->id, base);
 		if (fd < 0)
 			return (1);
@@ -28,7 +27,6 @@ int	file_redir(t_token *tok, t_base *base)
 	}
 	if (tmp->id == 4 || tmp->id == 6)
 	{
-		write(2,"redir out detected\n", 19);
 		fd = filechk(tmp->next, tmp->id, base);
 		if (fd < 0)
 			return (1);
@@ -37,41 +35,3 @@ int	file_redir(t_token *tok, t_base *base)
 	}
 	return (0);
 }
-
-/* int	file_redir(t_token *tok, t_base *base)
-{
-	int	fd;
-	int	fd;
-	t_token	*tmp;
-
-	tmp = tok;
-	if (tmp->id == 3)
-	{
-		fd = filechk(tmp->next, 1, base);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDIN_FILENO);
-	}
-	else if (tmp->id == 5)
-	{
-		fd = filechk(tmp->next, 1, base);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDIN_FILENO);
-	}
-	if (tmp->id == 4)
-	{
-		fd = filechk(tmp->next, 2, base);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-	}
-	else if (tmp->id == 6)
-	{
-		fd = filechk(tmp->next, 3, base);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-	}
-	return(0);
-} */

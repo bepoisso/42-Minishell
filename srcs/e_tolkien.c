@@ -87,7 +87,7 @@ static void	create_pipe(t_base *base, int i)
 	i = 0;
 	while (i < base->count_pipe)
 	{
-		if ( pipe(base->pipes[i]) == -1)
+		if (pipe(base->pipes[i]) == -1)
 		{
 			free_n_tabint(base->pipes, base->count_pipe);
 			perror("Error : Creating pipe\n");

@@ -27,5 +27,22 @@
 	Memcheck:Leak
 	match-leak-kinds: definite
 	fun:*
-	obj:/usr/bin/sort
+	obj:/usr/*
 }
+
+{
+   grep_regex_indirect_all
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:re_*
+   obj:/usr/bin/grep
+}
+
+{
+   grep_regex_indirect
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:re_node_set_alloc
+   obj:/usr/bin/grep
+}
+at | 

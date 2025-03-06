@@ -16,10 +16,7 @@ typedef struct s_cmd
 }	t_cmd;
 
 /**
- * Struct for the token
- * j'ai ajoute index_pipe ca va m'aider a gerer naviguer dans le tableau de
- * pipes, comme ca qund je navigue dans la liste et que j'arrive sur un pipe,
- *  je sais comment le gerer avec le tableau de pipes
+ * 
 */
 typedef struct s_token
 {
@@ -31,8 +28,8 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
-/* 
-	Struct for the main things
+/**
+ * Struct for the main things
 */
 typedef struct s_base
 {
@@ -41,6 +38,7 @@ typedef struct s_base
 	int				count_pipe;
 	int				**pipes;
 	char			**path_list;
+	pid_t			pid_last;
 	t_cmd			*cmds;
 	t_token			*token;
 }	t_base;

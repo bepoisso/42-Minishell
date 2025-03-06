@@ -16,19 +16,12 @@
  */
 int	wait_rings(t_base *base)
 {
-	int	i;
 	int	status;
 
-	i = 0;
-	while (i < base->count_forks)
-	{
-		waitpid(-1, &status, 0);
-		if (WIFEXITED(status))
-		{
-			i++;
-			base->exit_code = WEXITSTATUS(status);
-		}
-	}
+	status = 0;
+	waitpid(base->pid_last, &status, 0);
+	if (WIFEXITED(status))
+		base->exit_code = WEXITSTATUS(status);
 	free_base(base);
 	return (0);
 }
@@ -83,7 +76,8 @@ char	*check_cmd(char **env_list, char *cmd, t_base *base)
 	base->exit_code = 127;
 	ft_putstr_fd(RED"Command '", 2);
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("' not found, but can be installed with:\nsudo apt install ", 2);
+	ft_putstr_fd("' not found, but can be installed with:", 2);
+	ft_putstr_fd("\nsudo apt install ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd("\n"RESET, 2);
 	return (NULL);
@@ -133,59 +127,3 @@ int	filechk(t_token *token, int type, t_base *base)
 		return (ft_error("No such file or directory\n", 1, base), -1);
 	return (fd);
 }
-
-/* int	filechk(t_token *token, int type, t_base *base)
-{
-	int		fd;
-	char	*file;
-
-	if (token)
-		file = token->data;
-	else
-		return (ft_error("bash: syntax error near unexpected token\n", 1, base), -1);
-	fd = 0;
-	if (type == 1)
-	{
-		fd = open(file, O_RDONLY);
-		{
-			if (fd == -1 && errno == ENOENT)
-				return (ft_error("No such file or directory\n", 1, base), -1);
-		}
-	}
-	else if (type == 2)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (type == 3)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
-	return (fd);
-} */
-
-/* #include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-
-int main(int argc, char **argv)
-{
-	t_base base;
-
-	if (argc < 3)
-	{
-		fprintf(stderr, "Usage: %s <nom_du_fichier> <type>\n", argv[0]);
-		fprintf(stderr, "Type 1: lecture uniquement, Type 2: création
-		 (ouverture en écriture)\n");
-		return (1);
-	}
-
-	int type = atoi(argv[2]);
-	int ret = filechk(argv[1], type, base);
-
-	if (ret == 0)
-		printf("Vérification du fichier réussie.\n");
-	else
-		printf("Échec de la vérification du fichier (code %d).\n", ret);
-
-	return (ret);
-} */

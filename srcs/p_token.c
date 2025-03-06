@@ -159,7 +159,7 @@ t_token	*tokenizer(char *s, t_base *base)
 			if (s[i] == '\'')
 				literal = true;
 			start = i;
-			i += skip_quote(s, i) - 1;
+			i = skip_quote(s, i);
 		}
 		else
 		{
@@ -171,3 +171,5 @@ t_token	*tokenizer(char *s, t_base *base)
 	}
 	return (tokens);
 }
+
+//            test arg         args t"es"t T'ES'T < << >> >     | || "T      ES        T" 't    est     '

@@ -38,7 +38,7 @@ void	sig_handler(int signal);
 
 /**			e_check.c */
 int		wait_rings(t_base *base);
-char	*check_cmd(char **env_list, char *cmd);
+char	*check_cmd(char **env_list, char *cmd, t_base *base);
 int		filechk(t_token *token, int type, t_base *base);
 int		count_forks(t_base *base);
 

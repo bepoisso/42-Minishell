@@ -93,3 +93,29 @@ void display_base(t_base *base)
     printf("========================================\n");
 }
 
+/**
+ * @brief Debugs the state of a pipe in the Minishell project.
+ *
+ * This function prints the current process ID, the pipe index, the file
+ * descriptors of the pipe, and the closed file descriptor to the standard
+ * error output. It is used for debugging purposes to track the state of
+ * pipes within the shell.
+ *
+ * @param actual Pointer to the current token structure containing the pipe index.
+ * @param base Pointer to the base structure containing the pipes array.
+ * @param fd_closed The file descriptor that has been closed.
+ */
+void debug_pipe(t_token *actual, t_base *base, int fd_closed)
+{
+	ft_putnbr_fd(getpid(), 2);
+	ft_putstr_fd(BLUE" pipe nb ", 2);
+	ft_putnbr_fd(actual->index_pipe, 2);
+	ft_putstr_fd(" fd0= [", 2);
+	ft_putnbr_fd(base->pipes[actual->index_pipe][0], 2);
+	ft_putstr_fd("] fd1= [", 2);
+	ft_putnbr_fd(base->pipes[actual->index_pipe][1], 2);
+	ft_putstr_fd("]  closed :[", 2);
+	ft_putnbr_fd(fd_closed, 2);
+	ft_putstr_fd("]\n"RESET, 2);
+
+}

@@ -66,7 +66,7 @@ int	count_forks(t_base *base)
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-char	*check_cmd(char **env_list, char *cmd)
+char	*check_cmd(char **env_list, char *cmd, t_base *base)
 {
 	char	*path;
 	char	**env_listcpy;
@@ -76,10 +76,16 @@ char	*check_cmd(char **env_list, char *cmd)
 	{
 		path = ft_strjoin(*env_listcpy, cmd);
 		if (access(path, X_OK) == 0)
-			return (path);
+			return (base->exit_code = 0, path);
 		free_null((void *)&path);
 		env_listcpy++;
 	}
+	base->exit_code = 127;
+	ft_putstr_fd(RED"Command '", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("' not found, but can be installed with:\nsudo apt install ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("\n"RESET, 2);
 	return (NULL);
 }
 

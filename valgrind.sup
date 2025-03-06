@@ -21,3 +21,11 @@
 	fun:*
 	obj:/usr/*
 }
+
+{
+	sort_definitely_lost
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:*
+	obj:/usr/bin/sort
+}

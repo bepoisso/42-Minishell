@@ -21,15 +21,17 @@ static int	what_before(t_token *act_tok, t_base *base)
 	{
 		if (actual->id >= 3 && actual->id <= 6)
 		{
-			cls_pipes(-1, 1, 1, base);
+			cls_pipes(-1, 1, 0, base);
 			if (file_redir(actual, base))
 				return (1);
 			return (0);
 		}
 		else if (actual->id == 7)
 		{
-			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
-			, cls_pipes(-1, 1, 0, base), 0);
+			dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO);
+			close(base->pipes[actual->index_pipe][0]);
+			cls_pipes(-1, 1, 0, base);
+			return (0);
 		}
 		actual = actual->prev;
 	}
@@ -60,15 +62,17 @@ static int	what_after(t_token *act_tok, t_base *base)
 	{
 		if (actual->id >= 3 && actual->id <= 6)
 		{
-			cls_pipes(-1, 1, 1, base);
+			cls_pipes(-1, 0, 1, base);
 			if (file_redir(actual, base))
 				return (1);
 			return (0);
 		}
 		else if (actual->id == 7)
 		{
-			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
-			, cls_pipes(-1, 0, 1, base), 0);
+			dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO);
+			close(base->pipes[actual->index_pipe][1]);
+			cls_pipes(-1, 0, 1, base);
+			return (0);
 		}
 		actual = actual->next;
 	}
@@ -100,17 +104,6 @@ void	cls_pipes(int keep_open, int in, int out, t_base *base)
 		i++;
 	}
 }
-void	no_input()
-{
-	int fd_null = open("/dev/null", O_RDONLY);
-	if (fd_null != -1)
-	{
-		write(2, "no input\n", 9);
-		dup2(fd_null, STDIN_FILENO);
-		close(fd_null);
-	}
-}
-
 
 /**
  * act_cmd->path_cmd A FREE A LA FIN !!!!!!
@@ -132,27 +125,19 @@ void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 	}
 	if (pid == 0)
 	{
-		if (ft_strcmp(act_cmd->cmd[0], "ls"))
-		{
-			no_input();
-			cls_pipes(-1, 0, 1, base);
-		}
-		else
-			what_before(act_tok->prev, base);
+		what_before(act_tok->prev, base);
 		what_after(act_tok->next, base);
 		act_cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
 		if (!act_cmd->path_cmd)
 			clean_exit(base, 127);
-		base->exit_code = execve(act_cmd->path_cmd, act_cmd->cmd, environ);
+		execve(act_cmd->path_cmd, act_cmd->cmd, environ);
+		base->exit_code = errno;
 		/* if (act_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin
 		else
 			execve(act_cmd->path_cmd, act_cmd->cmd, environ); */
 	/* 	if (errno)
 		clean_exit(base, errno); */
-		write(2, "POUET\n", 6);
 		clean_exit(base, base->exit_code);
-		//waitpid(0, NULL, 0);
-	wait(NULL);
 	}
 }

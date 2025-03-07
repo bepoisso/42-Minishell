@@ -97,13 +97,6 @@ static void	create_pipe(t_base *base, int i)
 	}
 }
 
-//A AJOUTER DANS LE PARSER
-/**if (base->token->id == 7)
-*si la commande commence par un | rien ne se fait A AJOUTER AU PARSING
-*		return (free_exec(base), 
-ft_error("bash: syntax error near unexpected token `|'", 2, base), 1);
-message a afficher dans ce cas
-*/
 int	sauron(t_base *base)
 {
 	t_cmd	*actual_cmd;

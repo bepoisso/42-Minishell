@@ -47,7 +47,7 @@ int		count_forks(t_base *base);
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base);
+void	prepare_exec(t_token *act_tok, t_base *base);
 void	cls_pipes(int keep_open, int in, int out, t_base *base);
 
 /**			e_file_redir.c */

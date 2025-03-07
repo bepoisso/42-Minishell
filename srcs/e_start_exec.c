@@ -29,7 +29,6 @@ static int	what_before(t_token *act_tok, t_base *base)
 		else if (actual->id == 7)
 		{
 			dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO);
-			close(base->pipes[actual->index_pipe][0]);
 			cls_pipes(-1, 1, 0, base);
 			return (0);
 		}
@@ -70,7 +69,6 @@ static int	what_after(t_token *act_tok, t_base *base)
 		else if (actual->id == 7)
 		{
 			dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO);
-			close(base->pipes[actual->index_pipe][1]);
 			cls_pipes(-1, 0, 1, base);
 			return (0);
 		}
@@ -106,18 +104,27 @@ void	cls_pipes(int keep_open, int in, int out, t_base *base)
 }
 
 /**
+ * A CONTINUER DEMAIN : 
+ * 
+ * une fois dans le fork, verifier si il y a un eredirection < > << >>
+ * si il y en a une, close du ou des fd et dup2 pour la redir
+ */
+
+
+
+
+/**
  * act_cmd->path_cmd A FREE A LA FIN !!!!!!
  * gestion des erreurs a faire
  * CHANGER POUR FONCTION QUI PRINT DANS FD2
  * fonction a raccourcir
  */
-void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
+void	prepare_exec(t_token *act_tok, t_base *base)
 {
 	pid_t		pid;
 	extern char	**environ;
 
 	pid = fork();
-	base->pid_last = pid;
 	if (pid == -1)
 	{
 		perror("Error create fork\n");
@@ -125,12 +132,24 @@ void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 	}
 	if (pid == 0)
 	{
+		/* if (act_tok->next == NULL) {
+			int fd_null = open("/dev/null", O_RDONLY);
+			if (fd_null != -1) {
+				dup2(fd_null, STDIN_FILENO);
+				close(fd_null);
+				cls_pipes(-1, 1, 1, base);
+			}
+		} 
+		else {
+			what_before(act_tok->prev, base);
+		} */
 		what_before(act_tok->prev, base);
 		what_after(act_tok->next, base);
-		act_cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
-		if (!act_cmd->path_cmd)
+
+		act_tok->cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
+		if (!act_tok->cmd->path_cmd)
 			clean_exit(base, 127);
-		execve(act_cmd->path_cmd, act_cmd->cmd, environ);
+		execve(act_tok->cmd->path_cmd, act_tok->cmd->cmd, environ);
 		base->exit_code = errno;
 		/* if (act_cmd->builtin)
 			//handle_builtin();//fonction gestion builtin

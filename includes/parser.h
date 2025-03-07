@@ -24,6 +24,7 @@ typedef struct s_token
 {
 	int				id;
 	char			*data;
+	struct s_cmd	*cmd;
 	int				index_pipe;
 	bool			literal;
 	struct s_token	*next;
@@ -40,7 +41,6 @@ typedef struct s_base
 	int				count_pipe;
 	int				**pipes;
 	char			**path_list;
-	pid_t			pid_last;
 	t_cmd			*cmds;
 	t_token			*token;
 }	t_base;

@@ -17,6 +17,11 @@ int main(int ac, char **av)
 			printf("exit\n");
 			break ;
 		}
+		if (input[0] == '\0')
+		{
+			free(input);
+			continue;  // Ignore la ligne vide et réaffiche le prompt
+		}
 		if (*input)
 			add_history(input);
 		parser(input, &base);

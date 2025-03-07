@@ -100,6 +100,17 @@ void	cls_pipes(int keep_open, int in, int out, t_base *base)
 		i++;
 	}
 }
+void	no_input()
+{
+	int fd_null = open("/dev/null", O_RDONLY);
+	if (fd_null != -1)
+	{
+		write(2, "no input\n", 9);
+		dup2(fd_null, STDIN_FILENO);
+		close(fd_null);
+	}
+}
+
 
 /**
  * act_cmd->path_cmd A FREE A LA FIN !!!!!!
@@ -121,7 +132,13 @@ void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 	}
 	if (pid == 0)
 	{
-		what_before(act_tok->prev, base);
+		if (ft_strcmp(act_cmd->cmd[0], "ls"))
+		{
+			no_input();
+			cls_pipes(-1, 0, 1, base);
+		}
+		else
+			what_before(act_tok->prev, base);
 		what_after(act_tok->next, base);
 		act_cmd->path_cmd = check_cmd(base->path_list, act_tok->data, base);
 		if (!act_cmd->path_cmd)

@@ -134,5 +134,6 @@ void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 		clean_exit(base, errno); */
 		write(2, "POUET\n", 6);
 		clean_exit(base, base->exit_code);
+		waitpid(base->pid_last, NULL, 0);
 	}
 }

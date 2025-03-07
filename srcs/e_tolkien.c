@@ -127,5 +127,5 @@ int	sauron(t_base *base)
 	}
 	cls_pipes(-1, 1, 1, base);
 	wait_rings(base);
-	return (0);
+	return (0); 
 }

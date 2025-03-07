@@ -15,6 +15,8 @@ int main(void)
 		add_history(input);
 		parser(input, &base);
 		identify_token(&base);
+		print_tokens(base.token);
+		base.token = token_parser(base.token);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
  		printf("-----------------------------------------\n");

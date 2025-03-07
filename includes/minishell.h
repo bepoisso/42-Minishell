@@ -21,6 +21,7 @@ INDEX	TYPE	DESCRIPTION
 7		|		pipe
 9		cmd		commande
 10		args	commande args
+11		quote	like "" & ''
 */
 
 /*used for printf, perror */

@@ -27,6 +27,10 @@ int	get_op_token(char *data)
 		return (4);
 	if (ft_strncmp(data, "|", 1) == 0)
 		return (7);
+	if (ft_strncmp(data, "'", 1) == 0)
+		return (11);
+	if (ft_strncmp(data, "\"", 1) == 0)
+		return (11);
 	if (ft_isspace(*data))
 		return (0);
 	return (-1);
@@ -46,9 +50,11 @@ void	identify_token(t_base *base)
 		current->id = get_op_token(current->data);
 		if ((current->id >= 3 && current->id <= 6))
 			redir = 1;
+		if (current->id >= 1 && current->id <= 7)
+			cmd = 0;
 		if (current->id == -1)
 		{
-			if (redir == 1)
+			if (redir == 1 && current->id != 0)
 			{
 				current->id = get_redir_io(current->prev->data);
 				redir = 0;
@@ -61,8 +67,6 @@ void	identify_token(t_base *base)
 			else
 				current->id = 10;
 		}
-		else
-			cmd = 0;
 		current = current->next;
 	}
 }

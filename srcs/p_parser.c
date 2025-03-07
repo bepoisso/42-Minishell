@@ -9,3 +9,25 @@ void	parser(char *str, t_base *base)
 	tokens = tokenizer(str, base);
 	base->token = tokens;
 }
+
+t_token	*token_parser(t_token *tokens)
+{
+	t_token *current;
+
+	current = tokens;
+
+	while (current)
+	{
+		// if (current->id == 11)
+		current = current->next;
+	}
+	current = tokens;
+	while (current)
+	{
+		if (current->id == 0)
+			rm_node_token(current);
+		current = current->next;
+	}
+	
+	return (tokens);
+}

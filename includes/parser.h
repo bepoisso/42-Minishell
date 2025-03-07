@@ -62,5 +62,7 @@ void	identify_builtin(t_cmd *cmd);
 int		ft_strcmp(char *s1, char *s2);
 void	display_base(t_base *base);
 int		ft_isspace(char c);
+void	rm_node_token(t_token *token);
+t_token	*token_parser(t_token *tokens);
 
 #endif

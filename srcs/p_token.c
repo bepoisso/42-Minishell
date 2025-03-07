@@ -37,6 +37,20 @@ void	add_token(t_token **tokens, char *value, bool literal)
 	free(value);
 }
 
+void	rm_node_token(t_token *token)
+{
+	t_token	*next;
+	t_token	*prev;
+
+	if (!token)
+		return;
+	next = token->next;
+	prev = token->prev;
+	free(token);
+	next->prev = prev;
+	prev->next = next;
+}
+
 int	start_pipe(char *s, t_base *base)
 {
 	int	i;

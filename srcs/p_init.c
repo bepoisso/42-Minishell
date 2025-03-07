@@ -1,15 +1,22 @@
 #include "../includes/minishell.h"
 
-int	get_redir_io(char *data)
+int	get_redir_io(t_token *token)
 {
-	if (ft_strncmp(data, "<<", 2) == 0)
-		return (1);
-	if (ft_strncmp(data, ">>", 2) == 0)
-		return (2);
-	if (ft_strncmp(data, "<", 1) == 0)
-		return (1);
-	if (ft_strncmp(data, ">", 1) == 0)
-		return (2);
+	t_token *current;
+
+	current = token;
+	while (current)
+	{
+		if (ft_strncmp(current->data, "<<", 2) == 0)
+			return (1);
+		if (ft_strncmp(current->data, ">>", 2) == 0)
+			return (2);
+		if (ft_strncmp(current->data, "<", 1) == 0)
+			return (1);
+		if (ft_strncmp(current->data, ">", 1) == 0)
+			return (2);
+		current = current->prev;
+	}
 	return (0);
 }
 
@@ -31,7 +38,7 @@ int	get_op_token(char *data)
 		return (11);
 	if (ft_strncmp(data, "\"", 1) == 0)
 		return (11);
-	if (ft_isspace(*data))
+	if (ft_isspace(data[0]))
 		return (0);
 	return (-1);
 }
@@ -54,9 +61,9 @@ void	identify_token(t_base *base)
 			cmd = 0;
 		if (current->id == -1)
 		{
-			if (redir == 1 && current->id != 0)
+			if (redir == 1)
 			{
-				current->id = get_redir_io(current->prev->data);
+				current->id = get_redir_io(current);
 				redir = 0;
 			}
 			else if (cmd == 0)
@@ -64,7 +71,7 @@ void	identify_token(t_base *base)
 				current->id = 9;
 				cmd = 1;
 			}
-			else
+			else if (current->id != 0)
 				current->id = 10;
 		}
 		current = current->next;

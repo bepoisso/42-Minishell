@@ -50,8 +50,6 @@ void	rm_node_token(t_token *token)
 		prev->next = token->next;
 	if (next)
 		next->prev = token->prev;
-	else
-		next->prev = NULL;
 	free(token);
 }
 

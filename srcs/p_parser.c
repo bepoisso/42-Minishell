@@ -13,33 +13,56 @@ void	parser(char *str, t_base *base)
 t_token	*token_parser(t_token *tokens)
 {
 	t_token	*current;
-	char	*temp;
 	t_token	*save;
+	char	*temp;
+	char	*temp2;
+	char	*temp3;
 
 	current = tokens;
 	temp = NULL;
+	temp2 = NULL;
+	temp3 = NULL;
 	while (current)
 	{
 		if (current->id == 11)
 		{
-			if (current->prev)
+			if (current->prev && current->next)
+			{
+				temp = ft_strdup(current->prev->data);
+				free(current->prev->data);
+				temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
+				temp2 = ft_strjoin(temp, temp3);
+				current->prev->data = ft_strjoin(temp2, current->next->data);
+				current->id = 0;
+				current->next->id = 0;
+				free(temp);
+				free(temp2);
+				free(temp3);
+			}
+			else if (current->prev)
 			{
 				if (current->prev->id != 0)
 				{
 					temp = ft_strdup(current->prev->data);
 					free(current->prev->data);
-					current->prev->data = ft_strjoin(temp, current->data);
+					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
+					current->prev->data = ft_strjoin(temp, temp3);
 					current->id = 0;
+					free(temp);
+					free(temp3);
 				}
 			}
-			if (current->next)
+			else if (current->next)
 			{
 				if (current->next->id != 0)
 				{
 					temp = ft_strdup(current->next->data);
 					free(current->next->data);
-					current->next->data = ft_strjoin(current->data, temp);
+					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
+					current->next->data = ft_strjoin(temp3, temp);
 					current->id = 0;
+					free(temp);
+					free(temp3);
 				}
 			}
 		}

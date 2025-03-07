@@ -6,12 +6,18 @@ int main(void)
 	t_base	base;
 
 	ft_memset(&base, 0, sizeof(t_base));
+	input = 0;
 	header();
 	while (1)
 	{
 		input = readline("minishell> ");
 		if (!input)
 			return (ft_printf("exit\n"), 0);
+		if (input[0] == '\0' || input[0] == '\n')
+		{
+			free(input);
+			continue;
+		}
 		add_history(input);
 		parser(input, &base);
 		identify_token(&base);

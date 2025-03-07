@@ -17,6 +17,28 @@
 int	wait_rings(t_base *base)
 {
 	int	status;
+	int	i;
+
+	status = 0;
+	i = 0;
+	while(i < base->count_forks)
+	{
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
+		{
+			base->exit_code = WEXITSTATUS(status);
+			ft_putstr_fd(BLUE"\tchild over\n"RESET, 2);
+			i++;
+		}
+	}
+	free_base(base);
+	return (0);
+}
+
+
+/* int	wait_rings(t_base *base)
+{
+	int	status;
 
 	status = 0;
 	waitpid(base->pid_last, &status, 0);
@@ -24,7 +46,7 @@ int	wait_rings(t_base *base)
 		base->exit_code = WEXITSTATUS(status);
 	free_base(base);
 	return (0);
-}
+} */
 
 /**
  * fonction qui compte les forks pour permettre a sauron d'attendre tous les

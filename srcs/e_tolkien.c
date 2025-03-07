@@ -116,7 +116,7 @@ int	sauron(t_base *base)
 	tok = base->token;
 	while (tok)
 	{
-		/* if (tok->id == 8)
+	/* 	if (tok->id == 8)
 			handle_env(actual_cmd, tok, base); */
 		if (tok && tok->id == 9)
 		{

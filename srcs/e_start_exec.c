@@ -1,11 +1,12 @@
 #include "../includes/minishell.h"
 
+//ls -la | grep dr | sort | rev > outfile
 /**
  * @brief Handles the operations to be performed before executing a command.
  *
  * This function iterates through the tokens and performs necessary actions
  * based on the token's ID. It handles file redirections and pipe duplications.
- *
+ *at | 
  * @param act_tok Pointer to the current token.
  * @param base Pointer to the base structure containing pipe information.
  * @return int Returns 1 if there is an error in file redirection, otherwise 0.
@@ -134,6 +135,7 @@ void	prepare_exec(t_cmd *act_cmd, t_token *act_tok, t_base *base)
 		clean_exit(base, errno); */
 		write(2, "POUET\n", 6);
 		clean_exit(base, base->exit_code);
-		waitpid(base->pid_last, NULL, 0);
+		//waitpid(0, NULL, 0);
+	wait(NULL);
 	}
 }

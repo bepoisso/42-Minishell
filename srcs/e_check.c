@@ -28,9 +28,8 @@ int	wait_rings(t_base *base)
 		if (WIFEXITED(status))
 		{
 			base->exit_code = WEXITSTATUS(status);
-			ft_putstr_fd(BLUE"OVER\n"RESET, 2);
 			ft_putnbr_fd(pid, 2);
-			ft_putstr_fd(BLUE"  exit code:"RESET, 2);
+			ft_putstr_fd(BLUE" exit code:"RESET, 2);
 			ft_putnbr_fd(base->exit_code, 2);
 			ft_putchar_fd('\n', 2);
 			i++;

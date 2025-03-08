@@ -42,6 +42,36 @@ static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 	return (0);
 }
 
+void	close_fds(t_base *base, t_cmd *actualcmd)
+{
+	t_cmd *cmd;
+
+	cmd = base->cmds;
+	while (cmd)
+	{
+		if (cmd != actualcmd)
+			{
+				if (cmd->input != 0)
+					close(cmd->input);
+				if (cmd->output != 1)
+					close(cmd->output);
+			}
+		else if (cmd == actualcmd)
+		{
+			if (cmd->input != 0)
+			{
+				dup2(cmd->input, STDIN_FILENO);
+				close(cmd->input);
+			}
+			if (cmd->output != 1)
+			{
+				dup2(cmd->output, STDOUT_FILENO);
+				close(cmd->output);
+			}
+		}
+		cmd = cmd->next;
+	}
+}
 
 /**
  * act_cmd->path_cmd A FREE A LA FIN !!!!!!
@@ -53,11 +83,8 @@ int	prepare_exec(t_token *actual, t_base *base)
 	extern char	**environ;
 
 	
-	if (handle_redirections(actual->prev, base, actual->cmd))
+	if (handle_redirections(actual, base, actual->cmd))
 		return (1);
-	actual->cmd->path_cmd = check_cmd(base->path_list, actual->data, base);
-	if (!actual->cmd->path_cmd)
-		return (clean_exit(base, 127), 1);
 	actual->cmd->pid = fork();
 	if (actual->cmd->pid == -1)
 	{
@@ -75,16 +102,23 @@ int	prepare_exec(t_token *actual, t_base *base)
 		{
 			dup2(actual->cmd->output, STDOUT_FILENO);
 			close(actual->cmd->output);
-		}	
+		}
+		close_fds(base, actual->cmd);
+		actual->cmd->path_cmd = check_cmd(base->path_list, actual->data, base);
+		if (!actual->cmd->path_cmd)
+			return (clean_exit(base, 127), 1);
 		execve(actual->cmd->path_cmd, actual->cmd->cmd, environ);
 		base->exit_code = errno;
 		clean_exit(base, base->exit_code);
 	}
 	else
 	{
-		ft_putstr_fd(BLUE"PID exec: ", 2);
+		ft_putstr_fd(BLUE"PID exec:[", 2);
+		ft_putstr_fd(actual->cmd->cmd[0], 2);
+		ft_putstr_fd("] ", 2);
 		ft_putnbr_fd(actual->cmd->pid, 2);
 		ft_putstr_fd(RESET"\n", 2);
+
 		if (actual->cmd->input != 0)
 			close(actual->cmd->input);
 		if (actual->cmd->output != 1)

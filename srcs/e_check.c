@@ -16,18 +16,23 @@
  */
 int	wait_rings(t_base *base)
 {
-	int	status;
-	int	i;
+	int		status;
+	int		i;
+	pid_t	pid;
 
 	status = 0;
 	i = 0;
 	while(i < base->count_forks)
 	{
-		waitpid(-1, &status, 0);
+		pid = waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
 		{
 			base->exit_code = WEXITSTATUS(status);
 			ft_putstr_fd(BLUE"OVER\n"RESET, 2);
+			ft_putnbr_fd(pid, 2);
+			ft_putstr_fd(BLUE"  exit code:"RESET, 2);
+			ft_putnbr_fd(base->exit_code, 2);
+			ft_putchar_fd('\n', 2);
 			i++;
 		}
 	}
@@ -106,23 +111,11 @@ char	*check_cmd(char **env_list, char *cmd, t_base *base)
 }
 
 /**
- * @brief Checks the existence and accessibility of a file.
- *
- * This function attempts to open a file based on the specified type and
- *  checks for errors.
- * If the file cannot be opened due to it not existing or due to permission
- *  issues, appropriate
- * error messages are displayed and an error code is returned.
- *
- * @param file The path to the file to be checked.
- * @param type The type of check to be performed:
- *             - 1: Check if the file exists and can be opened for reading.
- *             - 2: Check if the file can be created.
- * @param base The base structure containing necessary context for error
- *  handling.
- *
- * @return int Returns 0 if the file check is successful, or 1 if an error
- *  occurs.
+ * Gestion des erreurs a faire, renvoyer un numero de fd utnique a chaque defaut
+ * les messages voint etre gere par une fonction externe, depuis le processus
+ * parent
+ * 
+ * print_error recois le massage, la commande en cause et la base
  */
 int	filechk(t_token *token, int type, t_base *base)
 {
@@ -144,8 +137,8 @@ int	filechk(t_token *token, int type, t_base *base)
 	else if (type == 6)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
+		return (perror("Permission denied\n"), ft_error("", 1, base), errno);
 	if (fd == -1 && errno == ENOENT)
-		return (ft_error("No such file or directory\n", 1, base), -1);
+		return (ft_error("No such file or directory\n", 1, base), errno);
 	return (fd);
 }

@@ -33,10 +33,9 @@ void display_token_list(t_token *token_list)
     printf("=== Liste des tokens ===\n");
     while (cur)
     {
-        printf("Token: data='%s', id=%d, index_pipe=%d, literal=%s\n",
+        printf("Token: data='%s', id=%d, literal=%s\n",
                cur->data ? cur->data : "(null)",
                cur->id,
-               cur->index_pipe,
                cur->literal ? "true" : "false");
         cur = cur->next;
     }
@@ -53,7 +52,6 @@ void display_base(t_base *base)
     printf("===== Contenu de la structure base =====\n");
     printf("Exit Code: %d\n", base->exit_code);
     printf("Count Forks: %d\n", base->count_forks);
-    printf("Count Pipe: %d\n", base->count_pipe);
     
     // Afficher la liste des chemins
     if (base->path_list)
@@ -65,20 +63,7 @@ void display_base(t_base *base)
     else
         printf("Path_list est NULL\n");
 
-    // Afficher les pipes
-    if (base->pipes)
-    {
-        printf("Pipes:\n");
-        for (int i = 0; i < base->count_pipe; i++)
-        {
-            if (base->pipes[i])
-                printf("  Pipe %d: [%d, %d]\n", i, base->pipes[i][0], base->pipes[i][1]);
-        }
-    }
-    else
-        printf("Pipes est NULL\n");
-
-    // Afficher la liste des commandes
+        // Afficher la liste des commandes
     if (base->cmds)
         display_cmd_list(base->cmds);
     else
@@ -91,31 +76,4 @@ void display_base(t_base *base)
         printf("Aucun token dans base->token.\n");
 
     printf("========================================\n");
-}
-
-/**
- * @brief Debugs the state of a pipe in the Minishell project.
- *
- * This function prints the current process ID, the pipe index, the file
- * descriptors of the pipe, and the closed file descriptor to the standard
- * error output. It is used for debugging purposes to track the state of
- * pipes within the shell.
- *
- * @param actual Pointer to the current token structure containing the pipe index.
- * @param base Pointer to the base structure containing the pipes array.
- * @param fd_closed The file descriptor that has been closed.
- */
-void debug_pipe(t_token *actual, t_base *base, int fd_closed)
-{
-	ft_putnbr_fd(getpid(), 2);
-	ft_putstr_fd(BLUE" pipe nb ", 2);
-	ft_putnbr_fd(actual->index_pipe, 2);
-	ft_putstr_fd(" fd0= [", 2);
-	ft_putnbr_fd(base->pipes[actual->index_pipe][0], 2);
-	ft_putstr_fd("] fd1= [", 2);
-	ft_putnbr_fd(base->pipes[actual->index_pipe][1], 2);
-	ft_putstr_fd("]  closed :[", 2);
-	ft_putnbr_fd(fd_closed, 2);
-	ft_putstr_fd("]\n"RESET, 2);
-
 }

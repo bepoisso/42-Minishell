@@ -45,3 +45,12 @@
    fun:re_node_set_alloc
    obj:/usr/bin/grep
 }
+
+{
+   ignore_grep_possible_leak
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   obj:/usr/bin/grep
+   ...
+}

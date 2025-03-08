@@ -20,9 +20,7 @@ static int	cmd_before(t_token *act_tok, int fd)
 	while (actual)
 	{
 		if (actual->id == 9)
-		{
 			actual->cmd->output = fd;
-		}
 		actual = actual->prev;
 	}
 	return (0);
@@ -36,9 +34,7 @@ static int	cmd_after(t_token *tok, int fd)
 	while (actual)
 	{
 		if (actual->id == 9)
-		{
 			actual->cmd->input = fd;
-		}
 		actual = actual->next;
 	}
 	return (0);
@@ -60,7 +56,8 @@ static void	create_redir(t_base *base)
 	{
 		if (actual->id == 7)
 		{
-			pipe(pipeline);
+			if (pipe(pipeline) < 0)
+				exit(1);
 			cmd_before(actual, pipeline[1]);
 			cmd_after(actual, pipeline[0]);
 		}
@@ -80,6 +77,9 @@ static void	handle_cmd(t_token *tok, t_base *base)
 		if (actual->id == 9)
 		{
 			actual->cmd = actual_cmd;
+			actual->cmd->input = 0;
+			actual->cmd->output = 1;
+			actual->cmd->pid = 0;
 			actual_cmd = actual_cmd->next;
 		}
 		else
@@ -88,7 +88,6 @@ static void	handle_cmd(t_token *tok, t_base *base)
 	}
 }
 
-
 int	sauron(t_base *base)
 {
 	t_token	*tok;
@@ -96,19 +95,20 @@ int	sauron(t_base *base)
 	tok = base->token;
 	handle_cmd(tok, base);
 	create_redir(base);
-	base->path_list = extract_paths();
 	base->count_forks = count_forks(base);
+	base->path_list = extract_paths();
 	while (tok)
 	{
 	/* 	if (tok->id == 8)
 			handle_env(actual_cmd, tok, base); */
+
+		
 		if (tok && tok->id == 9)
 		{
 			prepare_exec(tok, base);
 		}
 		tok = tok->next;
 	}
-	cls_pipes(-1, 1, 1, base);
 	wait_rings(base);
 	return (0); 
 }

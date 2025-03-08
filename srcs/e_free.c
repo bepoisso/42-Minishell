@@ -44,9 +44,6 @@ void	free_token_list(t_token *tk)
 
 void	free_base(t_base *base)
 {
-	free_n_tabint(base->pipes, base->count_pipe);
-	base->pipes = NULL;
-	free_doubletab(&base->path_list);
 	free_token_list(base->token);
 	base->token = NULL;
 	free_cmd_list(base->cmds);

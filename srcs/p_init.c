@@ -86,7 +86,7 @@ void	identify_builtin(t_cmd *cmd)
 	}
 }
 
-void	pipe_counter(t_base *base)
+/* void	pipe_counter(t_base *base)
 {
 	int		count;
 	t_token	*current;
@@ -103,4 +103,4 @@ void	pipe_counter(t_base *base)
 		current = current->next;
 	}
 	base->count_pipe = count;
-}
+} */

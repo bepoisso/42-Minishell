@@ -14,18 +14,18 @@
 int	file_redir(t_token *tok, t_base *base)
 {
 	int		fd;
-	t_token	*tmp;
+	t_token	*actual;
 
-	tmp = tok;
-	if (tmp->id == 3 || tmp->id == 5)
+	actual = tok;
+	if (actual->id == 3 || actual->id == 5)
 	{
-		fd = filechk(tmp->next, tmp->id, base);
+		fd = filechk(actual->next, actual->id, base);
 		if (fd < 0)
 			return (1);
 	}
-	if (tmp->id == 4 || tmp->id == 6)
+	if (actual->id == 4 || actual->id == 6)
 	{
-		fd = filechk(tmp->next, tmp->id, base);
+		fd = filechk(actual->next, actual->id, base);
 		if (fd < 0)
 			return (1);
 	}

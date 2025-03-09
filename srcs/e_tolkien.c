@@ -17,12 +17,11 @@ static int	cmd_before(t_token *tok, int fd)
 	t_token	*actual;
 
 	actual = tok->prev;
-	while (actual && actual->id !=7)
+	while (actual && actual->id != 7)
 	{
 		if (actual->id == 9)
 		{
 			actual->cmd->output = fd;
-			//printf("cmd %s recieved %d for output\n", actual->cmd->cmd[0], actual->cmd->output);
 		}
 		actual = actual->prev;
 	}
@@ -34,41 +33,32 @@ static int	cmd_after(t_token *tok, int fd)
 	t_token	*actual;
 
 	actual = tok->next;
-	while (actual && actual->id !=7)
+	while (actual && actual->id != 7)
 	{
 		if (actual->id == 9)
 		{
 			actual->cmd->input = fd;
-			//printf("cmd %s recieved %d for input\n", actual->cmd->cmd[0], actual->cmd->input);
 		}
 		actual = actual->next;
 	}
 	return (0);
 }
-/* if (actual->id >= 3 && actual->id <= 6)
-{
-	if (file_redir(actual, base))
-		return (1);
-	return (0);
-}	 */
 
-static void	create_redir(t_token *token, t_base *base)
+static void	create_redir(t_base *base)
 {
 	t_token	*actual;
 	int		pipeline[2];
 
-	actual = token;
+	actual = base->token;
 	while (actual)
 	{
-		if (pipe(pipeline) < 0)
+		if (actual->id == 7)
 		{
-			perror("fork");
-			clean_exit(base, -1);
+			if (pipe(pipeline) < 0)
+				exit(1);
+			cmd_before(actual, pipeline[1]);
+			cmd_after(actual, pipeline[0]);
 		}
-		//printf("fd out %d and fd in %d created \n", pipeline[1],pipeline[0]);
-		cmd_before(actual, pipeline[1]);
-		cmd_after(actual, pipeline[0]);
-		return;
 		actual = actual->next;
 	}
 }
@@ -77,7 +67,6 @@ static void	handle_cmd(t_token *tok, t_base *base)
 {
 	t_token	*actual;
 	t_cmd	*actual_cmd;
-	t_cmd	*lastcmd;
 
 	actual = tok;
 	actual_cmd = base->cmds;
@@ -86,71 +75,95 @@ static void	handle_cmd(t_token *tok, t_base *base)
 		if (actual->id == 9)
 		{
 			actual->cmd = actual_cmd;
-			lastcmd = actual_cmd;
-			actual_cmd->last_cmd = 0;
-			actual_cmd->input = 0;
-			actual_cmd->output = 1;
-			actual_cmd->pid = 0;
+			actual->cmd->input = 0;
+			actual->cmd->output = 1;
+			actual->cmd->pid = 0;
 			actual_cmd = actual_cmd->next;
 		}
 		else
 			actual->cmd = NULL;
 		actual = actual->next;
 	}
-	lastcmd->last_cmd = 1;
 }
- 
+
+/*Leak dans ft_spilt??
+ ==37438== 269 (104 direct, 165 indirect) bytes in 1 blocks are definitely lost in loss record 31 of 80
+==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==37438==    by 0x10BCBA: ft_split (in /home/zeph/Documents/Project42/42-Minishell/minishell)
+==37438==    by 0x109854: extract_paths (e_exec.c:31)
+==37438==    by 0x10A29E: sauron (e_tolkien.c:102)
+==37438==    by 0x10B3EE: main (p_main.c:38)
+==37438== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ft_split
+   fun:extract_paths
+   fun:sauron
+   fun:main
+} 
+   
+==37438== 165 bytes in 12 blocks are indirectly lost in loss record 28 of 80
+==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==37438==    by 0x10BB02: ft_strjoin (in /home/zeph/Documents/Project42/42-Minishell/minishell)
+==37438==    by 0x109895: extract_paths (e_exec.c:36)
+==37438==    by 0x10A29E: sauron (e_tolkien.c:102)
+==37438==    by 0x10B3EE: main (p_main.c:38)
+==37438== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:malloc
+   fun:ft_strjoin
+   fun:extract_paths
+   fun:sauron
+   fun:main
+}
+
+==37438== 8 bytes in 1 blocks are definitely lost in loss record 3 of 80
+==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==37438==    by 0x10B1F8: parsing_cmd (p_cmd.c:94)
+==37438==    by 0x10B3D2: main (p_main.c:31)
+==37438== 
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:parsing_cmd
+   fun:main
+}
+
+
+*/
+
+
+
 int	sauron(t_base *base)
 {
-	t_token	*tok;
-	t_token	*tok_cmd;
+	t_token				*tok;
+	/* struct sigaction	sa;
 
-	tok = base->token;
-	handle_cmd(tok, base);
-	base->count_forks = count_forks(base);
-	base->path_list = extract_paths();
-	while (tok->next)
-		tok = tok->next;
-	while (tok)
-	{
-		while (tok && tok->id != 9)
-			tok = tok->prev;
-		if (tok->id == 9)
-			tok_cmd = tok;
-		while (tok && tok->id != 7)
-			tok = tok->prev;
-		if (tok && tok->id == 7)
-			create_redir(tok, base);
-		//print_cmds(base);
-		prepare_exec(tok_cmd, base, tok_cmd->cmd);
-		if (tok)
-			tok = tok->prev;
-	}
-	if(base->count_forks)
-		wait_rings(base);
-	return (base->exit_code);
-}
-
-//base->cmds->next->next->cmd[0]
-
-/* int	sauron(t_base *base)
-{
-	t_token	*tok;
-
+	sa.sa_handler = SIG_IGN;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGPIPE, &sa, NULL); */
 	tok = base->token;
 	handle_cmd(tok, base);
 	create_redir(base);
 	base->count_forks = count_forks(base);
 	base->path_list = extract_paths();
-	print_cmds(base);
 	while (tok)
 	{
+	/* 	if (tok->id == 8)
+			handle_env(actual_cmd, tok, base); */
 		if (tok->id == 9)
-		{
 			prepare_exec(tok, base);
-		}
 		tok = tok->next;
 	}
 	wait_rings(base);
 	return (0);
-}*/
+}

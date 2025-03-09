@@ -47,13 +47,11 @@ int		count_forks(t_base *base);
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-int		prepare_exec(t_token *act_tok, t_base *base, t_cmd *actcmd);
+int		prepare_exec(t_token *act_tok, t_base *base);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);
 
 /**			d_print_struct */
-void	print_cmds(t_base *base);
-void	isattyornot(char *cmd);
 
 #endif

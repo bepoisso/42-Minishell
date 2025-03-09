@@ -7,6 +7,8 @@ int main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
+	//signal(SIGINT, sig_handler);
+	//signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
 	header();
 	while (1)

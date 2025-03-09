@@ -48,6 +48,7 @@ void	free_base(t_base *base)
 	base->token = NULL;
 	free_cmd_list(base->cmds);
 	base->cmds = NULL;
+	free_doubletab(&base->path_list);
 	base->count_forks = 0;
 }
 
@@ -58,6 +59,9 @@ void	free_base(t_base *base)
  */
 void	clean_exit(t_base *base, int exit_code)
 {
+	(void)base;
+	printf(GREEN "\texit code :%d\n "RESET, exit_code);
+	base->exit_code = exit_code;
 	free_base(base);
 	exit (exit_code);
 }

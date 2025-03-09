@@ -14,11 +14,11 @@
  *
  * Return: Always returns 0.
  */
-
 int	wait_rings(t_base *base)
 {
 	int		status;
 	int		i;
+	int		sig;
 	pid_t	pid;
 
 	status = 0;
@@ -35,23 +35,17 @@ int	wait_rings(t_base *base)
 			ft_putchar_fd('\n', 2);
 			i++;
 		}
+		else if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == SIGPIPE)
+				ft_putstr_fd("\nBye (SIGPIPE detected)!\n", 2);
+			i++;
+		}
 	}
 	free_base(base);
 	return (0);
 }
-
-
-/* int	wait_rings(t_base *base)
-{
-	int	status;
-
-	status = 0;
-	waitpid(base->pid_last, &status, 0);
-	if (WIFEXITED(status))
-		base->exit_code = WEXITSTATUS(status);
-	free_base(base);
-	return (0);
-} */
 
 /**
  * fonction qui compte les forks pour permettre a sauron d'attendre tous les

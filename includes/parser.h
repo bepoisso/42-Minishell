@@ -14,6 +14,7 @@ typedef struct s_cmd
 	int				input;
 	int				output;
 	pid_t			pid;
+	int				last_cmd;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;

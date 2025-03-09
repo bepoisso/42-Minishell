@@ -17,9 +17,9 @@ static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 	t_token	*actual;
 
 	actual = token;
-	while (actual && actual->id != 7)
+	while (actual->prev && actual->prev->id != 7)
 		actual = actual->prev;
-	while (actual && actual->id != 7)
+	while (actual->next && actual->next->id != 7)
 	{
 		if (actual->id == 3 || actual->id == 5)
 		{
@@ -78,51 +78,60 @@ void	close_fds(t_base *base, t_cmd *actualcmd)
  * gestion des erreurs a faire
  * CHANGER POUR FONCTION QUI PRINT DANS FD2
  */
-int	prepare_exec(t_token *actual, t_base *base)
+int	prepare_exec(t_token *tok, t_base *base, t_cmd *actcmd)
 {
 	extern char	**environ;
+	t_token		*actual;
 
-	
-	if (handle_redirections(actual, base, actual->cmd))
+	actual = tok;
+	if (handle_redirections(actual, base, actcmd))
 		return (1);
-	actual->cmd->pid = fork();
-	if (actual->cmd->pid == -1)
+	actcmd->pid = fork();
+	if (actcmd->pid == -1)
 	{
 		perror("Error: create fork\n");
 		clean_exit(base, -1);
 	}
-	if (actual->cmd->pid == 0)
+	if (actcmd->pid == 0)
 	{
-		if (actual->cmd->input != 0)
+		if (actcmd->input != 0)
 		{
-			dup2(actual->cmd->input, STDIN_FILENO);
-			close(actual->cmd->input);
+			dup2(actcmd->input, STDIN_FILENO);
+			close(actcmd->input);
 		}
-		if (actual->cmd->output != 1)
+		if (actcmd->output != 1)
 		{
-			dup2(actual->cmd->output, STDOUT_FILENO);
-			close(actual->cmd->output);
+			dup2(actcmd->output, STDOUT_FILENO);
+			close(actcmd->output);
 		}
-		close_fds(base, actual->cmd);
-		actual->cmd->path_cmd = check_cmd(base->path_list, actual->data, base);
-		if (!actual->cmd->path_cmd)
+		close_fds(base, actcmd);
+		isattyornot(actcmd->cmd[0]);
+		if (ft_strcmp(actcmd->cmd[0], "ls"))
+		{
+			ft_putstr_fd("LS DETECTED\n", 2);
+			close(STDIN_FILENO);
+		}
+		//print_cmds(base);
+		//if (actcmd->last_cmd && )
+		actcmd->path_cmd = check_cmd(base->path_list, actcmd->cmd[0], base);
+		if (!actcmd->path_cmd)
 			return (clean_exit(base, 127), 1);
-		execve(actual->cmd->path_cmd, actual->cmd->cmd, environ);
+		execve(actcmd->path_cmd, actcmd->cmd, environ);
 		base->exit_code = errno;
 		clean_exit(base, base->exit_code);
 	}
 	else
 	{
 		ft_putstr_fd(BLUE"PID exec:[", 2);
-		ft_putstr_fd(actual->cmd->cmd[0], 2);
+		ft_putstr_fd(actcmd->cmd[0], 2);
 		ft_putstr_fd("] ", 2);
-		ft_putnbr_fd(actual->cmd->pid, 2);
+		ft_putnbr_fd(actcmd->pid, 2);
 		ft_putstr_fd(RESET"\n", 2);
 
-		if (actual->cmd->input != 0)
-			close(actual->cmd->input);
-		if (actual->cmd->output != 1)
-			close(actual->cmd->output);
+		if (actcmd->input != 0)
+			close(actcmd->input);
+		if (actcmd->output != 1)
+			close(actcmd->output);
 	}
 	return (0);
 }

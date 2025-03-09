@@ -22,7 +22,7 @@ static int	cmd_before(t_token *tok, int fd)
 		if (actual->id == 9)
 		{
 			actual->cmd->output = fd;
-			printf("cmd %s recieved %d for output\n", actual->cmd->cmd[0], actual->cmd->output);
+			//printf("cmd %s recieved %d for output\n", actual->cmd->cmd[0], actual->cmd->output);
 		}
 		actual = actual->prev;
 	}
@@ -39,7 +39,7 @@ static int	cmd_after(t_token *tok, int fd)
 		if (actual->id == 9)
 		{
 			actual->cmd->input = fd;
-			printf("cmd %s recieved %d for input\n", actual->cmd->cmd[0], actual->cmd->input);
+			//printf("cmd %s recieved %d for input\n", actual->cmd->cmd[0], actual->cmd->input);
 		}
 		actual = actual->next;
 	}
@@ -52,7 +52,7 @@ static int	cmd_after(t_token *tok, int fd)
 	return (0);
 }	 */
 
-static void	create_redir(t_token *token)
+static void	create_redir(t_token *token, t_base *base)
 {
 	t_token	*actual;
 	int		pipeline[2];
@@ -61,7 +61,10 @@ static void	create_redir(t_token *token)
 	while (actual)
 	{
 		if (pipe(pipeline) < 0)
-			exit(1);
+		{
+			perror("fork");
+			clean_exit(base, -1);
+		}
 		//printf("fd out %d and fd in %d created \n", pipeline[1],pipeline[0]);
 		cmd_before(actual, pipeline[1]);
 		cmd_after(actual, pipeline[0]);
@@ -106,23 +109,26 @@ int	sauron(t_base *base)
 	handle_cmd(tok, base);
 	base->count_forks = count_forks(base);
 	base->path_list = extract_paths();
+	while (tok->next)
+		tok = tok->next;
 	while (tok)
 	{
 		while (tok && tok->id != 9)
-			tok = tok->next;
+			tok = tok->prev;
 		if (tok->id == 9)
 			tok_cmd = tok;
 		while (tok && tok->id != 7)
-			tok = tok->next;
+			tok = tok->prev;
 		if (tok && tok->id == 7)
-			create_redir(tok);
-		print_cmds(base);
+			create_redir(tok, base);
+		//print_cmds(base);
 		prepare_exec(tok_cmd, base, tok_cmd->cmd);
 		if (tok)
-			tok = tok->next;
+			tok = tok->prev;
 	}
-	wait_rings(base);
-	return (0);
+	if(base->count_forks)
+		wait_rings(base);
+	return (base->exit_code);
 }
 
 //base->cmds->next->next->cmd[0]

@@ -96,7 +96,8 @@ int	prepare_exec(t_token *tok, t_base *base, t_cmd *actcmd)
 	{
 		if (actcmd->input != 0)
 		{
-			dup2(actcmd->input, STDIN_FILENO);
+			if (!base->exit_code)
+				dup2(actcmd->input, STDIN_FILENO);
 			close(actcmd->input);
 		}
 		if (actcmd->output != 1)
@@ -105,18 +106,21 @@ int	prepare_exec(t_token *tok, t_base *base, t_cmd *actcmd)
 			close(actcmd->output);
 		}
 		close_fds(base, actcmd);
-		isattyornot(actcmd->cmd[0]);
 		if (ft_strcmp(actcmd->cmd[0], "ls"))
-		{
-			ft_putstr_fd("LS DETECTED\n", 2);
 			close(STDIN_FILENO);
-		}
-		//print_cmds(base);
-		//if (actcmd->last_cmd && )
 		actcmd->path_cmd = check_cmd(base->path_list, actcmd->cmd[0], base);
 		if (!actcmd->path_cmd)
+		{
+				close(actcmd->input);
+				close(actcmd->output);
 			return (clean_exit(base, 127), 1);
-		execve(actcmd->path_cmd, actcmd->cmd, environ);
+		}
+		if (base->exit_code != 127)
+			execve(actcmd->path_cmd, actcmd->cmd, environ);
+		if (actcmd->input != 0)
+			close(actcmd->input);
+		if (actcmd->output != 1)
+			close(actcmd->output);
 		base->exit_code = errno;
 		clean_exit(base, base->exit_code);
 	}

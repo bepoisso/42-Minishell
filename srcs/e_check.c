@@ -14,6 +14,7 @@
  *
  * Return: Always returns 0.
  */
+
 int	wait_rings(t_base *base)
 {
 	int		status;

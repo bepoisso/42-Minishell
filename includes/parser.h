@@ -64,5 +64,6 @@ void	display_base(t_base *base);
 int		ft_isspace(char c);
 void	rm_node_token(t_token *token);
 t_token	*token_parser(t_token *tokens);
+int		check_only_redirect(t_token *tokens, t_base *base);
 
 #endif

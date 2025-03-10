@@ -11,3 +11,19 @@ void	ft_error(char *s, int code, t_base *base)
 	if (getpid() == 0)
 		exit (base->exit_code);
 }
+
+int	check_only_redirect(t_token *tokens, t_base *base)
+{
+	t_token *current;
+
+	current = tokens;
+	while (current)
+	{
+		if (current->data[0] == '<' && !current->next)
+			return (ft_error("bash: syntax error near unexpected token `newline'", 2, base), 1);
+		else if (current->data[0] == '>' && !current->next)
+			return (ft_error("bash: syntax error near unexpected token `newline'", 2, base), 1);
+		current = current->next;
+	}
+	return (0);
+}

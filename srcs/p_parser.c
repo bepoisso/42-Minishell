@@ -66,6 +66,8 @@ t_token	*token_parser(t_token *tokens)
 	current = tokens;
 	while (1)
 	{
+		if (!current)
+			break ;
 		save = current->next;
 		if (current->id == 0)
 		{

@@ -27,6 +27,11 @@ int main(void)
 		identify_token(&base);
 		print_tokens(base.token);
 		base.token = token_parser(base.token);
+		if (check_only_redirect(base.token, &base))
+		{
+			free(input);
+			continue ;
+		}
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
  		printf("-----------------------------------------\n");

@@ -21,3 +21,37 @@
 	fun:*
 	obj:/usr/*
 }
+
+{
+	sort_definitely_lost
+	Memcheck:Leak
+	match-leak-kinds: definite
+	fun:*
+	obj:/usr/*
+}
+
+{
+   grep_regex_indirect_all
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:re_*
+   obj:/usr/bin/grep
+}
+
+{
+   grep_regex_indirect
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:re_node_set_alloc
+   obj:/usr/bin/grep
+}
+
+{
+   ignore_grep_possible_leak
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   obj:/usr/bin/grep
+   ...
+}
+

@@ -16,17 +16,31 @@
  */
 int	wait_rings(t_base *base)
 {
-	int	i;
-	int	status;
+	int		status;
+	int		i;
+	int		sig;
+	pid_t	pid;
 
+	status = 0;
 	i = 0;
-	while (i < base->count_forks)
+	while(i < base->count_forks)
 	{
-		waitpid(-1, &status, 0);
+		pid = waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
 		{
-			i++;
 			base->exit_code = WEXITSTATUS(status);
+			ft_putnbr_fd(pid, 2);
+			ft_putstr_fd(BLUE" exit code:"RESET, 2);
+			ft_putnbr_fd(base->exit_code, 2);
+			ft_putchar_fd('\n', 2);
+			i++;
+		}
+		else if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			if (sig == SIGPIPE)
+				ft_putstr_fd("\nBye (SIGPIPE detected)!\n", 2);
+			i++;
 		}
 	}
 	free_base(base);
@@ -66,7 +80,7 @@ int	count_forks(t_base *base)
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-char	*check_cmd(char **env_list, char *cmd)
+char	*check_cmd(char **env_list, char *cmd, t_base *base)
 {
 	char	*path;
 	char	**env_listcpy;
@@ -76,31 +90,26 @@ char	*check_cmd(char **env_list, char *cmd)
 	{
 		path = ft_strjoin(*env_listcpy, cmd);
 		if (access(path, X_OK) == 0)
-			return (path);
+			return (base->exit_code = 0, path);
 		free_null((void *)&path);
 		env_listcpy++;
 	}
+	base->exit_code = 127;
+	ft_putstr_fd(RED"Command '", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("' not found, but can be installed with:", 2);
+	ft_putstr_fd("\nsudo apt install ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd("\n"RESET, 2);
 	return (NULL);
 }
 
 /**
- * @brief Checks the existence and accessibility of a file.
- *
- * This function attempts to open a file based on the specified type and
- *  checks for errors.
- * If the file cannot be opened due to it not existing or due to permission
- *  issues, appropriate
- * error messages are displayed and an error code is returned.
- *
- * @param file The path to the file to be checked.
- * @param type The type of check to be performed:
- *             - 1: Check if the file exists and can be opened for reading.
- *             - 2: Check if the file can be created.
- * @param base The base structure containing necessary context for error
- *  handling.
- *
- * @return int Returns 0 if the file check is successful, or 1 if an error
- *  occurs.
+ * Gestion des erreurs a faire, renvoyer un numero de fd utnique a chaque defaut
+ * les messages voint etre gere par une fonction externe, depuis le processus
+ * parent
+ * 
+ * print_error recois le massage, la commande en cause et la base
  */
 int	filechk(t_token *token, int type, t_base *base)
 {
@@ -122,64 +131,8 @@ int	filechk(t_token *token, int type, t_base *base)
 	else if (type == 6)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
+		return (perror("Permission denied\n"), ft_error("", 1, base), errno);
 	if (fd == -1 && errno == ENOENT)
-		return (ft_error("No such file or directory\n", 1, base), -1);
+		return (ft_error("No such file or directory\n", 1, base), errno);
 	return (fd);
 }
-
-/* int	filechk(t_token *token, int type, t_base *base)
-{
-	int		fd;
-	char	*file;
-
-	if (token)
-		file = token->data;
-	else
-		return (ft_error("bash: syntax error near unexpected token\n", 1, base), -1);
-	fd = 0;
-	if (type == 1)
-	{
-		fd = open(file, O_RDONLY);
-		{
-			if (fd == -1 && errno == ENOENT)
-				return (ft_error("No such file or directory\n", 1, base), -1);
-		}
-	}
-	else if (type == 2)
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	else if (type == 3)
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
-	return (fd);
-} */
-
-/* #include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <errno.h>
-#include <unistd.h>
-
-int main(int argc, char **argv)
-{
-	t_base base;
-
-	if (argc < 3)
-	{
-		fprintf(stderr, "Usage: %s <nom_du_fichier> <type>\n", argv[0]);
-		fprintf(stderr, "Type 1: lecture uniquement, Type 2: création
-		 (ouverture en écriture)\n");
-		return (1);
-	}
-
-	int type = atoi(argv[2]);
-	int ret = filechk(argv[1], type, base);
-
-	if (ret == 0)
-		printf("Vérification du fichier réussie.\n");
-	else
-		printf("Échec de la vérification du fichier (code %d).\n", ret);
-
-	return (ret);
-} */

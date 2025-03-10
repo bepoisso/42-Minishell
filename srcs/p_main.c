@@ -19,7 +19,8 @@ int main(void)
 			continue;
 		}
 		add_history(input);
-		parser(input, &base);
+		if (parser(input, &base))
+			break;
 		identify_token(&base);
 		print_tokens(base.token);
 		base.token = token_parser(base.token);

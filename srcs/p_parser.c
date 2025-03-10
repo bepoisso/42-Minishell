@@ -1,13 +1,14 @@
 #include "../includes/minishell.h"
 
-void	parser(char *str, t_base *base)
+int	parser(char *str, t_base *base)
 {
 	t_token	*tokens;
 
 	if (open_quote(str) != 0)
-		return (ft_error("ERROR\nopen quote", 1, base));
+		return (ft_error("ERROR\nopen quote", 1, base), 1);
 	tokens = tokenizer(str, base);
 	base->token = tokens;
+	return (0);
 }
 
 t_token	*token_parser(t_token *tokens)
@@ -26,7 +27,7 @@ t_token	*token_parser(t_token *tokens)
 	{
 		if (current->id == 11)
 		{
-			if (current->prev && current->next)
+			if (current->prev && current->next && current->prev->id != 0 && current->next->id != 0)
 			{
 				temp = ft_strdup(current->prev->data);
 				free(current->prev->data);
@@ -39,31 +40,25 @@ t_token	*token_parser(t_token *tokens)
 				free(temp2);
 				free(temp3);
 			}
-			else if (current->prev)
+			else if (current->prev && current->prev->id != 0)
 			{
-				if (current->prev->id != 0)
-				{
-					temp = ft_strdup(current->prev->data);
-					free(current->prev->data);
-					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
-					current->prev->data = ft_strjoin(temp, temp3);
-					current->id = 0;
-					free(temp);
-					free(temp3);
-				}
+				temp = ft_strdup(current->prev->data);
+				free(current->prev->data);
+				temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
+				current->prev->data = ft_strjoin(temp, temp3);
+				current->id = 0;
+				free(temp);
+				free(temp3);
 			}
-			else if (current->next)
+			else if (current->next && current->next->id != 0)
 			{
-				if (current->next->id != 0)
-				{
-					temp = ft_strdup(current->next->data);
-					free(current->next->data);
-					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
-					current->next->data = ft_strjoin(temp3, temp);
-					current->id = 0;
-					free(temp);
-					free(temp3);
-				}
+				temp = ft_strdup(current->next->data);
+				free(current->next->data);
+				temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
+				current->next->data = ft_strjoin(temp3, temp);
+				current->id = 0;
+				free(temp);
+				free(temp3);
 			}
 		}
 		current = current->next;

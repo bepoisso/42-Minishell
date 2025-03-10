@@ -47,7 +47,7 @@ typedef struct s_base
 
 
 void	ft_error(char *s, int code, t_base *base);
-void	parser(char *str, t_base *base);
+int		parser(char *str, t_base *base);
 t_token	*tokenizer(char *s, t_base *base);
 void	print_tokens(t_token *tokens);
 int		open_quote(char *str);

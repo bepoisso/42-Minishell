@@ -20,7 +20,10 @@ int main(void)
 		}
 		add_history(input);
 		if (parser(input, &base))
-			break;
+		{
+			free(input);
+			continue;
+		}
 		identify_token(&base);
 		print_tokens(base.token);
 		base.token = token_parser(base.token);

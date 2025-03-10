@@ -1,7 +1,7 @@
 #include "../includes/minishell.h"
 
 int	check_quote(char c, char *str, int *i)
-{
+{	
 	int	val;
 
 	val = 0;
@@ -30,6 +30,8 @@ int	open_quote(char *str)
 	{
 		single += check_quote((char)39, str, &i);
 		multi += check_quote((char)34, str, &i);
+		if (!str[i])
+			break;
 		i++;
 	}
 	if (single % 2 != 0 || multi % 2 != 0)

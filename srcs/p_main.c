@@ -26,8 +26,8 @@ int main(void)
 			free(input);
 			continue;
 		}
-		identify_token(&base);
-		//print_tokens(base.token);
+		identify_token(base.token);
+		print_tokens(base.token);
 		base.token = token_parser(base.token);
 		if (check_only_redirect(base.token, &base))
 		{
@@ -36,13 +36,13 @@ int main(void)
 		}
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
-		if (ft_strcmp(base.token->data, "exit"))
+		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (free(input), clean_exit(&base, 0), 0);
- 	/* 	printf("-----------------------------------------\n");
+ 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");
 		print_cmd(&base);
-		printf("-----------------------------------------\n\n"); */
+		printf("-----------------------------------------\n\n");
 		sauron(&base);
 		free_base(&base);
 		printf(GREEN"Exit Code in main : %d\n"RESET, base.exit_code);

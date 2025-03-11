@@ -50,11 +50,10 @@ t_token	*tokenizer(char *s, t_base *base);
 void	print_tokens(t_token *tokens);
 int		open_quote(char *str);
 int		skip_quote(char *s, int	i);
-void	identify_token(t_base *base);
+void	identify_token(t_token *tokens);
 int		get_op_token(char *data);
 t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
-void	pipe_counter(t_base *base);
 void	header(void);
 void	identify_builtin(t_cmd *cmd);
 int		ft_strcmp(char *s1, char *s2);
@@ -63,5 +62,6 @@ int		ft_isspace(char c);
 void	rm_node_token(t_token *token);
 t_token	*token_parser(t_token *tokens);
 int		check_only_redirect(t_token *tokens, t_base *base);
+int		ft_isop(char c);
 
 #endif

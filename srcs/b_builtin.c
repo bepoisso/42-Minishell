@@ -35,7 +35,7 @@ char	*shlvl_modifier(char **environ, int i)
 
 	j = 0;
 	temp = ft_atoi(environ[i] + 6) + 1;
-	new_env = ft_calloc(0, sizeof(char) * ft_strlen(environ[i]) + 2);
+	new_env = ft_calloc(ft_strlen(environ[i]) + 2, sizeof(char));
 	while (environ[i][j] && j < 6)
 	{
 		new_env[j] = environ[i][j];

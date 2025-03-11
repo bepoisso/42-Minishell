@@ -15,7 +15,7 @@ int main(void)
 	{
 		input = readline("🤏🐚> ");
 		if (!input)
-			return (ft_printf("exit\n"), 0);
+			return (free_doubletab(&base.env), ft_printf("exit\n"), 0);
 		if (input[0] == '\0' || input[0] == '\n')
 		{
 			free(input);
@@ -38,7 +38,7 @@ int main(void)
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (free(input), clean_exit(&base, 0), 0);
+			return (free_doubletab(&base.env), free(input), clean_exit(&base, 0), 0);
  		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");

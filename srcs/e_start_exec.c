@@ -14,13 +14,13 @@ static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 		{
 			if (cmd->input > 0)
 				close(cmd->input);
-			cmd->input = filechk(actual->next, actual->id, base);
+			cmd->input = filechk(actual->next, actual->id, base, cmd);
 		}
 		else if (actual->id == 4 || actual->id == 6)
 		{
 			if (cmd->output > 2)
 				close(cmd->output);
-			cmd->output = filechk(actual->next, actual->id, base);
+			cmd->output = filechk(actual->next, actual->id, base, cmd);
 		}
 		if (cmd->input < 0 || cmd->output < 0)
 			return (-1);
@@ -29,12 +29,23 @@ static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 	return (0);
 }
 
-static void	close_inpt_outp(int fd1, int fd2)
+static void	close_inpt_outp(t_cmd *actualcmd)
 {
-	if (fd1 > 2)
-		close(fd1);
-	if (fd2 > 2)
-		close(fd2);
+	if (actualcmd->input > 2)
+	{
+		close(actualcmd->input);
+		actualcmd->input = 0;
+	}
+	if (actualcmd->output > 2)
+	{
+		close(actualcmd->output);
+		actualcmd->output = 1;
+	}
+	if (actualcmd->hrdoc > 2)
+	{
+		close(actualcmd->hrdoc);
+		actualcmd->hrdoc = 0;
+	}
 }
 
 void	close_fds(t_base *base, t_cmd *actualcmd)
@@ -74,7 +85,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 	extern char	**environ;
 
 	if (handle_redirections(actual, base, actual->cmd))
-		return (close_inpt_outp(actual->cmd->input, actual->cmd->output), base->exit_code = 1);
+		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	base->lastpid = fork();
 	if (base->lastpid == -1)
 	{
@@ -94,6 +105,6 @@ int	prepare_exec(t_token *actual, t_base *base)
 		clean_exit(base, base->exit_code);
 	}
 	else
-		close_inpt_outp(actual->cmd->input, actual->cmd->output);
+		close_inpt_outp(actual->cmd);
 	return (0);
 }

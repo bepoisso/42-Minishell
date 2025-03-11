@@ -22,6 +22,9 @@
  *  bash mais fonction sous zsh
  */
 
+# define HRDOC_FILE "hrdoc_temp"
+# define SIZEOFLINE 1000
+
 /**			free.c */
 void	free_doubletab(char ***str);
 void	free_null(void	**ptr);
@@ -40,7 +43,7 @@ void	sig_handler(int signal);
 /**			e_check.c */
 int		wait_rings(t_base *base);
 char	*check_cmd(char **env_list, char *cmd, t_base *base);
-int		filechk(t_token *token, int type, t_base *base);
+int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 int		count_forks(t_base *base);
 
 /**			e_tolkien */

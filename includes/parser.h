@@ -13,6 +13,7 @@ typedef struct s_cmd
 	bool			builtin;
 	int				input;
 	int				output;
+	int				hrdoc;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;

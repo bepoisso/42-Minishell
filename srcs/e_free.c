@@ -59,7 +59,7 @@ void	free_base(t_base *base)
  */
 void	clean_exit(t_base *base, int exit_code)
 {
-	(void)base;
+	// A SUPPRE
 	printf(GREEN "\texit code :%d\n "RESET, exit_code);
 	base->exit_code = exit_code;
 	free_base(base);

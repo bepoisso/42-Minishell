@@ -36,6 +36,8 @@ int main(void)
 		}
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
+		if (ft_strcmp(base.token->data, "exit"))
+			return (free(input), clean_exit(&base, 0), 0);
  	/* 	printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");

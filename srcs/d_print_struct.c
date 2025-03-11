@@ -107,7 +107,7 @@ void	print_cmd(t_base *base)
 	while (current)
 	{
 		i = 0;
-		printf("\nCMD : %s\n", current->cmd[i]);
+		printf("\nCMD : %s [%d]\n", current->cmd[i], current->builtin);
 		i++;
 		while (current->cmd[i])
 		{

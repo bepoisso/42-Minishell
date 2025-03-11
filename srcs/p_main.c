@@ -8,11 +8,12 @@ int main(void)
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
-	input = 0;
+	input = NULL;
 	header();
+	base.env = env_cpy();
 	while (1)
 	{
-		input = readline("minishell> ");
+		input = readline("🤏🐚> ");
 		if (!input)
 			return (ft_printf("exit\n"), 0);
 		if (input[0] == '\0' || input[0] == '\n')
@@ -48,5 +49,6 @@ int main(void)
 		printf(GREEN"Exit Code in main : %d\n"RESET, base.exit_code);
 		free(input);
 	}
+	free_doubletab(&base.env);
 	return (0);
 }

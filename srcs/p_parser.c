@@ -32,8 +32,8 @@ t_token	*token_parser(t_token *tokens)
 	char	*temp;
 	char	*temp2;
 	char	*temp3;
-
-	while (no_quote(tokens))
+	
+	while (1)
 	{
 		current = tokens;
 		temp = NULL;
@@ -95,6 +95,8 @@ t_token	*token_parser(t_token *tokens)
 				break;
 			current = save;
 		}
+		if (no_quote(tokens) == 0)
+			break;
 	}
 	return (tokens);
 }

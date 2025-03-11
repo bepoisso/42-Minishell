@@ -159,7 +159,9 @@ int	sauron(t_base *base)
 	{
 	/* 	if (tok->id == 8)
 			handle_env(actual_cmd, tok, base); */
-		if (tok->id == 9)
+		if (tok->id == 9 && tok->cmd->builtin == true)
+			handling_builtin(base, tok);
+		else if (tok->id == 9)
 			prepare_exec(tok, base);
 		tok = tok->next;
 	}

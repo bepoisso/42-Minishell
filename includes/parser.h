@@ -35,6 +35,7 @@ typedef struct s_token
  */
 typedef struct s_base
 {
+	char			**env;
 	int				exit_code;
 	int				count_forks;
 	char			**path_list;

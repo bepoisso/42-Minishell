@@ -85,71 +85,11 @@ static void	handle_cmd(t_token *tok, t_base *base)
 	}
 }
 
-/*Leak dans ft_spilt??
- ==37438== 269 (104 direct, 165 indirect) bytes in 1 blocks are definitely lost in loss record 31 of 80
-==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==37438==    by 0x10BCBA: ft_split (in /home/zeph/Documents/Project42/42-Minishell/minishell)
-==37438==    by 0x109854: extract_paths (e_exec.c:31)
-==37438==    by 0x10A29E: sauron (e_tolkien.c:102)
-==37438==    by 0x10B3EE: main (p_main.c:38)
-==37438== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: definite
-   fun:malloc
-   fun:ft_split
-   fun:extract_paths
-   fun:sauron
-   fun:main
-} 
-   
-==37438== 165 bytes in 12 blocks are indirectly lost in loss record 28 of 80
-==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==37438==    by 0x10BB02: ft_strjoin (in /home/zeph/Documents/Project42/42-Minishell/minishell)
-==37438==    by 0x109895: extract_paths (e_exec.c:36)
-==37438==    by 0x10A29E: sauron (e_tolkien.c:102)
-==37438==    by 0x10B3EE: main (p_main.c:38)
-==37438== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: indirect
-   fun:malloc
-   fun:ft_strjoin
-   fun:extract_paths
-   fun:sauron
-   fun:main
-}
-
-==37438== 8 bytes in 1 blocks are definitely lost in loss record 3 of 80
-==37438==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
-==37438==    by 0x10B1F8: parsing_cmd (p_cmd.c:94)
-==37438==    by 0x10B3D2: main (p_main.c:31)
-==37438== 
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: definite
-   fun:malloc
-   fun:parsing_cmd
-   fun:main
-}
-
-
-*/
-
-
 
 int	sauron(t_base *base)
 {
 	t_token				*tok;
-	/* struct sigaction	sa;
 
-	sa.sa_handler = SIG_IGN;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGPIPE, &sa, NULL); */
 	tok = base->token;
 	handle_cmd(tok, base);
 	create_redir(base);
@@ -157,10 +97,10 @@ int	sauron(t_base *base)
 	base->path_list = extract_paths();
 	while (tok)
 	{
-	/* 	if (tok->id == 8)
-			handle_env(actual_cmd, tok, base); */
-		if (tok->id == 9)
+		if (tok->id == 9 && tok->cmd->builtin == 0)
 			prepare_exec(tok, base);
+/* 		if (tok->id == 9 && tok->cmd->builtin == 1)
+			handle_env(tok, base); */
 		tok = tok->next;
 	}
 	wait_rings(base);

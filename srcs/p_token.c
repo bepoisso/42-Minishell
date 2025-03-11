@@ -44,6 +44,7 @@ void	rm_node_token(t_token *token)
 
 	if (!token)
 		return;
+	free(token->data);
 	next = token->next;
 	prev = token->prev;
 	if (prev)

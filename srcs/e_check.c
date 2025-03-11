@@ -14,7 +14,7 @@
  *
  * Return: Always returns 0.
  */
-int	wait_rings(t_base *base)
+/* int	wait_rings(t_base *base)
 {
 	int		status;
 	int		i;
@@ -49,6 +49,24 @@ int	wait_rings(t_base *base)
 		}
 	}
 	free_base(base);
+	return (0);
+} */
+
+int	wait_rings(t_base *base)
+{
+	int		status;
+	int		i;
+	pid_t	pid;
+
+	status = 0;
+	i = 0;
+	while(i < base->count_forks)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == base->lastpid)
+			base->exit_code = WEXITSTATUS(status);
+		i++;
+	}
 	return (0);
 }
 

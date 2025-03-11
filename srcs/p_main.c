@@ -38,14 +38,13 @@ int main(void)
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit"))
 			return (free(input), clean_exit(&base, 0), 0);
- 	/* 	printf("-----------------------------------------\n");
- 		print_tokens(base.token);
-		printf("\n\n\n");
-		print_cmd(&base);
-		printf("-----------------------------------------\n\n"); */
 		sauron(&base);
+		printf("-----------------------------------------\n");
+		print_tokens(base.token);
 		free_base(&base);
-		printf(GREEN"Exit Code in main : %d\n"RESET, base.exit_code);
+		
+		 
+		printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 		free(input);
 	}
 	return (0);

@@ -97,11 +97,9 @@ t_token	*tokenizer(char *s, t_base *base)
 	int		start;
 	t_token	*tokens;
 	bool	literal;
-
+	(void)base;
 	tokens = NULL;
 	i = 0;
-	if (start_pipe(s, base))
-		return (tokens);
 	while (ft_isspace(s[i]))
 		i++;
 	if (!s[i])

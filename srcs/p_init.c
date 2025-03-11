@@ -43,7 +43,7 @@ int	get_op_token(char *data)
 	return (-1);
 }
 
-void	identify_token(t_base *base)
+void	identify_token(t_token *tokens)
 {
 	t_token	*current;
 	int		cmd;
@@ -51,7 +51,7 @@ void	identify_token(t_base *base)
 
 	cmd = 0;
 	redir = 0;
-	current = base->token;
+	current = tokens;
 	while (current)
 	{
 		current->id = get_op_token(current->data);
@@ -90,8 +90,7 @@ void	identify_builtin(t_cmd *cmd)
 			|| ft_strcmp("pwd", current->cmd[0])
 			|| ft_strcmp("export", current->cmd[0])
 			|| ft_strcmp("unset", current->cmd[0])
-			|| ft_strcmp("env", current->cmd[0])
-			|| ft_strcmp("exit", current->cmd[0]))
+			|| ft_strcmp("env", current->cmd[0]))
 			current->builtin = true;
 		else
 			current->builtin = false;

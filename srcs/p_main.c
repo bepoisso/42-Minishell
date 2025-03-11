@@ -8,11 +8,12 @@ int main(void)
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
-	input = 0;
+	input = NULL;
 	header();
+	base.env = env_cpy();
 	while (1)
 	{
-		input = readline("minishell> ");
+		input = readline("🤏🐚> ");
 		if (!input)
 			return (ft_printf("exit\n"), 0);
 		if (input[0] == '\0' || input[0] == '\n')
@@ -26,8 +27,8 @@ int main(void)
 			free(input);
 			continue;
 		}
-		identify_token(&base);
-		//print_tokens(base.token);
+		identify_token(base.token);
+		print_tokens(base.token);
 		base.token = token_parser(base.token);
 		if (check_only_redirect(base.token, &base))
 		{
@@ -36,8 +37,13 @@ int main(void)
 		}
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
-		if (ft_strcmp(base.token->data, "exit"))
+		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (free(input), clean_exit(&base, 0), 0);
+ 		printf("-----------------------------------------\n");
+ 		print_tokens(base.token);
+		printf("\n\n\n");
+		print_cmd(&base);
+		printf("-----------------------------------------\n\n");
 		sauron(&base);
 		printf("-----------------------------------------\n");
 		print_tokens(base.token);
@@ -47,5 +53,6 @@ int main(void)
 		printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 		free(input);
 	}
+	free_doubletab(&base.env);
 	return (0);
 }

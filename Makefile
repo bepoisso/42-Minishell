@@ -37,6 +37,13 @@ SRC_FILES = e_check.c\
 			p_main.c\
 			p_header.c\
 			d_print_struct.c\
+			b_pwd.c\
+			b_builtin.c\
+			b_echo.c\
+			b_env.c\
+			b_export.c\
+			b_unset.c\
+			b_cd.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

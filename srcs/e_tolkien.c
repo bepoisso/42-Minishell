@@ -97,7 +97,11 @@ int	sauron(t_base *base)
 	base->path_list = extract_paths();
 	while (tok)
 	{
-		if (tok->id == 9 && tok->cmd->builtin == 0)
+	/* 	if (tok->id == 8)
+			handle_env(actual_cmd, tok, base); */
+		if (tok->id == 9 && tok->cmd->builtin == true)
+			handling_builtin(base, tok);
+		else if (tok->id == 9)
 			prepare_exec(tok, base);
 /* 		if (tok->id == 9 && tok->cmd->builtin == 1)
 			handle_env(tok, base); */

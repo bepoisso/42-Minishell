@@ -136,8 +136,8 @@ int	filechk(t_token *token, int type, t_base *base)
 	else if (type == 6)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-		return (perror("Permission denied\n"), ft_error("", 1, base), errno);
+		return (perror("Permission denied\n"), ft_error("", 1, base), -1);
 	if (fd == -1 && errno == ENOENT)
-		return (ft_error("No such file or directory\n", 1, base), errno);
+		return (ft_error("No such file or directory\n", 1, base), -1);
 	return (fd);
 }

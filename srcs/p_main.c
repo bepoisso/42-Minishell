@@ -27,16 +27,17 @@ int main(void)
 			continue;
 		}
 		identify_token(&base);
-		print_tokens(base.token);
+		//print_tokens(base.token);
 		base.token = token_parser(base.token);
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
- 		printf("-----------------------------------------\n");
+ 	/* 	printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		printf("\n\n\n");
 		print_cmd(&base);
-		printf("-----------------------------------------\n\n");
+		printf("-----------------------------------------\n\n"); */
 		sauron(&base);
+		free_base(&base);
 		printf(GREEN"Exit Code in main : %d\n"RESET, base.exit_code);
 		free(input);
 	}

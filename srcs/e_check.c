@@ -28,7 +28,8 @@ int	wait_rings(t_base *base)
 		pid = waitpid(-1, &status, 0);
 		if (WIFEXITED(status))
 		{
-			base->exit_code = WEXITSTATUS(status);
+			if (pid == base->lastpid)
+				base->exit_code = WEXITSTATUS(status);
 			ft_putnbr_fd(pid, 2);
 			ft_putstr_fd(BLUE" exit code:"RESET, 2);
 			ft_putnbr_fd(base->exit_code, 2);
@@ -39,7 +40,11 @@ int	wait_rings(t_base *base)
 		{
 			sig = WTERMSIG(status);
 			if (sig == SIGPIPE)
-				ft_putstr_fd("\nBye (SIGPIPE detected)!\n", 2);
+			{
+				ft_putstr_fd("\nBye (SIGPIPE detected)! in ", 2);
+				ft_putnbr_fd(pid, 2);
+				ft_putstr_fd("\n", 2);
+			}
 			i++;
 		}
 	}

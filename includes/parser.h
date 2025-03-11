@@ -13,15 +13,13 @@ typedef struct s_cmd
 	bool			builtin;
 	int				input;
 	int				output;
-	pid_t			pid;
-	int				last_cmd;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
 
 /**
  * 
-*/
+ */
 typedef struct s_token
 {
 	int				id;
@@ -34,12 +32,13 @@ typedef struct s_token
 
 /**
  * Struct for the main things
-*/
+ */
 typedef struct s_base
 {
 	int				exit_code;
 	int				count_forks;
 	char			**path_list;
+	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
 }	t_base;

@@ -77,7 +77,6 @@ static void	handle_cmd(t_token *tok, t_base *base)
 			actual->cmd = actual_cmd;
 			actual->cmd->input = 0;
 			actual->cmd->output = 1;
-			actual->cmd->pid = 0;
 			actual_cmd = actual_cmd->next;
 		}
 		else
@@ -165,5 +164,6 @@ int	sauron(t_base *base)
 		tok = tok->next;
 	}
 	wait_rings(base);
+	printf(BLUE"Exit Code in Sauron : %d\n"RESET, base->exit_code);
 	return (0);
 }

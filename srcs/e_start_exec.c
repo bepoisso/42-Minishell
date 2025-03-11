@@ -79,15 +79,14 @@ int	prepare_exec(t_token *actual, t_base *base)
 
 	if (handle_redirections(actual, base, actual->cmd))
 		return (1);
-	actual->cmd->pid = fork();
-	if (actual->cmd->pid == -1)
+	base->lastpid = fork();
+	if (base->lastpid == -1)
 	{
 		perror("Error: create fork\n");
 		clean_exit(base, -1);
 	}
-	if (actual->cmd->pid == 0)
+	if (base->lastpid == 0)
 	{
-		//signal(SIGPIPE, SIG_IGN);
 		if (actual->cmd->input != 0)
 		{
 			dup2(actual->cmd->input, STDIN_FILENO);

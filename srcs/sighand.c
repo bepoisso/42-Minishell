@@ -16,10 +16,15 @@
 } */
 void	sig_handler(int signal)
 {
-	if (signal == SIGINT)
+	if (waitpid(-1, NULL, WNOHANG) == - 1)
 	{
-		printf(RED"\nCTRL-C received"RESET"\n");
-		exit (0);
+		if (signal == SIGINT)
+		{
+			ft_printf("\n");
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
 	}
 }
 

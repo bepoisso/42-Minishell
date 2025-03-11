@@ -5,10 +5,8 @@ int main(void)
 	char	*input;
 	t_base	base;
 
-	(void)ac;
-	(void)av;
-	//signal(SIGINT, sig_handler);
-	//signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
 	input = 0;
 	header();
@@ -39,6 +37,7 @@ int main(void)
 		print_cmd(&base);
 		printf("-----------------------------------------\n\n");
 		sauron(&base);
+		printf(GREEN"Exit Code in main : %d\n"RESET, base.exit_code);
 		free(input);
 	}
 	return (0);

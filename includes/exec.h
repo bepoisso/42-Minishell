@@ -12,7 +12,8 @@
  * info threads
  * set non-stop on : si multithread, permet de continuer apres un point d'arret
  *  plutot que d'arreter
- * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
+ * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
+ *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
  * 
  * ls -la | rev | rev | grep dr | sort > outfile
  * < infile sort > outfile.txt commande de test
@@ -38,7 +39,7 @@ void	sig_handler(int signal);
 
 /**			e_check.c */
 int		wait_rings(t_base *base);
-char	*check_cmd(char **env_list, char *cmd);
+char	*check_cmd(char **env_list, char *cmd, t_base *base);
 int		filechk(t_token *token, int type, t_base *base);
 int		count_forks(t_base *base);
 
@@ -46,10 +47,11 @@ int		count_forks(t_base *base);
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base);
-void	cls_pipes(int keep_open, int in, int out, t_base *base);
+int		prepare_exec(t_token *act_tok, t_base *base);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);
+
+/**			d_print_struct */
 
 #endif

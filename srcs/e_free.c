@@ -1,4 +1,5 @@
-#include "../includes/minishell.h"
+# include "../includes/minishell.h"
+
 
 void	free_n_tabint(int **tabint, int n)
 {
@@ -43,13 +44,12 @@ void	free_token_list(t_token *tk)
 
 void	free_base(t_base *base)
 {
-	free_n_tabint(base->pipes, base->count_pipe);
-	base->pipes = NULL;
-	free_doubletab(&base->path_list);
 	free_token_list(base->token);
 	base->token = NULL;
 	free_cmd_list(base->cmds);
 	base->cmds = NULL;
+	free_doubletab(&base->path_list);
+	base->count_forks = 0;
 }
 
 /**Invalid read sur valgrind 

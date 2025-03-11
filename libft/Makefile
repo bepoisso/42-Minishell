@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bepoisso <bepoisso@student.42perpignan.    +#+  +:+       +#+         #
+#    By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/08/21 18:34:37 by bepoisso          #+#    #+#              #
-#    Updated: 2025/02/17 15:16:02 by bepoisso         ###   ########.fr        #
+#    Updated: 2025/03/05 19:22:29 by jrinaudo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,16 +83,16 @@ $(NAME): $(OBJS)
 	@ar rcs $@ $^
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
+	@$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 clean:
-	rm -rf $(OBJS)
+	@rm -rf $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

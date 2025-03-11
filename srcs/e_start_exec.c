@@ -1,140 +1,99 @@
 #include "../includes/minishell.h"
 
-/**
- * @brief Handles the operations to be performed before executing a command.
- *
- * This function iterates through the tokens and performs necessary actions
- * based on the token's ID. It handles file redirections and pipe duplications.
- *
- * @param act_tok Pointer to the current token.
- * @param base Pointer to the base structure containing pipe information.
- * @return int Returns 1 if there is an error in file redirection, otherwise 0.
- */
-static int	what_before(t_token *act_tok, t_base *base)
+//ls -la | grep dr | sort | rev > outfile
+static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 {
 	t_token	*actual;
 
-	actual = act_tok;
-	while (actual)
-	{
-		if (actual->id >= 3 && actual->id <= 6)
-		{
-			cls_pipes(-1, 1, 1, base);
-			if (file_redir(actual, base))
-				return (1);
-			return (0);
-		}
-		else if (actual->id == 7)
-		{
-			return (dup2(base->pipes[actual->index_pipe][0], STDIN_FILENO)
-			, close(base->pipes[actual->index_pipe][1])
-			, cls_pipes(actual->index_pipe, 1, 0, base), 0);
-		}
+	actual = token;
+	while (actual->prev && actual->prev->id != 7)
 		actual = actual->prev;
-	}
-	cls_pipes(-1, 1, 0, base);
-	return (0);
-}
-
-/**
- * what_after - Handles the execution flow based on the token ID.
- * @act_tok: Pointer to the current token.
- * @base: Pointer to the base structure containing necessary data.
- *
- * This function iterates through the tokens starting from @act_tok and performs
- * actions based on the token ID. If the token ID is between 3 and 6, it closes
- * pipes, performs file redirection, and returns 1 on success or 0 otherwise.
- * If the token ID is 7, it duplicates the pipe file descriptor to STDOUT,
- * closes the read end of the pipe, closes other pipes, and returns 0.
- * If no specific action is required, it closes pipes and returns 0.
- *
- * Return: 1 if file redirection is successful, 0 otherwise.
- */
-static int	what_after(t_token *act_tok, t_base *base)
-{
-	t_token	*actual;
-
-	actual = act_tok;
-	while (actual)
+	while (actual && actual->id != 7)
 	{
-		if (actual->id >= 3 && actual->id <= 6)
+		if (actual->id == 3 || actual->id == 5)
 		{
-			cls_pipes(-1, 1, 1, base);
-			if (file_redir(actual, base))
-				return (1);
-			return (0);
+			if (cmd->input > 0)
+				close(cmd->input);
+			cmd->input = filechk(actual->next, actual->id, base);
 		}
-		else if (actual->id == 7)
+		else if (actual->id == 4 || actual->id == 6)
 		{
-			return (dup2(base->pipes[actual->index_pipe][1], STDOUT_FILENO)
-			, close(base->pipes[actual->index_pipe][0])
-				, cls_pipes(actual->index_pipe, 0, 1, base), 0);
+			if (cmd->output > 2)
+				close(cmd->output);
+			cmd->output = filechk(actual->next, actual->id, base);
 		}
+		if (cmd->input < 0 || cmd->output < 0)
+			return (-1);
 		actual = actual->next;
 	}
-	cls_pipes(-1, 0, 1, base);
 	return (0);
 }
 
-/**fonction qui va gere la fermeture de tous les fd non utilise dans les forks
- * le premier parametre est l'index dans le tableau de pipes du fd a conserver
- * si il est a -1 on efface tout
- * les second et troisiemes parametres indiquent si il faut supprimer le in, le
- * out, les deux ou aucun. 1 pour supprimer, 0 conserver
- * le troisieme parametre est la base, pour recuperer le tableau de pipes
- */
-void	cls_pipes(int keep_open, int in, int out, t_base *base)
+static void	close_inpt_outp(int fd1, int fd2)
 {
-	int	i;
+	if (fd1 > 2)
+		close(fd1);
+	if (fd2 > 2)
+		close(fd2);
+}
 
-	i = 0;
-	while (i < base->count_pipe)
+void	close_fds(t_base *base, t_cmd *actualcmd)
+{
+	t_cmd	*cmd;
+
+	cmd = base->cmds;
+	while (cmd)
 	{
-		if (i != keep_open)
+		if (cmd != actualcmd)
 		{
-			if (in)
-				close(base->pipes[i][0]);
-			if (out)
-				close(base->pipes[i][1]);
+			if (cmd->input != 0)
+				close(cmd->input);
+			if (cmd->output != 1)
+				close(cmd->output);
 		}
-		i++;
+		cmd = cmd->next;
 	}
 }
 
-/**
- * actual_cmd->path_cmd A FREE A LA FIN !!!!!!
- * gestion des erreurs a faire
- * CHANGER POUR FONCTION QUI PRINT DANS FD2
- * fonction a raccourcir
- */
-void	prepare_exec(t_cmd *actual_cmd, t_token *act_tok, t_base *base)
+static void	exec_redir(t_token *actual)
 {
-	pid_t		pid;
+	if (actual->cmd->input != 0)
+	{
+		dup2(actual->cmd->input, STDIN_FILENO);
+		close(actual->cmd->input);
+	}
+	if (actual->cmd->output != 1)
+	{
+		dup2(actual->cmd->output, STDOUT_FILENO);
+		close(actual->cmd->output);
+	}
+}
+
+int	prepare_exec(t_token *actual, t_base *base)
+{
 	extern char	**environ;
 
-	pid = fork();
-	if (pid == -1)
+	if (handle_redirections(actual, base, actual->cmd))
+		return (close_inpt_outp(actual->cmd->input, actual->cmd->output), base->exit_code = 1);
+	base->lastpid = fork();
+	if (base->lastpid == -1)
 	{
-		perror("Error create fork\n");
+		perror("Error: create fork\n");
 		clean_exit(base, -1);
 	}
-	if (pid == 0)
+	if (base->lastpid == 0)
 	{
-		actual_cmd->path_cmd = check_cmd(base->path_list, act_tok->data);
-		if (!actual_cmd->path_cmd)
-		{
-			ft_printf("%s: Command not found\n", act_tok->data);
-			clean_exit(base, 127);
-		}
-		if (!what_before(act_tok->prev, base) && !what_after(act_tok->next, base))
-			base->exit_code = execve(actual_cmd->path_cmd, actual_cmd->cmd, environ);
-		/* if (actual_cmd->builtin)
-			//handle_builtin();//fonction gestion builtin
-		else
-			execve(actual_cmd->path_cmd, actual_cmd->cmd, environ); */
-	/* 	if (errno)
-		clean_exit(base, errno); */
-		cls_pipes(1, 1, -1, base);
+		exec_redir(actual);
+		close_fds(base, actual->cmd);
+		actual->cmd->path_cmd = check_cmd(base->path_list, actual->data, base);
+		if (!actual->cmd->path_cmd)
+			return (close(actual->cmd->input), close(actual->cmd->output)
+				, clean_exit(base, 127), 1);
+		execve(actual->cmd->path_cmd, actual->cmd->cmd, environ);
+		base->exit_code = errno;
 		clean_exit(base, base->exit_code);
 	}
+	else
+		close_inpt_outp(actual->cmd->input, actual->cmd->output);
+	return (0);
 }

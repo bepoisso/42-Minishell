@@ -53,43 +53,6 @@ void	rm_node_token(t_token *token)
 	free(token);
 }
 
-int	start_pipe(char *s, t_base *base)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
-	i++;
-	if (s[i])
-	{
-		if (s[i] == '|' && s[i + 1] == '|')
-			return (ft_error("minishell: syntax error near unexpected token `||'", 2, base), 1);
-		else if (s[i] == '|')
-			return (ft_error("minishell: syntax error near unexpected token `|'\n", 2, base), 1);
-		else if (s[i] == '&' && s[i + 1] == '&')
-			return (ft_error("minishell: syntax error near unexpected token `&&'", 2, base), 1);
-		else if (s[i] == '&')
-			return (ft_error("minishell: syntax error near unexpected token `&'\n", 2, base), 1);
-		else if (s[i] == ':' || s[i] == '!')
-			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
-	}
-	return (0);
-}
-
-int	ft_isspace(char c)
-{
-	if ((c >= 7 && c <= 13) || c == 32)
-		return (1);
-	return (0);
-}
-
-int	ft_isop(char c)
-{
-	if (c == '|' || c == '<' || c == '>')
-		return (1);
-	return (0);
-}
-
 t_token	*tokenizer(char *s, t_base *base)
 {
 	int		i;
@@ -136,4 +99,37 @@ t_token	*tokenizer(char *s, t_base *base)
 	return (tokens);
 }
 
-//            test arg         args t"es"t T'ES'T < << >> >     | || "T      ES        T" 't    est     '
+void	identify_token(t_token *tokens)
+{
+	t_token	*current;
+	int		cmd;
+	int		redir;
+
+	cmd = 0;
+	redir = 0;
+	current = tokens;
+	while (current)
+	{
+		current->id = get_op_token(current->data);
+		if ((current->id >= 3 && current->id <= 6))
+			redir = 1;
+		if (current->id >= 1 && current->id <= 7)
+			cmd = 0;
+		if (current->id == -1)
+		{
+			if (redir == 1)
+			{
+				current->id = get_redir_io(current);
+				redir = 0;
+			}
+			else if (cmd == 0)
+			{
+				current->id = 9;
+				cmd = 1;
+			}
+			else if (current->id != 0)
+				current->id = 10;
+		}
+		current = current->next;
+	}
+}

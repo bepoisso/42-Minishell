@@ -3,17 +3,17 @@
 void	handling_builtin(t_base *base, t_token *actual_tok)
 {
 	base->env = env_cpy();
-	if (ft_strncmp(actual_tok->data, "echo", 4) == 0)
+	if (ft_strncmp(actual_tok->data, "echo", 5) == 0)
 		builtin_echo(base, actual_tok);
-	else if (ft_strncmp(actual_tok->data, "pwd", 3) == 0)
+	else if (ft_strncmp(actual_tok->data, "pwd", 4) == 0)
 		builtin_pwd(base);
-	else if (ft_strncmp(actual_tok->data, "env", 3) == 0)
+	else if (ft_strncmp(actual_tok->data, "env", 4) == 0)
 		builtin_env(base, actual_tok);
-		// else if (ft_strncmp(actual_tok->data, "cd", 2))
+		// else if (ft_strncmp(actual_tok->data, "cd", 3))
 		// 	builtin_cd(base, actual_tok);
-		// if (ft_strncmp(actual_tok->data, "export", 6))
+		// if (ft_strncmp(actual_tok->data, "export", 7))
 		// 	builtin_export(base, actual_tok);
-		// if (ft_strncmp(actual_tok->data, "unset", 5))
+		// if (ft_strncmp(actual_tok->data, "unset", 6))
 		// 	builtin_unset(base, actual_tok);
 }
 
@@ -35,7 +35,7 @@ char	*shlvl_modifier(char **environ, int i)
 
 	j = 0;
 	temp = ft_atoi(environ[i] + 6) + 1;
-	new_env = ft_calloc(0, sizeof(char) * ft_strlen(environ[i]) + 2);
+	new_env = ft_calloc(ft_strlen(environ[i]) + 2, sizeof(char));
 	while (environ[i][j] && j < 6)
 	{
 		new_env[j] = environ[i][j];

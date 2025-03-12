@@ -86,3 +86,23 @@ t_cmd	*parsing_cmd(t_base *base)
 	}
 	return (cmds);
 }
+
+void	identify_builtin(t_cmd *cmd)
+{
+	t_cmd	*current;
+
+	current = cmd;
+	while (current)
+	{
+		if (ft_strcmp("echo", current->cmd[0])
+			|| ft_strcmp("cd", current->cmd[0])
+			|| ft_strcmp("pwd", current->cmd[0])
+			|| ft_strcmp("export", current->cmd[0])
+			|| ft_strcmp("unset", current->cmd[0])
+			|| ft_strcmp("env", current->cmd[0]))
+			current->builtin = true;
+		else
+			current->builtin = false;
+		current = current->next;
+	}
+}

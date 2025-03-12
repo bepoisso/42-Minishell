@@ -11,20 +11,6 @@ int	parser(char *str, t_base *base)
 	return (0);
 }
 
-int	no_quote(t_token *tokens)
-{
-	t_token *current;
-
-	current = tokens;
-	while (current)
-	{
-		if (current->id == 11)
-			return (1);
-		current = current->next;
-	}
-	return (0);
-}
-
 t_token	*token_parser(t_token *tokens)
 {
 	t_token	*current;

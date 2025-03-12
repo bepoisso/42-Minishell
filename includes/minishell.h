@@ -25,7 +25,7 @@ INDEX	TYPE	DESCRIPTION
 11		quote	like "" & ''
 */
 
-/*used for printf, perror */
+/*used forft_printf, perror */
 # include <stdio.h>
 /*			used for malloc, free, exit, getenv */
 # include <stdlib.h>

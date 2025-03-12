@@ -89,7 +89,8 @@ static void	handle_cmd(t_token *tok, t_base *base)
 
 int	sauron(t_base *base)
 {
-	t_token				*tok;
+	t_token		*tok;
+	extern char	**environ;
 
 	tok = base->token;
 	handle_cmd(tok, base);
@@ -103,12 +104,11 @@ int	sauron(t_base *base)
 		if (tok->id == 9 && tok->cmd->builtin == true)
 			handling_builtin(base, tok);
 		else if (tok->id == 9)
-			prepare_exec(tok, base);
+			prepare_exec(tok, base, environ);
 /* 		if (tok->id == 9 && tok->cmd->builtin == 1)
 			handle_env(tok, base); */
 		tok = tok->next;
 	}
 	wait_rings(base);
-	printf(BLUE"Exit Code in Sauron : %d\n"RESET, base->exit_code);
 	return (0);
 }

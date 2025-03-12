@@ -80,10 +80,8 @@ static void	exec_redir(t_token *actual)
 	}
 }
 
-int	prepare_exec(t_token *actual, t_base *base)
+int	prepare_exec(t_token *actual, t_base *base, char **environ)
 {
-	extern char	**environ;
-
 	if (handle_redirections(actual, base, actual->cmd))
 		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	base->lastpid = fork();
@@ -94,6 +92,8 @@ int	prepare_exec(t_token *actual, t_base *base)
 	}
 	if (base->lastpid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
+		//signal(SIGQUIT, sig_quit_handler);
 		exec_redir(actual);
 		close_fds(base, actual->cmd);
 		actual->cmd->path_cmd = check_cmd(base->path_list, actual->data, base);

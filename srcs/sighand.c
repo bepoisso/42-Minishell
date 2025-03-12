@@ -27,7 +27,18 @@ void	sig_handler(int signal)
 		}
 	}
 }
-
+void	sig_quit_handler(int signal)
+{
+	printf("Signal %d reçu\n", signal);
+	if (signal == SIGQUIT)
+	{
+		ft_printf("\\plop\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
+		
 /**
  * sigemptyset(&sa_int.sa_mask)
  * The sigemptyset() function initializes the signal set set to empty, with

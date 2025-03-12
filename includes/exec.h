@@ -39,6 +39,7 @@ char	**extract_paths(void);
 
 /**			handler.c */
 void	sig_handler(int signal);
+void	sig_quit_handler(int signal);
 
 /**			e_check.c */
 int		wait_rings(t_base *base);
@@ -50,7 +51,7 @@ int		count_forks(t_base *base);
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-int		prepare_exec(t_token *act_tok, t_base *base);
+int     prepare_exec(t_token *actual, t_base *base, char **environ);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);

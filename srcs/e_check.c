@@ -59,7 +59,7 @@ int	wait_rings(t_base *base)
 
 	status = 0;
 	i = 0;
-	while(i < base->count_forks)
+	while (i < base->count_forks)
 	{
 		pid = waitpid(-1, &status, 0);
 		if (pid == base->lastpid)
@@ -108,21 +108,28 @@ char	*check_cmd(char **env_list, char *cmd, t_base *base)
 	char	**env_listcpy;
 
 	env_listcpy = env_list;
-	while (*env_listcpy)
+	if (env_list)
 	{
-		path = ft_strjoin(*env_listcpy, cmd);
-		if (access(path, X_OK) == 0)
-			return (base->exit_code = 0, path);
-		free_null((void *)&path);
-		env_listcpy++;
+		while (*env_listcpy)
+		{
+			path = ft_strjoin(*env_listcpy, cmd);
+			if (access(path, X_OK) == 0)
+				return (base->exit_code = 0, path);
+			free_null((void *)&path);
+			env_listcpy++;
+		}
+		base->exit_code = 127;
+		ft_putstr_fd(RED"Command '", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("' not found, but can be installed with:", 2);
+		ft_putstr_fd("\nsudo apt install ", 2);
+		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("\n"RESET, 2);
+		return (NULL);
 	}
 	base->exit_code = 127;
-	ft_putstr_fd(RED"Command '", 2);
+	ft_putstr_fd(RED"Minishell: ", 2);
 	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("' not found, but can be installed with:", 2);
-	ft_putstr_fd("\nsudo apt install ", 2);
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("\n"RESET, 2);
+	ft_putstr_fd(": No such file or directory\nRESET", 2);
 	return (NULL);
 }
-

@@ -1,32 +1,30 @@
 #include "../includes/minishell.h"
 
-char	*add_in_history(t_token *tokens, char *line)
+char	*add_in_command(t_base *base)
 {
-	t_token	*actual;
-	char 	*cmd;
-	char	*tmp;
+	char	*line;
+	char	*hrdoc;
+	int		fd;
 
-	actual = tokens;
-	cmd = NULL;
-	tmp = ft_strdup(actual->data);
-	while (actual->prev)
-		actual = actual->prev;
-	while (actual->next)
+	fd = open(HRDOC_FILE, O_RDONLY, 0644);
+	hrdoc = get_next_line(fd);
+	if (!hrdoc)
+		return (NULL);
+	while (hrdoc)
 	{
-		free_null((void **)&cmd);
-		cmd = ft_strjoin(tmp, actual->data);
-		free(tmp);
-		actual = actual->next;
+		line = ft_strjoin(base->input, hrdoc);
+		if (!line)
+			return (NULL);
+		free_null((void **)&hrdoc);
+		free_null((void **)&base->input);
+		base->input = line;
+		hrdoc = get_next_line(fd);
 	}
-	free_null((void **)&cmd);
-//A terminer avec l'ajout du fichier temporaire
-	cmd = ft_strjoin(tmp, actual->data);
+	close(fd);
+	return (base->input);
 }
 
-/**
- * REFAIRE AVEC READ PLUTOT QUE READLINE pour eviter le probleme de enter
- */
-static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
+static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 {
 	char	*line;
 	int		fd;
@@ -41,8 +39,8 @@ static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 		return (-1);
 	line = strdup(" ");
 	if (!line)
-		return(-1);
-	while (line[0] && ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
+		return (-1);
+	while (line && ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
 	{
 		free_null((void **)&line);
 		line = readline(BLUE">"RESET);
@@ -54,29 +52,23 @@ static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 			ft_putstr_fd(tokens->data, 2);
 			ft_putstr_fd("\n", 2);
 		}
-		else if (ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
+		else if (line[0] == '\0' || ft_strncmp(line, tokens->data
+				, ft_strlen(tokens->data) + 1))
 		{
 			if (write(fd, line, ft_strlen(line)) < 0)
-				return(free_null((void **)line), close(fd), -1);
+				return (free_null((void **)line), close(fd), -1);
 			if (write(fd, "\n", 1) < 0)
-				return(close(fd), -1);
+				return (close(fd), -1);
 			hrdoc_size += ft_strlen(line);
 		}
 	}
 	cmd->hrdoc = fd;
-	//add_history(add_in_history);
-	free_null((void **)&line);
 	close(fd);
+	free_null((void **)&line);
+	base->input = add_in_command(base);
 	return (fd);
 }
 
-/**
- * Gestion des erreurs a faire, renvoyer un numero de fd utnique a chaque defaut
- * les messages voint etre gere par une fonction externe, depuis le processus
- * parent
- * 
- * print_error recois le massage, la commande en cause et la base
- */
 int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 {
 	int		fd;
@@ -89,12 +81,12 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 			, -1);
 	fd = 0;
 	if (type == 3)
-		fd = open(file, O_RDONLY);
+		fd = open(file, O_RDONLY, 0644);
 	if (type == 5)
 	{
-		if(handle_hrdoc(token, cmd) < 0)
+		if (handle_hrdoc(token, cmd, base) < 0)
 			return (-1);
-		fd = open(HRDOC_FILE, O_RDONLY);
+		fd = open(HRDOC_FILE, O_RDONLY, 0644);
 	}
 	else if (type == 4)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -106,4 +98,3 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 		return (ft_error("No such file or directory\n", 1, base), -1);
 	return (fd);
 }
-

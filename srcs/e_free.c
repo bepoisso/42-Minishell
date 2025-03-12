@@ -1,5 +1,4 @@
-# include "../includes/minishell.h"
-
+#include "../includes/minishell.h"
 
 void	free_n_tabint(int **tabint, int n)
 {
@@ -27,19 +26,6 @@ void	free_cmd_list(t_cmd *cmd)
 	}
 }
 
-/* void printadr(t_token *tk)
-{
-	t_token	*tkcpy;
-
-	tkcpy = tk;
-	while (tkcpy)
-	{
-		if (tkcpy->data)
-			printf("%s adresse : %p\n", tkcpy->data, &tkcpy->data);
-		tkcpy = tkcpy->next;
-	} 
-} */
-
 void	free_token_list(t_token *tk)
 {
 	t_token	*tkcpy;
@@ -49,7 +35,7 @@ void	free_token_list(t_token *tk)
 		tkcpy = tk->next;
 		free(tk->data);
 		free(tk);
-		tk = tkcpy; 
+		tk = tkcpy;
 	}
 }
 
@@ -61,17 +47,12 @@ void	free_base(t_base *base)
 	base->cmds = NULL;
 	free_doubletab(&base->path_list);
 	base->count_forks = 0;
+	free_null((void **)&base->input);
+	free_doubletab(&base->env);
 }
 
-/**Invalid read sur valgrind 
- * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
- *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
- *  ./minishell ls -l
- */
 void	clean_exit(t_base *base, int exit_code)
 {
-	// A SUPPRE
-	printf(GREEN "\t clean exit -- exit code :%d\n "RESET, exit_code);
 	base->exit_code = exit_code;
 	free_base(base);
 	exit (exit_code);

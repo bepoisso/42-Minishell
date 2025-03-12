@@ -22,7 +22,7 @@
  *  bash mais fonction sous zsh
  */
 
-# define HRDOC_FILE "hrdoc_temp"
+# define HRDOC_FILE ".hrdoc_temp"
 # define SIZEOFLINE 1000
 
 /**			free.c */

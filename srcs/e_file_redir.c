@@ -23,7 +23,9 @@ char	*add_in_history(t_token *tokens, char *line)
 	cmd = ft_strjoin(tmp, actual->data);
 }
 
-
+/**
+ * REFAIRE AVEC READ PLUTOT QUE READLINE pour eviter le probleme de enter
+ */
 static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 {
 	char	*line;
@@ -52,7 +54,6 @@ static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 			ft_putstr_fd(tokens->data, 2);
 			ft_putstr_fd("\n", 2);
 		}
-
 		if (ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
 		{
 			if (write(fd, line, ft_strlen(line)) < 0)

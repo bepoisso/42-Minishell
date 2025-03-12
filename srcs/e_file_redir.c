@@ -46,7 +46,7 @@ static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 	{
 		free_null((void **)&line);
 		line = readline(BLUE">"RESET);
-		if (line[0] == '\0')
+		if (!line)
 		{
 			ft_putstr_fd("minishell: warning: here-document at line ", 2);
 			ft_putnbr_fd(hrdoc_size, 2);
@@ -54,7 +54,7 @@ static int handle_hrdoc(t_token *tokens, t_cmd *cmd)
 			ft_putstr_fd(tokens->data, 2);
 			ft_putstr_fd("\n", 2);
 		}
-		if (ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
+		else if (ft_strncmp(line, tokens->data, ft_strlen(tokens->data) + 1))
 		{
 			if (write(fd, line, ft_strlen(line)) < 0)
 				return(free_null((void **)line), close(fd), -1);

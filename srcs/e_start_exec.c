@@ -100,7 +100,10 @@ int	prepare_exec(t_token *actual, t_base *base, char **environ)
 		if (!actual->cmd->path_cmd)
 			return (close(actual->cmd->input), close(actual->cmd->output)
 				, clean_exit(base, 127), 1);
-		execve(actual->cmd->path_cmd, actual->cmd->cmd, environ);
+		if (actual->cmd->builtin)
+			exec_builtins(actual, base);
+		else
+			execve(actual->cmd->path_cmd, actual->cmd->cmd, environ);
 		base->exit_code = errno;
 		clean_exit(base, base->exit_code);
 	}

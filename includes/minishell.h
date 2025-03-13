@@ -9,6 +9,7 @@
 # include "../libft/includes/libft.h"
 # include "parser.h"
 # include "exec.h"
+# include "builtins.h"
 
 /* 
 INDEX	TYPE	DESCRIPTION
@@ -68,11 +69,5 @@ INDEX	TYPE	DESCRIPTION
 # define CYAN "\033[0;36m"
 # define VIOLET "\033[0;35m"
 # define RESET "\033[0m"
-
-void	handling_builtin(t_base *base, t_token *actual_tok);
-char	**env_cpy(void);
-void	builtin_env(t_base *base, t_token *actual_tok);
-void	builtin_pwd(t_base *base);
-void	builtin_echo(t_base *base, t_token *actual_tok);
 
 #endif

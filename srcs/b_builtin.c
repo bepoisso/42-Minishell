@@ -36,8 +36,8 @@ int	exec_builtins(t_token *actual, t_base *base)
 		builtin_export(base, actual);
 	else if (ft_strcmp(actual->data, "env"))
 		builtin_env(base, actual);
-	else if (ft_strcmp(actual->data, "exit"))
-		builtin_exit(base);
+	// else if (ft_strcmp(actual->data, "exit"))
+
 	return (status);
 }
 

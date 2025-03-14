@@ -43,7 +43,7 @@ void	sig_quit_handler(int signal);
 
 /**			e_check.c */
 int		wait_rings(t_base *base);
-char	*check_cmd(char **env_list, char *cmd, t_base *base);
+char	*check_cmd(t_token *actual, t_base *base);
 int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 int		count_forks(t_base *base);
 
@@ -51,7 +51,7 @@ int		count_forks(t_base *base);
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-int     prepare_exec(t_token *actual, t_base *base, char **environ);
+int     prepare_exec(t_token *actual, t_base *base);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);

@@ -32,7 +32,7 @@ int main(void)
 			continue;
 		}
 		identify_token(base.token);
-		//print_tokens(base.token);
+		print_tokens(base.token);
 		base.token = token_parser(base.token);
 		if (check_only_redirect(base.token, &base))
 		{
@@ -53,7 +53,7 @@ int main(void)
 /* 		ft_printf("-----------------------------------------\n");
 		print_tokens(base.token); */
 		free_base(&base);
-		//ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
+		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
 	return (0);
 }

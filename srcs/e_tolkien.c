@@ -90,7 +90,6 @@ static void	handle_cmd(t_token *tok, t_base *base)
 int	sauron(t_base *base)
 {
 	t_token		*tok;
-	extern char	**environ;
 
 	tok = base->token;
 	handle_cmd(tok, base);
@@ -102,7 +101,7 @@ int	sauron(t_base *base)
 	/* 	if (tok->id == 8)
 			handle_env(actual_cmd, tok, base); */
 		if (tok->id == 9)
-			prepare_exec(tok, base, environ);
+			prepare_exec(tok, base);
 /* 		if (tok->id == 9 && tok->cmd->builtin == 1)
 			handle_env(tok, base); */
 		tok = tok->next;

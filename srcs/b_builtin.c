@@ -1,5 +1,19 @@
+
+
 #include "../includes/minishell.h"
 
+/****************************************************************
+* 					What else to do :							*
+* 																*
+* cd:		ToDo												*
+* echo:		ToFix => gérer le -n								*
+* pwd:		Do													*
+* export:	ToDo												*
+* unset:	ToDo												*
+* env:		ToFix => ordre alphabétique ! = Bash				*
+* exec:		ToDo ne fait rien si pas seul						*
+* 																*
+****************************************************************/
 /* void	handling_builtin(t_base *base, t_token *actual_tok)
 {
 	base->env = env_cpy();
@@ -21,9 +35,9 @@
  * MODIFIER FONCTIONS EN VOID EN INT POUR VERIFIER LE STATUS DE SORTIE
  * 
  */
-int	exec_builtins(t_token *actual, t_base *base)
+void	exec_builtins(t_token *actual, t_base *base)
 {
-	int	status;
+	//int	status;
 
 	if (ft_strcmp(actual->data, "echo"))
 		builtin_echo(base, actual);
@@ -37,7 +51,7 @@ int	exec_builtins(t_token *actual, t_base *base)
 		builtin_env(base, actual);
 	else if (ft_strcmp(actual->data, "exit"))
 		builtin_exit(base);
-	return (status);
+	//return (status);
 }
 
 int ft_strslen(char **strs)

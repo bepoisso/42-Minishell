@@ -4,7 +4,7 @@
 # include "minishell.h"
 
 /**		 */
-int		exec_builtins(t_token *actual, t_base *base);
+void	exec_builtins(t_token *actual, t_base *base);
 char	**env_cpy(void);
 void	builtin_env(t_base *base, t_token *actual_tok);
 void	builtin_pwd(t_base *base);

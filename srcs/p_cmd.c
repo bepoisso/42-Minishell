@@ -73,7 +73,7 @@ t_cmd	*parsing_cmd(t_base *base)
 		value = malloc(sizeof(char *) * (count_args(tokens) + 1));
 		if (!value)
 			return (NULL);
-		while (tokens && (tokens->id == 9 || tokens->id == 10))
+		while (tokens && (tokens->id == 9 || tokens->id == 10 || tokens->id == 11))
 		{
 			value[++i] = ft_strdup(tokens->data);
 			tokens = tokens->next;

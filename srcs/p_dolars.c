@@ -1,24 +1,51 @@
 #include "../includes/minishell.h"
 
-char	*search_env_var(char *search)
+char	*search_env_var(char *search, char **env)
 {
-	extern char	**environ; //Remplacer par notre environ
 	int			i;
 	int			j;
+	char		*temp; // a suppre
 
 	i = 0;
 	j = 0;
-	while(environ[j])
+	while(env[i])
 	{
-		if (ft_strncmp(search, environ[i], ft_strlen(search)) == 0)
+		if (ft_strncmp(search, env[i], ft_strlen(search)) == 0)
 		{
-			j = ft_strlen(search) + 1;
-			if (environ[i][j] == '=')				
-				return (free(search), ft_strdup(environ[i] + j));
+			j = ft_strlen(search);
+			if (env[i][j] == '=')
+			{
+				temp = ft_strdup(env[i] + (j + 1));
+				return (free(search), temp);
+			}
 		}
 		i++;
 	}
 	return (free(search), NULL);
+}
+
+char	*replace_dolars_var(t_token *token, char *var)
+{
+	int	i;
+	int	j;
+	char	*temp_before;
+	char	*temp_after;
+
+	temp_before = NULL;
+	temp_after = NULL;
+	i = 0;
+	j = 0;
+	while (token->data[i] && token->data[i] != '$')
+		i++;
+	i++;
+	temp_before = ft_strndup(token->data[i], i);
+	while (token->data[i] != ' ' || token->data[i] != '$')
+		i++;
+	i = j;
+	while (token->data[i])
+		i++;
+	temp_after = ft_strndup(token->data + j, i - j);
+	// Faire les join de tout ca et c'est bon
 }
 
 void	search_dolars(t_token *tokens)
@@ -32,7 +59,7 @@ void	search_dolars(t_token *tokens)
 	while (current)
 	{
 		i = 0;
-		if (current->id == 11 && current->literal == false)
+		if (current && current->literal == false)
 		{
 			while (current->data[i])
 			{
@@ -42,13 +69,13 @@ void	search_dolars(t_token *tokens)
 					while (current->data[j] && (current->data[j] != ' ' || current->data[j] != '\'' || current->data[j] != '"'))
 						j++;
 					temp = ft_strndup(current->data + (i + 1), j - i);
-					temp = search_env_var(temp);
+					temp = search_env_var(temp, tokens->base->env);
 					if (!temp)
 					{
 						i++;
 						continue;
 					}
-					// remlacer $VAR par temp
+					replace_dolars_var(current, temp);
 					break;
 				}
 				i++;

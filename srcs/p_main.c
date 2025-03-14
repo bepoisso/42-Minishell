@@ -43,15 +43,15 @@ int main(void)
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (add_history(base.input), clean_exit(&base, 0), 0);
- 		/*printf("-----------------------------------------\n");
+ 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		ft_printf("\n\n\n");
 		print_cmd(&base);
-		ft_printf("-----------------------------------------\n\n"); */
+		ft_printf("-----------------------------------------\n\n");
 		sauron(&base);
 		add_history(base.input);
-/* 		ft_printf("-----------------------------------------\n");
-		print_tokens(base.token); */
+		ft_printf("-----------------------------------------\n");
+		print_tokens(base.token);
 		free_base(&base);
 		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}

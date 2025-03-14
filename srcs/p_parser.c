@@ -11,78 +11,87 @@ int	parser(char *str, t_base *base)
 	return (0);
 }
 
+void	rm_quote(t_token *tokens)
+{
+	t_token	*current;
+	char	*temp;
+	int		i;
+	int		j;
+
+	current = tokens;
+	i = -1;
+	j = 0;
+	while (current)
+	{
+		if (current && (ft_strchr(current->data, '\'') || ft_strchr(current->data, '"')))
+		{
+			temp = malloc(sizeof(char) * (ft_strlen(current->data) + 1));
+			ft_memset(temp, 0, sizeof(char) * (ft_strlen(current->data) + 1));
+			while (current->data[++i])
+			{
+				if (!(current->data[i] == '\'' || current->data[i] == '"'))
+				{
+					temp[j] = current->data[i];
+					j++;
+				}
+			}
+			temp[j] = '\0';
+			free(current->data);
+			current->data = ft_strdup(temp);
+			free(temp);
+		}
+		current = current->next;
+	}
+}
+
 t_token	*token_parser(t_token *tokens)
 {
 	t_token	*current;
 	t_token	*save;
 	char	*temp;
-	char	*temp2;
-	char	*temp3;
-	
+
+	current = tokens;
+	temp = NULL;
+	while (current)
+	{
+		if (!ft_isop(current->data[0]) && current->id != 0)
+		{
+			if (current->next && (current->next->id == 11 || (current->id == 11 && !ft_isop(current->next->data[0]) && current->next->id != 0)) )
+			{
+				temp = ft_strdup(current->data);
+				current->id = 11;
+				current->literal = current->next->literal;
+				free(current->data);
+				current->data = ft_strjoin(temp, current->next->data);
+				rm_node_token(current->next);
+				continue;
+			}
+		}
+		current = current->next;
+	}
+	current = tokens;
 	while (1)
 	{
-		current = tokens;
-		temp = NULL;
-		temp2 = NULL;
-		temp3 = NULL;
-		while (current)
+		 if (!current)
+			break ;
+		save = current->next;
+		if (current->id == 0)
 		{
-			if (current->id == 11)
-			{
-				if (current->prev && current->next && current->prev->id != 0 && current->next->id != 0 && !ft_isop(current->prev->data[0]) && !ft_isop(current->next->data[0]))
-				{
-					temp = ft_strdup(current->prev->data);
-					free(current->prev->data);
-					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
-					temp2 = ft_strjoin(temp, temp3);
-					current->prev->data = ft_strjoin(temp2, current->next->data);
-					current->id = 0;
-					current->next->id = 0;
-					free(temp);
-					free(temp2);
-					free(temp3);
-				}
-				else if (current->prev && current->prev->id != 0 && !ft_isop(current->prev->data[0]))
-				{
-					temp = ft_strdup(current->prev->data);
-					free(current->prev->data);
-					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
-					current->prev->data = ft_strjoin(temp, temp3);
-					current->id = 0;
-					free(temp);
-					free(temp3);
-				}
-				else if (current->next && current->next->id != 0 && !ft_isop(current->next->data[0]))
-				{
-					temp = ft_strdup(current->next->data);
-					free(current->next->data);
-					temp3 = ft_strndup(current->data + 1, ft_strlen(current->data) - 2);
-					current->next->data = ft_strjoin(temp3, temp);
-					current->id = 0;
-					free(temp);
-					free(temp3);
-				}
-			}
-			current = current->next;
+			if (current == tokens)
+			tokens = tokens->next;
+			rm_node_token(current);
 		}
-		current = tokens;
-		while (1)
-		{
-			if (!current)
-				break ;
-			save = current->next;
-			if (current->id == 0)
-			{
-				if (current == tokens)
-					tokens = tokens->next;
-				rm_node_token(current);
-			}
-			if (save == NULL)
-				break;
-			current = save;
-		}
-		if (no_quote(tokens) == 0)
+		if (save == NULL)
 			break;
+		current = save;
 	}
+	identify_token(tokens);
+	printf("----------1----------\n");
+	print_tokens(tokens);
+	search_dolars(tokens);
+	rm_quote(tokens);
+	printf("----------2----------\n");
+	print_tokens(tokens);
 	return (tokens);
 }
+

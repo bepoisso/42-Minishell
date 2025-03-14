@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	handling_builtin(t_base *base, t_token *actual_tok)
+/* void	handling_builtin(t_base *base, t_token *actual_tok)
 {
 	base->env = env_cpy();
 	if (ft_strncmp(actual_tok->data, "echo", 5) == 0)
@@ -15,6 +15,29 @@ void	handling_builtin(t_base *base, t_token *actual_tok)
 		// 	builtin_export(base, actual_tok);
 		// if (ft_strncmp(actual_tok->data, "unset", 6))
 		// 	builtin_unset(base, actual_tok);
+} */
+
+/**
+ * MODIFIER FONCTIONS EN VOID EN INT POUR VERIFIER LE STATUS DE SORTIE
+ * 
+ */
+int	exec_builtins(t_token *actual, t_base *base)
+{
+	int	status;
+
+	if (ft_strcmp(actual->data, "echo"))
+		builtin_echo(base, actual);
+	else if (ft_strcmp(actual->data, "cd"))
+		builtin_cd(base, actual);
+	else if (ft_strcmp(actual->data, "pwd"))
+		builtin_pwd(base);
+	else if (ft_strcmp(actual->data, "export"))
+		builtin_export(base, actual);
+	else if (ft_strcmp(actual->data, "env"))
+		builtin_env(base, actual);
+	else if (ft_strcmp(actual->data, "exit"))
+		builtin_exit(base);
+	return (status);
 }
 
 int ft_strslen(char **strs)
@@ -27,6 +50,7 @@ int ft_strslen(char **strs)
 	return (i);
 }
 
+// TEMP SERT A QUOI?
 char	*shlvl_modifier(char **environ, int i)
 {
 	int		j;

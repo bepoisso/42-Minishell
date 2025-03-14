@@ -1,5 +1,11 @@
 #include "../includes/minishell.h"
 
+/**
+ * ==14954== 8 bytes in 1 blocks are definitely lost in loss record 3 of 78
+ * ==14954==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+ * ==14954==    by 0x10BBDA: parsing_cmd (p_cmd.c:73)
+ * ==14954==    by 0x10BF42: main (p_main.c:36)
+ */
 int main(void)
 {
 	t_base	base;

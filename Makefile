@@ -44,7 +44,6 @@ SRC_FILES = e_check.c\
 			b_export.c\
 			b_unset.c\
 			b_cd.c\
-			b_exit.c\
 			p_dolars.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-t_token	*create_token(char *value, bool literal)
+t_token	*create_token(char *value, bool literal, t_base *base)
 {
 	t_token	*new;
 
@@ -11,17 +11,18 @@ t_token	*create_token(char *value, bool literal)
 	new->literal = literal;
 	new->next = NULL;
 	new->prev = NULL;
+	new->base = base;
 	return (new);
 }
 
-void	add_token(t_token **tokens, char *value, bool literal)
+void	add_token(t_token **tokens, char *value, bool literal, t_base *base)
 {
 	t_token	*new;
 	t_token	*temp;
 
 	if (!value)
 		return ;
-	new = create_token(value, literal);
+	new = create_token(value, literal, base);
 	if (!new)
 		return;
 	if (!*tokens)
@@ -95,7 +96,7 @@ t_token	*tokenizer(char *s, t_base *base)
 			while(ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i]) && s[i] != '\'' && s[i] != '"')
 				i++;
 		}
-		add_token(&tokens, ft_strndup(s + start, i - start), literal);
+		add_token(&tokens, ft_strndup(s + start, i - start), literal, base);
 	}
 	return (tokens);
 }

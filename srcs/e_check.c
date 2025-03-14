@@ -122,7 +122,7 @@ char	*check_cmd(t_token *actual, t_base *base)
 		ft_putstr_fd(RED"Command '", 2);
 		ft_putstr_fd(actual->cmd->cmd[0], 2);
 		ft_putstr_fd("' not found, but can be installed with:", 2);
-		ft_putstr_fd("\nsudo apt install ", 2);
+		ft_putstr_fd("\n\tsudo apt install ", 2);
 		ft_putstr_fd(actual->cmd->cmd[0], 2);
 		ft_putstr_fd("\n"RESET, 2);
 		return (NULL);

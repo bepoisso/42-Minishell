@@ -1,4 +1,4 @@
-valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --log-file=valgrind.log ./minishell
+valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --log-file=test_valgrind.log ./minishell
 ls -ls | cat -e | grep dr | sort > outfile
 
 ==179263== 14 bytes in 7 blocks are definitely lost in loss record 7 of 67

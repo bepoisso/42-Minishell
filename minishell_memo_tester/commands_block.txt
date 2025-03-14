@@ -1,0 +1,20 @@
+
+/bin/wc
+
+/bin/grep tata
+
+/bin/cut
+
+/bin/cat file
+
+
+/b'in/'wc
+
+/"bin"/gr'ep ta'ta
+
+/bi"n/cu"t
+
+/bin"/cat file"
+
+/"bin"/gr'ep ta'ta
+/bin"/cat file"

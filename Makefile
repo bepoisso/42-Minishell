@@ -6,12 +6,13 @@ RESET	= \033[0m
 
 #_________________VARIABLE_________________
 
-NAME = minishell
-CC = cc
-CFLAGS = -Wall -Wextra -g -I$(INC_DIR) #-Werror#
-LIBS= -lreadline -lhistory -L./libft -lft
-VALARGS = --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes --child-silent-after-fork=yes -s
-MAKEFLAGS += --no-print-directory
+NAME		= minishell
+CC			= cc
+CFLAGS		= -Wall -Wextra -g -I$(INC_DIR) #-Werror#
+LIBS		= -lreadline -lhistory -L./libft -lft
+VALARGS		= --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes -s
+SVALARGS	= --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes -s --log-file=test_valgrind.log
+MAKEFLAGS	+= --no-print-directory
 
 #_________________FILES_________________
 
@@ -78,6 +79,9 @@ re: fclean all
 
 val: 
 		valgrind $(VALARGS) ./$(NAME)
+
+valsilent:
+		valgrind $(SVALARGS) ./$(NAME)
 
 exec: re
 		./$(NAME)

@@ -1,0 +1,87 @@
+echo papa >> file1
+
+echo maman >> file1
+
+cat file1
+
+cat file1 | grep papa | more
+
+# ok a verifier manuellement
+
+# cat includes/minishell.h
+# 
+# cat <includes/minishell.h
+# 
+# diff but validated
+
+<< end cat|>fileout 
+#!! ne fonctionne pas ou trop, le vrai necrit rien ds fileout pb redir globale
+ 
+
+ls fichiernul | grep bla | more
+ 
+# ok sauf message err cat chemin absolu
+
+<noexist cat 
+
+cat <noexist
+  
+# ok mais verif message bash
+<testfile cat
+
+cat <testfile
+
+
+<testfile cat | rev > outfile
+ 
+<outfile cat
+
+ok mais verif manuelle
+
+rm outfile 
+# rm err normal car deja remove
+<testfile cat | echeo niania | rev > outfile
+
+<outfile cat
+
+<testfile cat | echo niania | rev > outfile
+
+<outfile cat
+
+<testfile cat | echo niania | rev >> outfile
+
+<outfile cat
+
+
+< outfile | rev
+
+#!! ne marche pas car ne devrait rien afficher pb redir globale
+# cat | cat | ls
+# 
+<<end cat
+
+# ok mais verif manuelle
+
+<<end <<end
+
+<<end 
+
+# pb reglé!! pb return -1! et reaffiche la string + a veriff manuellement peut etre redir globale
+
+# >>asup >>asup cat
+
+# ok mais verif manuellement asup est crée mais naffiche qu'une seule fois le cat entrée
+
+>>asup >>asup
+
+# ok mais verif manuellement asup est crée mais naffiche rien
+# fin
+
+ls | rev | cat >outfile76 > outfile77 -n >outfile78| rev
+ls | <infile <infile2 rev | cat >outfile76 > outfile77 -n >outfile78| rev
+ls |  rev |>outfile76 > outfile77 <infile <infile2 cat  -n >outfile78| rev
+ls | <infile2 rev | > outfile77 <infile  >outfile76 cat  -n >outfile78| rev
+
+cat | cat | ( rev | cat ) //seg
+cat || (rev |cat )
+cat && (rev |cat )

@@ -25,6 +25,7 @@ int	exec_builtins(t_token *actual, t_base *base)
 {
 	int	status;
 
+	status = 0;
 	if (ft_strcmp(actual->data, "echo"))
 		builtin_echo(base, actual);
 	else if (ft_strcmp(actual->data, "cd"))

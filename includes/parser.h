@@ -70,6 +70,7 @@ int		ft_isspace(char c);
 int		start_pipe(char *s, t_base *base);
 int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
+void	search_dolars(t_token *tokens);
 
 
 #endif

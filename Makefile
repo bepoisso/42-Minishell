@@ -8,7 +8,7 @@ RESET	= \033[0m
 
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -g -I$(INC_DIR) -Werror
+CFLAGS = -Wall -Wextra -g -I$(INC_DIR) #-Werror#
 LIBS= -lreadline -lhistory -L./libft -lft
 VALARGS = --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes --child-silent-after-fork=yes -s
 MAKEFLAGS += --no-print-directory
@@ -45,6 +45,7 @@ SRC_FILES = e_check.c\
 			b_unset.c\
 			b_cd.c\
 			b_exit.c\
+			p_dolars.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

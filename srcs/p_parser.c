@@ -11,10 +11,30 @@ int	parser(char *str, t_base *base)
 	return (0);
 }
 
-void	update_dolars(t_token *tokens)
+char	*search_env_var(char *search)
+{
+	extern char	**environ; //Remplacer par notre environ
+	int			i;
+	int			j;
+
+	i = 0;
+	j = 0;
+	while(environ[j])
+	{
+		if (ft_strncmp(search, environ[i], ft_strlen(search)) == 0)
+		{
+			j = ft_strlen(search) + 1;
+			if (environ[i][j] == '=')				
+				return (free(search), ft_strdup(environ[i] + j));
+		}
+		i++;
+	}
+	return (free(search), NULL);
+}
+
+void	search_dolars(t_token *tokens)
 {
 	t_token		*current;
-	extern char **env;
 	int			i;
 	int			j;
 	char		*temp;
@@ -33,7 +53,13 @@ void	update_dolars(t_token *tokens)
 					while (current->data[j] && (current->data[j] != ' ' || current->data[j] != '\'' || current->data[j] != '"'))
 						j++;
 					temp = ft_strndup(current->data + (i + 1), j - i);
-					// checher dans environ ce qui corespond et le remplacer
+					temp = search_env_var(temp);
+					if (!temp)
+					{
+						i++;
+						continue;
+					}
+					// remlacer $VAR par temp
 					break;
 				}
 				i++;
@@ -41,7 +67,6 @@ void	update_dolars(t_token *tokens)
 		}
 		current = current->next;
 	}
-	
 }
 
 void	rm_quote(t_token *tokens)
@@ -56,19 +81,16 @@ void	rm_quote(t_token *tokens)
 	j = 0;
 	while (current)
 	{
-		printf("IN\n");
-		if (current->id == 9 && (ft_strchr(current->data, '\'') || ft_strchr(current->data, '"')))
+		if (current && (ft_strchr(current->data, '\'') || ft_strchr(current->data, '"')))
 		{
 			temp = malloc(sizeof(char) * (ft_strlen(current->data) + 1));
+			ft_memset(temp, 0, sizeof(char) * (ft_strlen(current->data) + 1));
 			while (current->data[++i])
 			{
-				if (current->data[i] == '\'' || current->data[i] == '"')
-					i++;
-				else
+				if (!(current->data[i] == '\'' || current->data[i] == '"'))
 				{
 					temp[j] = current->data[i];
 					j++;
-					i++;
 				}
 			}
 			temp[j] = '\0';
@@ -122,9 +144,12 @@ t_token	*token_parser(t_token *tokens)
 		current = save;
 	}
 	identify_token(tokens);
-	update_dolars(tokens);
+	printf("----------1----------\n");
+	print_tokens(tokens);
+	search_dolars(tokens);
 	rm_quote(tokens);
-	identify_token(tokens);
+	printf("----------2----------\n");
+	print_tokens(tokens);
 	return (tokens);
 }
 

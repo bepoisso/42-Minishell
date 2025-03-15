@@ -39,7 +39,7 @@ void	rm_quote(t_token *tokens)
 					in = 0;
 				else if (current->data[i] == '\'' && in == 2)
 					in = 0;
-				else if (in != 0)
+				else
 				{
 					temp[j] = current->data[i];
 					j++;
@@ -72,6 +72,7 @@ t_token	*token_parser(t_token *tokens)
 				current->literal = current->next->literal;
 				free_null((void **)&current->data);
 				current->data = ft_strjoin(temp, current->next->data);
+				free(temp);
 				rm_node_token(current->next);
 				continue;
 			}

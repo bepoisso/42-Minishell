@@ -28,6 +28,7 @@ int main(void)
 		}
 		if (parser(base.input, &base))
 		{
+			add_history(base.input);
 			free_null((void**)&base.input);
 			continue;
 		}

@@ -14,10 +14,10 @@ int main(void)
 	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
 	base.input = NULL;
+	base.env = env_cpy();
 	header();
 	while (1)
 	{
-		base.env = env_cpy();
 		base.input = readline("🤏🐚> ");
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"), 0);

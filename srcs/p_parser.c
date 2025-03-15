@@ -19,10 +19,10 @@ void	rm_quote(t_token *tokens)
 	int		j;
 
 	current = tokens;
-	i = -1;
-	j = 0;
 	while (current)
 	{
+		j = 0;
+		i = -1;
 		if (current && (ft_strchr(current->data, '\'') || ft_strchr(current->data, '"')))
 		{
 			temp = malloc(sizeof(char) * (ft_strlen(current->data) + 1));
@@ -35,7 +35,6 @@ void	rm_quote(t_token *tokens)
 					j++;
 				}
 			}
-			temp[j] = '\0';
 			free(current->data);
 			current->data = ft_strdup(temp);
 			free(temp);
@@ -86,12 +85,8 @@ t_token	*token_parser(t_token *tokens)
 		current = save;
 	}
 	identify_token(tokens);
-	printf("----------1----------\n");
-	print_tokens(tokens);
-	search_dolars(tokens);
 	rm_quote(tokens);
-	printf("----------2----------\n");
-	print_tokens(tokens);
+	identify_token(tokens);
 	return (tokens);
 }
 

@@ -38,7 +38,7 @@ char	*replace_dolars_var(t_token *token, char *var)
 	while (token->data[i] && token->data[i] != '$')
 		i++;
 	i++;
-	temp_before = ft_strndup(token->data[i], i);
+	temp_before = ft_strndup(token->data, i);
 	while (token->data[i] != ' ' || token->data[i] != '$')
 		i++;
 	i = j;
@@ -46,6 +46,7 @@ char	*replace_dolars_var(t_token *token, char *var)
 		i++;
 	temp_after = ft_strndup(token->data + j, i - j);
 	// Faire les join de tout ca et c'est bon
+	return (NULL); // renvoyer le resultat du join
 }
 
 void	search_dolars(t_token *tokens)

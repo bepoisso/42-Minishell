@@ -23,9 +23,9 @@
  */
 int	exec_builtins(t_token *actual, t_base *base)
 {
-	int	status;
+	/* int	status;
 
-	status = 0;
+	status = 0; */
 	if (ft_strcmp(actual->data, "echo"))
 		builtin_echo(base, actual);
 	else if (ft_strcmp(actual->data, "cd"))
@@ -38,7 +38,7 @@ int	exec_builtins(t_token *actual, t_base *base)
 		builtin_env(base, actual);
 	// else if (ft_strcmp(actual->data, "exit"))
 
-	return (status);
+	// return (status);
 }
 
 int ft_strslen(char **strs)
@@ -51,15 +51,12 @@ int ft_strslen(char **strs)
 	return (i);
 }
 
-// TEMP SERT A QUOI?
 char	*shlvl_modifier(char **environ, int i)
 {
 	int		j;
-	int		temp;
 	char	*new_env;
 
 	j = 0;
-	temp = ft_atoi(environ[i] + 6) + 1;
 	new_env = ft_calloc(ft_strlen(environ[i]) + 2, sizeof(char));
 	while (environ[i][j] && j < 6)
 	{

@@ -14,10 +14,11 @@ int main(void)
 	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
 	base.input = NULL;
+	base.env = env_cpy();
 	header();
 	while (1)
 	{
-		base.env = env_cpy();
+		ft_printf(GREEN"Exit code at the beginning : %d\n"RESET, base.exit_code);
 		base.input = readline("🤏🐚> ");
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"), 0);
@@ -28,11 +29,12 @@ int main(void)
 		}
 		if (parser(base.input, &base))
 		{
+			add_history(base.input);
 			free_null((void**)&base.input);
 			continue;
 		}
 		identify_token(base.token);
-		print_tokens(base.token);
+		//print_tokens(base.token);
 		base.token = token_parser(base.token);
 		if (check_only_redirect(base.token, &base))
 		{
@@ -42,16 +44,16 @@ int main(void)
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (add_history(base.input), clean_exit(&base, 0), 0);
- 		printf("-----------------------------------------\n");
+			return (add_history(base.input),ft_printf(GREEN"Exit code in main after exit : %d\n"RESET, base.exit_code), clean_exit(&base, 0), 0);
+ 		/* printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		ft_printf("\n\n\n");
 		print_cmd(&base);
-		ft_printf("-----------------------------------------\n\n");
+		ft_printf("-----------------------------------------\n\n"); */
 		sauron(&base);
 		add_history(base.input);
-		ft_printf("-----------------------------------------\n");
-		print_tokens(base.token);
+		/* ft_printf("-----------------------------------------\n");
+		print_tokens(base.token); */
 		free_base(&base);
 		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}

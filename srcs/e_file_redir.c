@@ -95,6 +95,6 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 	if (fd == -1 && errno == EACCES)
 		return (ft_error("Permission denied\n", 1, base), -1);
 	if (fd == -1 && errno == ENOENT)
-		return (ft_error("No such file or directory\n", 1, base), -1);
+		return (ft_error("No such file or directory", 1, base), -1);
 	return (fd);
 }

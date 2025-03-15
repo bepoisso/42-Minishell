@@ -28,6 +28,7 @@ SRC_FILES = e_check.c\
 			e_start_exec.c\
 			e_tolkien.c\
 			sighand.c\
+			d_print.c\
 			p_parser.c\
 			p_utils.c\
 			p_error.c\
@@ -37,15 +38,14 @@ SRC_FILES = e_check.c\
 			p_cmd.c\
 			p_main.c\
 			p_header.c\
-			d_print.c\
-			b_pwd.c\
+			p_dolars.c\
 			b_builtin.c\
+			b_cd.c\
 			b_echo.c\
 			b_env.c\
 			b_export.c\
+			b_pwd.c\
 			b_unset.c\
-			b_cd.c\
-			p_dolars.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

@@ -33,8 +33,8 @@ void	free_token_list(t_token *tk)
 	while (tk)
 	{
 		tkcpy = tk->next;
-		free(tk->data);
-		free(tk);
+		free_null(tk->data);
+		free_null(tk);
 		tk = tkcpy;
 	}
 }

@@ -5,7 +5,7 @@
 /****************************************************************
 * 					What else to do :							*
 * 																*
-* cd:		ToDo												*
+* cd:		TO FINISH	Zef											*
 * echo:		ToFix => gérer le -n								*
 * pwd:		Do													*
 * export:	ToDo												*
@@ -104,3 +104,4 @@ char **env_cpy(void)
 	new_env[i] = NULL;
 	return (new_env);
 }
+

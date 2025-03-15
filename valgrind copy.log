@@ -1,5 +1,5 @@
 valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all --log-file=test_valgrind.log ./minishell
-ls -ls | cat -e | grep dr | sort > outfile
+ls -la | cat -e | grep dr | sort > outfile
 
 ==179263== 14 bytes in 7 blocks are definitely lost in loss record 7 of 67
 ==179263==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
@@ -13,7 +13,7 @@ ls -ls | cat -e | grep dr | sort > outfile
 {
    <insert_a_suppression_name_here>
    Memcheck:Leak
-   match-leak-kinds: definite
+   match-leak-kinds: definite 
    fun:malloc
    fun:ft_strdup
    fun:create_token

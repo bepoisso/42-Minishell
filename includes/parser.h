@@ -20,9 +20,6 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
-/**
- * 
- */
 typedef struct s_token
 {
 	int				id;
@@ -33,6 +30,15 @@ typedef struct s_token
 	struct s_token	*prev;
 	struct s_base	*base;
 }	t_token;
+
+typedef struct s_var
+{
+	char			*name;
+	char			*content;
+	bool			error;
+	struct s_var	*next;
+	struct s_var	*prev;
+}	t_var;
 
 /**
  * Struct for the main things
@@ -47,6 +53,7 @@ typedef struct s_base
 	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
+	t_var			*envir;
 }	t_base;
 
 

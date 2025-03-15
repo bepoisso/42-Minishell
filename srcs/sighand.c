@@ -32,7 +32,6 @@ void	sig_quit_handler(int signal)
 	printf("Signal %d reçu\n", signal);
 	if (signal == SIGQUIT)
 	{
-		ft_printf("\\plop\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

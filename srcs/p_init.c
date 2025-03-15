@@ -20,19 +20,19 @@ int	get_redir_io(t_token *token)
 	return (0);
 }
 
-int	get_op_token(char *data)
+int	get_op_token(char *data, int id)
 {
 	if (!data || !*data)
 		return (-2);
-	if (ft_strncmp(data, "<<", 2) == 0)
+	if (ft_strncmp(data, "<<", 2) == 0 && id != 11)
 		return (5);
-	if (ft_strncmp(data, ">>", 2) == 0)
+	if (ft_strncmp(data, ">>", 2) == 0 && id != 11)
 		return (6);
-	if (ft_strncmp(data, "<", 1) == 0)
+	if (ft_strncmp(data, "<", 1) == 0 && id != 11)
 		return (3);
-	if (ft_strncmp(data, ">", 1) == 0)
+	if (ft_strncmp(data, ">", 1) == 0 && id != 11)
 		return (4);
-	if (ft_strncmp(data, "|", 1) == 0)
+	if (ft_strncmp(data, "|", 1) == 0 && id != 11)
 		return (7);
 	if (ft_strncmp(data, "'", 1) == 0)
 		return (11);

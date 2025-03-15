@@ -57,7 +57,7 @@ void	print_tokens(t_token *tokens);
 int		open_quote(char *str);
 int		skip_quote(char *s, int	i);
 void	identify_token(t_token *tokens);
-int		get_op_token(char *data);
+int		get_op_token(char *data, int id);
 t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
 void	header(void);
@@ -74,6 +74,7 @@ int		start_pipe(char *s, t_base *base);
 int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
 void	search_dolars(t_token *tokens);
+int		check_double_pippe(t_token *tokens);
 
 
 #endif

@@ -17,7 +17,9 @@ void	rm_quote(t_token *tokens)
 	char	*temp;
 	int		i;
 	int		j;
+	int		in;
 
+	in = 0;
 	current = tokens;
 	while (current)
 	{
@@ -29,15 +31,23 @@ void	rm_quote(t_token *tokens)
 			ft_memset(temp, 0, sizeof(char) * (ft_strlen(current->data) + 1));
 			while (current->data[++i])
 			{
-				if (!(current->data[i] == '\'' || current->data[i] == '"'))
+				if (current->data[i] == '"' && in == 0)
+					in = 1;
+				else if (current->data[i] == '\'' && in == 0)
+					in = 2;
+				else if (current->data[i] == '"' && in == 1)
+					in = 0;
+				else if (current->data[i] == '\'' && in == 2)
+					in = 0;
+				else if (in != 0)
 				{
 					temp[j] = current->data[i];
 					j++;
 				}
 			}
-			free(current->data);
+			free_null((void **)&current->data);
 			current->data = ft_strdup(temp);
-			free(temp);
+			free_null((void **)&temp);
 		}
 		current = current->next;
 	}
@@ -60,7 +70,7 @@ t_token	*token_parser(t_token *tokens)
 				temp = ft_strdup(current->data);
 				current->id = 11;
 				current->literal = current->next->literal;
-				free(current->data);
+				free_null((void **)&current->data);
 				current->data = ft_strjoin(temp, current->next->data);
 				rm_node_token(current->next);
 				continue;

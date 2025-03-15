@@ -5,6 +5,7 @@ t_token	*create_token(char *value, bool literal, t_base *base)
 	t_token	*new;
 
 	new = malloc(sizeof(t_token));
+	ft_memset(new, 0, (sizeof(t_token)));
 	if (!new)
 		return (NULL);
 	new->data = ft_strdup(value);
@@ -35,7 +36,7 @@ void	add_token(t_token **tokens, char *value, bool literal, t_base *base)
 		temp->next = new;
 		new->prev = temp;
 	}
-	free(value);
+	free_null((void **)&value);
 }
 
 void	rm_node_token(t_token *token)
@@ -45,14 +46,14 @@ void	rm_node_token(t_token *token)
 
 	if (!token)
 		return;
-	free(token->data);
+	free_null((void **)&token->data);
 	next = token->next;
 	prev = token->prev;
 	if (prev)
 		prev->next = token->next;
 	if (next)
 		next->prev = token->prev;
-	free(token);
+	free_null((void **)&token);
 }
 
 t_token	*tokenizer(char *s, t_base *base)
@@ -112,7 +113,7 @@ void	identify_token(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		current->id = get_op_token(current->data);
+		current->id = get_op_token(current->data, current->id);
 		if ((current->id >= 3 && current->id <= 6))
 			redir = 1;
 		if (current->id >= 1 && current->id <= 7)

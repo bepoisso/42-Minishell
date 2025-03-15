@@ -16,12 +16,12 @@ char	*search_env_var(char *search, char **env)
 			if (env[i][j] == '=')
 			{
 				temp = ft_strdup(env[i] + (j + 1));
-				return (free(search), temp);
+				return (free_null((void **)&search), temp);
 			}
 		}
 		i++;
 	}
-	return (free(search), NULL);
+	return (free_null((void **)&search), NULL);
 }
 
 char	*replace_dolars_var(t_token *token, char *var)

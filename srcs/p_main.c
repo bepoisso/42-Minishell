@@ -30,14 +30,16 @@ int main(void)
 		if (parser(base.input, &base))
 		{
 			add_history(base.input);
+			add_history(base.input);
 			free_null((void**)&base.input);
 			continue;
 		}
 		identify_token(base.token);
 		//print_tokens(base.token);
 		base.token = token_parser(base.token);
-		if (check_only_redirect(base.token, &base))
+		if (check_double_pippe(base.token) || check_only_redirect(base.token, &base))
 		{
+			add_history(base.input);
 			free_null((void**)&base.input);
 			continue ;
 		}
@@ -45,17 +47,19 @@ int main(void)
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (add_history(base.input),ft_printf(GREEN"Exit code in main after exit : %d\n"RESET, base.exit_code), clean_exit(&base, 0), 0);
- 		/* printf("-----------------------------------------\n");
+ 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		ft_printf("\n\n\n");
 		print_cmd(&base);
-		ft_printf("-----------------------------------------\n\n"); */
+		ft_printf("-----------------------------------------\n\n");
 		sauron(&base);
 		add_history(base.input);
-		/* ft_printf("-----------------------------------------\n");
-		print_tokens(base.token); */
+		ft_printf("-----------------------------------------\n");
+		print_tokens(base.token);
 		free_base(&base);
 		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
+	free_doubletab(&base.env);
 	return (0);
 }
+// ls -la | grep dr | sort | cat -e | rev >outfile

@@ -70,7 +70,8 @@ t_cmd	*parsing_cmd(t_base *base)
 	while (tokens)
 	{
 		i = -1;
-		value = malloc(sizeof(char *) * (count_args(tokens) + 1));
+		//value = malloc(sizeof(char *) * (count_args(tokens) + 1));
+		value = ft_calloc((count_args(tokens) + 1), sizeof(char *));
 		if (!value)
 			return (NULL);
 		while (tokens && (tokens->id == 9 || tokens->id == 10 || tokens->id == 11))
@@ -81,6 +82,8 @@ t_cmd	*parsing_cmd(t_base *base)
 		value[++i] = NULL;
 		if (value[0])
 			add_cmd(&cmds, value);
+		else
+			free_doubletab(&value);
 		if (tokens && tokens->id != 9 && tokens->id != 10)
 			tokens = tokens->next;
 	}

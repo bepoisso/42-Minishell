@@ -19,7 +19,7 @@ INDEX	TYPE	DESCRIPTION
 3		<		redir infile replace
 4		>		redir outfile replace
 5		<<		redir infile append
-6		<<		redir outfile append
+6		>>		redir outfile append
 7		|		pipe
 9		cmd		commande
 10		args	commande args

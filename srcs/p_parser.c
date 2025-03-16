@@ -17,28 +17,37 @@ void	rm_quote(t_token *tokens)
 	char	*temp;
 	int		i;
 	int		j;
+	int		in;
 
+	in = 0;
 	current = tokens;
-	i = -1;
-	j = 0;
 	while (current)
 	{
+		j = 0;
+		i = -1;
 		if (current && (ft_strchr(current->data, '\'') || ft_strchr(current->data, '"')))
 		{
 			temp = malloc(sizeof(char) * (ft_strlen(current->data) + 1));
 			ft_memset(temp, 0, sizeof(char) * (ft_strlen(current->data) + 1));
 			while (current->data[++i])
 			{
-				if (!(current->data[i] == '\'' || current->data[i] == '"'))
+				if (current->data[i] == '"' && in == 0)
+					in = 1;
+				else if (current->data[i] == '\'' && in == 0)
+					in = 2;
+				else if (current->data[i] == '"' && in == 1)
+					in = 0;
+				else if (current->data[i] == '\'' && in == 2)
+					in = 0;
+				else
 				{
 					temp[j] = current->data[i];
 					j++;
 				}
 			}
-			temp[j] = '\0';
-			free(current->data);
+			free_null((void **)&current->data);
 			current->data = ft_strdup(temp);
-			free(temp);
+			free_null((void **)&temp);
 		}
 		current = current->next;
 	}
@@ -61,8 +70,9 @@ t_token	*token_parser(t_token *tokens)
 				temp = ft_strdup(current->data);
 				current->id = 11;
 				current->literal = current->next->literal;
-				free(current->data);
+				free_null((void **)&current->data);
 				current->data = ft_strjoin(temp, current->next->data);
+				free(temp);
 				rm_node_token(current->next);
 				continue;
 			}
@@ -86,12 +96,8 @@ t_token	*token_parser(t_token *tokens)
 		current = save;
 	}
 	identify_token(tokens);
-	printf("----------1----------\n");
-	print_tokens(tokens);
-	search_dolars(tokens);
 	rm_quote(tokens);
-	printf("----------2----------\n");
-	print_tokens(tokens);
+	identify_token(tokens);
 	return (tokens);
 }
 

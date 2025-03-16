@@ -101,7 +101,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 			return (close(actual->cmd->input), close(actual->cmd->output)
 				, clean_exit(base, 127), 1);
 		if (actual->cmd->builtin)
-			exec_builtins(actual, base);
+			exec_builtins(actual);
 		else
 			execve(actual->cmd->path_cmd, actual->cmd->cmd, base->env);
 		base->exit_code = errno;

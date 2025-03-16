@@ -46,6 +46,7 @@ SRC_FILES = e_check.c\
 			b_export.c\
 			b_pwd.c\
 			b_unset.c\
+			test_b_cd.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

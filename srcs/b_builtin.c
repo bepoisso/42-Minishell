@@ -5,7 +5,7 @@
 /****************************************************************
 * 					What else to do :							*
 * 																*
-* cd:		TO FINISH	Zef											*
+* cd:		TO FINISH	Zef										*
 * echo:		ToFix => gérer le -n								*
 * pwd:		Do													*
 * export:	ToDo												*
@@ -35,24 +35,26 @@
  * MODIFIER FONCTIONS EN VOID EN INT POUR VERIFIER LE STATUS DE SORTIE
  * 
  */
-void	exec_builtins(t_token *actual, t_base *base)
+void	exec_builtins(t_token *actual)
 {
-	//int	status;
+	/* int	status;
 
-	//status = 0;
+	status = 0; */
 	if (ft_strcmp(actual->data, "echo"))
-		builtin_echo(base, actual);
+		builtin_echo(actual);
 	else if (ft_strcmp(actual->data, "cd"))
-		builtin_cd(base, actual);
+		builtin_cd(actual, actual->base);
 	else if (ft_strcmp(actual->data, "pwd"))
-		builtin_pwd(base);
+		builtin_pwd(actual->base);
 	else if (ft_strcmp(actual->data, "export"))
-		builtin_export(base, actual);
+		builtin_export(actual);
 	else if (ft_strcmp(actual->data, "env"))
-		builtin_env(base, actual);
-/* 	else if (ft_strcmp(actual->data, "exit"))
-		builtin_exit(base); */
-	//return (status);
+		builtin_env(actual);
+	else if (ft_strcmp(actual->data, "unset"))
+		builtin_unset(actual);
+	// else if (ft_strcmp(actual->data, "exit"))
+
+	// return (status);
 }
 
 int ft_strslen(char **strs)
@@ -65,15 +67,12 @@ int ft_strslen(char **strs)
 	return (i);
 }
 
-// TEMP SERT A QUOI?
 char	*shlvl_modifier(char **environ, int i)
 {
 	int		j;
-	int		temp;
 	char	*new_env;
 
 	j = 0;
-	temp = ft_atoi(environ[i] + 6) + 1;
 	new_env = ft_calloc(ft_strlen(environ[i]) + 2, sizeof(char));
 	while (environ[i][j] && j < 6)
 	{
@@ -85,23 +84,4 @@ char	*shlvl_modifier(char **environ, int i)
 	return (new_env);
 }
 
-char **env_cpy(void)
-{
-	extern char	**environ;
-	char		**new_env;
-	int			i;
-
-	i = 0;
-	new_env = (char **)malloc(sizeof(char *) * (ft_strslen(environ) + 1));
-	while (environ[i])
-	{
-		if(ft_strncmp(environ[i], "SHLVL", 5) == 0)
-			new_env[i] = shlvl_modifier(environ, i);
-		else
-			new_env[i] = ft_strdup(environ[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-}
 

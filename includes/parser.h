@@ -20,17 +20,6 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
-typedef struct s_token
-{
-	int				id;
-	char			*data;
-	struct s_cmd	*cmd;
-	bool			literal;
-	struct s_token	*next;
-	struct s_token	*prev;
-	struct s_base	*base;
-}	t_token;
-
 typedef struct s_var
 {
 	char			*name;
@@ -40,12 +29,25 @@ typedef struct s_var
 	struct s_var	*prev;
 }	t_var;
 
+typedef struct s_token
+{
+	int				id;
+	char			*data;
+	struct s_cmd	*cmd;
+	bool			literal;
+	t_var			expanse;
+	struct s_base	*base;
+	struct s_token	*next;
+	struct s_token	*prev;
+}	t_token;
+
 /**
  * Struct for the main things
  */
 typedef struct s_base
 {
 	char			**env;
+	t_var			*envir;
 	char			*input;
 	int				exit_code;
 	int				count_forks;
@@ -53,7 +55,7 @@ typedef struct s_base
 	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
-	t_var			*envir;
+	int				envir_nb;
 }	t_base;
 
 
@@ -64,7 +66,7 @@ void	print_tokens(t_token *tokens);
 int		open_quote(char *str);
 int		skip_quote(char *s, int	i);
 void	identify_token(t_token *tokens);
-int		get_op_token(char *data);
+int		get_op_token(char *data, int id);
 t_cmd	*parsing_cmd(t_base *base);
 void	print_cmd(t_base *base);
 void	header(void);
@@ -81,6 +83,7 @@ int		start_pipe(char *s, t_base *base);
 int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
 void	search_dolars(t_token *tokens);
+int		check_double_pippe(t_token *tokens);
 
 
 #endif

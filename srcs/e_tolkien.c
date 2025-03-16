@@ -95,7 +95,7 @@ int	sauron(t_base *base)
 	handle_cmd(tok, base);
 	create_redir(base);
 	base->count_forks = count_forks(base);
-	base->path_list = extract_paths();
+	base->path_list = extract_paths(base);
 	while (tok)
 	{
 	/* 	if (tok->id == 8)

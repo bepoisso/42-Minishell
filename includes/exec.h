@@ -35,7 +35,7 @@ void	free_base(t_base *base);
 void	clean_exit(t_base *base, int exit_code);
 
 /**			e_exec.c */
-char	**extract_paths(void);
+char	**extract_paths(t_base *base);
 
 /**			handler.c */
 void	sig_handler(int signal);
@@ -57,5 +57,8 @@ int     prepare_exec(t_token *actual, t_base *base);
 int		file_redir(t_token *tok, t_base *base);
 
 /**			d_print_struct */
+
+/**			e_env.c */
+char	**env_cpy(void);
 
 #endif

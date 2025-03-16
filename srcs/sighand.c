@@ -123,7 +123,7 @@ siginfo_t {
 		if (*str)
 			add_history(str);
 		printf("You entered: %s\n", str);
-		free(str);
+		free_null((void **)&str);
 	}
 	return (0);
 } */

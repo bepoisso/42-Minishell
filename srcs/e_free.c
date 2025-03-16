@@ -33,8 +33,8 @@ void	free_token_list(t_token *tk)
 	while (tk)
 	{
 		tkcpy = tk->next;
-		free_null(tk->data);
-		free_null(tk);
+		free_null((void **)&tk->data);
+		free_null((void **)&tk);
 		tk = tkcpy;
 	}
 }
@@ -55,5 +55,6 @@ void	clean_exit(t_base *base, int exit_code)
 {
 	base->exit_code = exit_code;
 	free_base(base);
+	free_doubletab(&base->env);
 	exit (exit_code);
 }

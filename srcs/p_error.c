@@ -30,3 +30,34 @@ int	check_only_redirect(t_token *tokens, t_base *base)
 	}
 	return (0);
 }
+
+void	print_double(int id, t_base *base)
+{
+	if (id == 3)
+		ft_error("minishell: syntax error near unexpected token `<'", 2, base);
+	else if (id == 4)
+		ft_error("minishell: syntax error near unexpected token `>'", 2, base);
+	else if (id == 5)
+		ft_error("minishell: syntax error near unexpected token `<<'", 2, base);
+	else if (id == 6)
+		ft_error("minishell: syntax error near unexpected token `>>'", 2, base);
+	else if (id == 7)
+		ft_error("minishell: syntax error near unexpected token `|'", 2, base);
+}
+
+int	check_double_pippe(t_token *tokens)
+{
+	t_token	*current;
+
+	current = tokens;
+	while (current)
+	{
+		if (current->next && current->id >= 3 && current->id <= 7)
+		{
+			if (current->id == current->next->id)
+				return (print_double(current->id, current->base), 1);
+		}
+		current = current->next;
+	}
+	return (0);
+}

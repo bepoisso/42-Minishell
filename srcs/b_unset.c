@@ -1,40 +1,97 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   b_unset.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/16 19:01:34 by jrinaudo          #+#    #+#             */
+/*   Updated: 2025/03/16 19:02:41 by jrinaudo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
-char	*search_in_dualtab(char **tabstr, char *search)
-{
-	int	i;
-
-	i = 0;
-	while (tabstr[i])
-	{
-		if (!ft_strncmp(tabstr[i], search, ft_strlen(tabstr[i])))
-			return(tabstr[i]);
-		i++;
-	}
-	return (NULL);
-}
+/**
+ * unset doit etre la seule commande pour fonctionner
+ * Fonction a tester
+ * 
+ */
 
 static int	srch_n_destroy(t_token *tok, char *search)
 {
+	int		i;
+	int		erased;
+
+	erased = 0;
+	i = 0;
+	while (tok->base->env[i])
+	{
+		if (strncmp(search, tok->base->env[i], ft_strlen(search))
+			&& tok->base->env[i][ft_strlen(search) == '='])
+		{
+			free_null((void **)&tok->base->env[i]);
+			erased++;
+		}
+		i++;
+	}
+	return (erased);
+}
+
+int	update_env(t_token *tok, int size)
+{
+	int		i;
+	int		j;
+	char	**env;
 	char	**envcpy;
 
-	envcpy = tok->base->env;
-	int	i;
-
 	i = 0;
-	while (envcpy[i])
+	j = 0;
+	env = tok->base->env;
+	envcpy = ft_calloc(sizeof_db_tab(env), sizeof(char **) * size);
+	if (!envcpy)
+		return (1);
+	while (env[i])
 	{
-		if (!ft_strncmp(envcpy[i], search, ft_strlen(envcpy[i])))
-			{
-				free_null((void **)envcpy[i]);
-				envcpy[i] = ft_strdup("");
-				return (1);
-			}
+		while (env[i])
+		{
+			if (!env[i])
+				i++;
+			envcpy[j] = env[i];
+			j++;
+			i++;
+		}
+	}
+	free(tok->base->env);
+	tok->base->env = envcpy;
+	return (0);
+}
+
+int	builtin_unset(t_token *tok)
+{
+	int		i;
+	int		erased;
+
+	i = 1;
+	erased = 0;
+	if (tok->base->cmds->next != NULL)
+		return (0);
+	while (tok->cmd->cmd[i])
+	{
+		erased = srch_n_destroy(tok, tok->cmd->cmd[i]);
+		if (erased == -1)
+			return (1);
+		i++;
+	}
+	if (erased)
+	{
+		if (update_env(tok, sizeof_db_tab(tok->base->env) - erased + 1))
+			return (1);
 	}
 	return (0);
 }
 
-static void	remove_node(t_var *to_remove)
+/* static void	remove_node(t_var *to_remove)
 {
 	t_var	*prev;
 	t_var	*next;
@@ -49,27 +106,28 @@ static void	remove_node(t_var *to_remove)
 	free_null((void **)&to_remove->name);
 	free_null((void **)&to_remove);			
 	to_remove = to_remove->next;
-}
-
+} */
 /**
  * Possibilte de plusieurs variables a supprimer, fonction qui navigue dans la
  * liste d'arguments et supprime les noeuds qui sont dans la liste.
  * si aucun noeud trouve, il ne se passe rien
  */
-void	builtin_unset(t_token *actual_tok)
+/* int	builtin_unset(t_token *actual_tok)
 {
 	t_var	*act_var;
 	int		i;
 
 	i = 1;
+	if (actual_tok->base->cmds->next != NULL)
+		return (0);
 	while (actual_tok->cmd->cmd[i])
 	{
-		if (!srch_n_destroy(actual_tok, actual_tok->cmd->cmd[i]))
+		if (srch_n_destroy(actual_tok, actual_tok->cmd->cmd[i]))
 		{
-			act_var = search_in_var(actual_tok->base->envir, actual_tok->cmd->cmd[i]);
+			act_var = search_in_var(actual_tok->base->envir
+				, actual_tok->cmd->cmd[i]);
 			if (act_var)
 				remove_node(act_var);
 		}
 	}
-}
-
+} */

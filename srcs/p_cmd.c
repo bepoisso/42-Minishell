@@ -4,6 +4,8 @@ t_cmd	*create_cmd(char **value)
 {
 	t_cmd	*new;
 
+	if (!value || *value == NULL)
+		return (NULL);
 	new = malloc(sizeof(t_cmd));
 	ft_memset(new, 0, sizeof(t_cmd));
 	if (!new)

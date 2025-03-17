@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:01:34 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/16 19:02:41 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/17 10:59:30 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 /**
  * unset doit etre la seule commande pour fonctionner
  * Fonction a tester
+ * 
+ * A modifier plus tard avec export, pas besoin de update_env, bash supprime la
+ *  data mais garde la ligne du tableau pour l'utiliser apres avec export si
+ * besoin
  * 
  */
 
@@ -57,9 +61,12 @@ int	update_env(t_token *tok, int size)
 		{
 			if (!env[i])
 				i++;
-			envcpy[j] = env[i];
-			j++;
-			i++;
+			else
+			{
+				envcpy[j] = env[i];
+				j++;
+				i++;
+			}
 		}
 	}
 	free(tok->base->env);

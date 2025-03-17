@@ -6,11 +6,17 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:03:47 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/16 19:03:51 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/17 11:20:58 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+/**
+ * declare -x COLORTERM="truecolor"
+ * 
+ */
+
 
 
 /* char	**add_in_env(char **env, char *data, char* name)

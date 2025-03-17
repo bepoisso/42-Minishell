@@ -23,6 +23,9 @@
  * 		if error :
  * 			Print: Error bash: cd: *new: No such file or directory RETURN
  * 
+ * !! AU MOMENT DE L'espansion, emplacer les ~ par le chemin pour HOME
+ * 
+ * 
  */
 
 /* int	check_args(char **args, t_base *base)
@@ -69,19 +72,18 @@ char	*search_in_env(char **env, char * search)
 
 /* fonction a ecrire qui va utiliser va args pour concatener autant de chaines
  que possible et renvoyer le resultat*/
-char *make_err_mess()
+/* char *make_err_mess()
 {
 	char *message;
 
-
 	return (message);
-}
+} */
 
 static int	go_back(t_base *base, char *backup)
 {
 	if (chdir(search_in_env(base->env, "OLDPWD")) == -1)
-		return (ft_error("minishell: cd: OLDPWD not set", 1, base));
-	change_val_var(base->env, "OLDPWD", backup);
+		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
+	change_val_env(base->env, "OLDPWD", backup);
 }
 
 
@@ -89,7 +91,7 @@ static int	go_home(t_base *base, char *backup)
 {
 	if (chdir(search_in_env(base->env, "HOME")) == -1)
 		return (ft_error("minishell: cd: HOME not set", 1, base), 1);
-	change_val_var(base->env, "OLDPWD", backup);
+	change_val_env(base->env, "OLDPWD", backup);
 	return (0);
 }
 
@@ -103,7 +105,7 @@ int	builtin_cd(t_token *actual_tok, t_base *base)
 	envcpy = actual_tok->base->env;
 	size = sizeof_db_tab(actual_tok->cmd->cmd);
 	if (size > 1)
-	return (ft_error("Error minishell: cd: too many arguments\n", 2, base);
+		return (ft_error("Error minishell: cd: too many arguments\n", 2, base), 1);
 	getcwd(backup, sizeof(backup));
 	if (size == 0 || (size == 1 && ft_strncmp(actual_tok->cmd->cmd[0], "#", 2)))
 	{
@@ -130,10 +132,6 @@ int	builtin_cd(t_token *actual_tok, t_base *base)
 	}
 	return ;
 }
-
-
-
-
 
 /**
  * 

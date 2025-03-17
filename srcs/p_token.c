@@ -4,6 +4,8 @@ t_token	*create_token(char *value, bool literal, t_base *base)
 {
 	t_token	*new;
 
+	if (!value)
+		return (NULL);
 	new = malloc(sizeof(t_token));
 	ft_memset(new, 0, (sizeof(t_token)));
 	if (!new)

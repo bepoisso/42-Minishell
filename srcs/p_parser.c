@@ -96,6 +96,7 @@ t_token	*token_parser(t_token *tokens)
 		current = save;
 	}
 	identify_token(tokens);
+	handling_dollar(tokens, tokens->base);
 	rm_quote(tokens);
 	identify_token(tokens);
 	return (tokens);

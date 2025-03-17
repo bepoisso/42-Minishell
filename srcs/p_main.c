@@ -57,5 +57,6 @@ int main(void)
 		free_base(&base);
 		//ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
+	free_doubletab(&base.env);
 	return (0);
 }

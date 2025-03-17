@@ -39,6 +39,7 @@ int	exec_builtins(t_token *actual, t_base *base)
 	// else if (ft_strcmp(actual->data, "exit"))
 
 	// return (status);
+	return (0); // a retirer
 }
 
 int ft_strslen(char **strs)

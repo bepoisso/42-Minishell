@@ -34,6 +34,15 @@ typedef struct s_token
 	struct s_base	*base;
 }	t_token;
 
+typedef struct s_dollar
+{
+	char	*name;
+	char	*data;
+	bool	literal;
+	struct s_dollar *prev;
+	struct s_dollar *next;
+}	t_dollar;
+
 /**
  * Struct for the main things
  */
@@ -47,6 +56,7 @@ typedef struct s_base
 	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
+	t_dollar		*dollars;
 }	t_base;
 
 
@@ -73,7 +83,7 @@ int		ft_isspace(char c);
 int		start_pipe(char *s, t_base *base);
 int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
-void	search_dolars(t_token *tokens);
+void	handling_dollar(t_token *tokens, t_base *base);
 int		check_double_pippe(t_token *tokens);
 
 

@@ -85,6 +85,7 @@ int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
 void	handling_dollar(t_token *tokens, t_base *base);
 int		check_double_pippe(t_token *tokens);
+void	print_dollar(t_base *base);
 
 
 #endif

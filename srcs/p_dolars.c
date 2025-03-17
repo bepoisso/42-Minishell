@@ -13,11 +13,11 @@ char	*search_env_var(char *search, char **env)
 		{
 			j = ft_strlen(search);
 			if (env[i][j] == '=')
-				return (free_null((void **)&search), ft_strdup(env[i] + (j + 1)));
+				return (ft_strdup(env[i] + (j + 1)));
 		}
 		i++;
 	}
-	return (free_null((void **)&search), ft_strdup(""));
+	return (ft_strdup(""));
 }
 
 
@@ -59,8 +59,8 @@ void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
 		temp->next = new;
 		new->prev = temp;
 	}
-	free_null((void **)&name);
-	free_null((void **)&value);
+	// free_null((void **)&name);
+	// free_null((void **)&value);
 }
 
 void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
@@ -76,9 +76,10 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 		if (token->data[i] == '$')
 		{
 			j = i;
+			i++;
 			while (token->data[i] && ft_isalnum(token->data[i]))
 				i++;
-			name = ft_strndup(token->data + j, i - j);
+			name = ft_strndup(token->data + j + 1, i - j);
 			data = search_env_var(name, base->env);
 			add_dollar(&dollars, name, data, token->literal);
 		}
@@ -91,13 +92,16 @@ void	handling_dollar(t_token *tokens, t_base *base)
 	t_dollar	*dollars;
 	t_token		*current;
 
+	free(base->dollars);
 	dollars = malloc(sizeof(t_dollar));
 	ft_memset(dollars, 0, sizeof(t_dollar));
 	current = tokens;
+
 	while (current)
 	{
 		get_name_value_dollar(current, dollars, base);
 		current = current->next;
 	}
 	base->dollars = dollars;
+	print_dollar(base);
 }

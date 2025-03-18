@@ -1,0 +1,98 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   e_start_exec_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 17:50:07 by jrinaudo          #+#    #+#             */
+/*   Updated: 2025/03/18 20:33:07 by jrinaudo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+
+int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
+{
+	t_token	*actual;
+
+	actual = token;
+	while (actual->prev && actual->prev->id != 7)
+		actual = actual->prev;
+	while (actual && actual->id != 7)
+	{
+		if (actual->id == 3 || actual->id == 5)
+		{
+			if (cmd->input > 0)
+				close(cmd->input);
+			cmd->input = filechk(actual->next, actual->id, base, cmd);
+		}
+		else if (actual->id == 4 || actual->id == 6)
+		{
+			if (cmd->output > 2)
+				close(cmd->output);
+			cmd->output = filechk(actual->next, actual->id, base, cmd);
+		}
+		if (cmd->input < 0 || cmd->output < 0)
+			return (-1);
+		actual = actual->next;
+	}
+	return (0);
+}
+
+void	close_inpt_outp(t_cmd *actualcmd)
+{
+	if (actualcmd->input > 2)
+	{
+		close(actualcmd->input);
+		actualcmd->input = 0;
+	}
+	if (actualcmd->output > 2)
+	{
+		close(actualcmd->output);
+		actualcmd->output = 1;
+	}
+	if (actualcmd->hrdoc > 2)
+	{
+		close(actualcmd->hrdoc);
+		actualcmd->hrdoc = 0;
+	}
+}
+
+static void	raz_std_fds(t_base *base)
+{
+	if (dup2(base->stdout_back, STDOUT_FILENO) == -1)
+	{
+		perror("dup2 failed");
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(base->stdin_back, STDIN_FILENO) == -1)
+	{
+		perror("dup2 failed");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
+{
+	if (actualcmd->input > 2)
+	{
+		close(actualcmd->input);
+		actualcmd->input = 0;
+	}
+	if (actualcmd->output > 2)
+	{
+		close(actualcmd->output);
+		actualcmd->output = 1;
+	}
+	if (actualcmd->hrdoc > 2)
+	{
+		close(actualcmd->hrdoc);
+		actualcmd->hrdoc = 0;
+	}
+	raz_std_fds(base);
+	if (base->stdin_back)
+		close(base->stdin_back);
+	if (base->stdout_back)
+	close(base->stdout_back);
+}

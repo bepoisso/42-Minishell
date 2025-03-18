@@ -1,52 +1,6 @@
 #include "../includes/minishell.h"
 
 //ls -la | grep dr | sort | rev > outfile
-static int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
-{
-	t_token	*actual;
-
-	actual = token;
-	while (actual->prev && actual->prev->id != 7)
-		actual = actual->prev;
-	while (actual && actual->id != 7)
-	{
-		if (actual->id == 3 || actual->id == 5)
-		{
-			if (cmd->input > 0)
-				close(cmd->input);
-			cmd->input = filechk(actual->next, actual->id, base, cmd);
-		}
-		else if (actual->id == 4 || actual->id == 6)
-		{
-			if (cmd->output > 2)
-				close(cmd->output);
-			cmd->output = filechk(actual->next, actual->id, base, cmd);
-		}
-		if (cmd->input < 0 || cmd->output < 0)
-			return (-1);
-		actual = actual->next;
-	}
-	return (0);
-}
-
-static void	close_inpt_outp(t_cmd *actualcmd)
-{
-	if (actualcmd->input > 2)
-	{
-		close(actualcmd->input);
-		actualcmd->input = 0;
-	}
-	if (actualcmd->output > 2)
-	{
-		close(actualcmd->output);
-		actualcmd->output = 1;
-	}
-	if (actualcmd->hrdoc > 2)
-	{
-		close(actualcmd->hrdoc);
-		actualcmd->hrdoc = 0;
-	}
-}
 
 void	close_fds(t_base *base, t_cmd *actualcmd)
 {
@@ -71,11 +25,39 @@ static void	exec_redir(t_token *actual)
 	if (actual->cmd->input != 0)
 	{
 		dup2(actual->cmd->input, STDIN_FILENO);
+		if (actual->cmd->input < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
 		close(actual->cmd->input);
 	}
 	if (actual->cmd->output != 1)
 	{
 		dup2(actual->cmd->output, STDOUT_FILENO);
+		if (actual->cmd->output < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
+		close(actual->cmd->output);
+	}
+}
+
+static void	exec_redir_main_process(t_token *actual)
+{
+	if (actual->cmd->input != 0)
+	{
+		actual->base->stdin_back = dup(STDIN_FILENO);
+		if (actual->base->stdin_back < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
+		dup2(actual->cmd->input, STDIN_FILENO);
+		if (actual->cmd->input < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
+		close(actual->cmd->input);
+	}
+	if (actual->cmd->output != 1)
+	{
+		actual->base->stdout_back = dup(STDOUT_FILENO);
+		if (actual->base->stdout_back < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
+		dup2(actual->cmd->output, STDOUT_FILENO);
+		if (actual->cmd->output < 0)
+			return (ft_error("dup2 failed", 1, actual->base));
 		close(actual->cmd->output);
 	}
 }
@@ -86,8 +68,9 @@ int	prepare_exec(t_token *actual, t_base *base)
 		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	if (actual->cmd->builtin)
 	{
-		exec_redir(actual);
+		exec_redir_main_process(actual);
 		exec_builtins(actual);
+		close_opend_fds_builtins(actual->cmd, base);
 	}
 	else
 	{
@@ -107,7 +90,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 			base->exit_code = errno;
 			clean_exit(base, base->exit_code);
 		}
+		close_inpt_outp(actual->cmd);
 	}
-	close_inpt_outp(actual->cmd);
 	return (0);
 }

@@ -28,6 +28,7 @@ SRC_FILES = e_check.c\
 			e_free.c\
 			e_free2.c\
 			e_start_exec.c\
+			e_start_exec_utils.c\
 			e_tolkien.c\
 			e_utils.c\
 			sighand.c\

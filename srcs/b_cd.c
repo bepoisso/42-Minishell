@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 19:59:31 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 14:01:50 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:33:25 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@
 	}
 	return (0);
  }
-
 
 static int	update_oldpwd(char *new_data, t_base *base)
 {

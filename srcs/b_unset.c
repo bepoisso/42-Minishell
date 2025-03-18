@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:01:34 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 10:13:22 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:38:23 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ static int	srch_n_destroy(t_token *tok, char *search)
 	i = 0;
 	while (tok->base->env[i])
 	{
-		if (strncmp(search, tok->base->env[i], ft_strlen(search))
+		if (!ft_strncmp(search, tok->base->env[i], ft_strlen(search))
 			&& tok->base->env[i][ft_strlen(search) == '='])
 		{
 			free_null((void **)&tok->base->env[i]);
+			tok->base->env[i] = ft_strdup("");
 			erased++;
 		}
 		i++;
@@ -74,6 +75,12 @@ int	update_env(t_token *tok, int size)
 	return (0);
 }
 
+/**
+ * LESSCLOSE=/usr/bin/lesspipe non geree par minishell
+ * LESSOPEN=| /usr/bin/lesspipe non geree par minishell
+ * utlise par less, afficheur de texte que l'on utilise pas dans minishell
+ * 
+ */
 int	builtin_unset(t_token *tok)
 {
 	int		i;
@@ -90,11 +97,11 @@ int	builtin_unset(t_token *tok)
 			return (1);
 		i++;
 	}
-	if (erased)
+	/* if (erased)
 	{
 		if (update_env(tok, ft_strslen(tok->base->env) - erased + 1))
 			return (1);
-	}
+	} */
 	return (0);
 }
 

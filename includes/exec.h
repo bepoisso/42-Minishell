@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 09:33:24 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 10:39:25 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:56:34 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,11 @@ int		sauron(t_base *base);
 
 /**			e_start_exec.c */
 int     prepare_exec(t_token *actual, t_base *base);
+
+/**			e_start_exec_utils.c */
+void	close_inpt_outp(t_cmd *actualcmd);
+int		handle_redirections(t_token *token, t_base *base, t_cmd *cmd);
+void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base);
 
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);

@@ -40,17 +40,63 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
+
 /**
- * Struct for the main things
+ * @struct s_base
+ * @brief Represents the main structure for the Minishell project, containing
+ *        all necessary data for environment management, command execution,
+ *        and shell state tracking.
+ * 
+ * @var s_base::env
+ * Array of environment variables as strings.
+ * 
+ * @var s_base::envir
+ * Pointer to a linked list of environment variables (custom structure t_var).
+ * 
+ * @var s_base::input
+ * Stores the current user input string.
+ * 
+ * @var s_base::tild
+ * Stores the tilde (~) expansion value, typically the home directory.
+ * 
+ * @var s_base::exit_code
+ * Stores the exit code of the last executed command.
+ * 
+ * @var s_base::count_forks
+ * Tracks the number of forked processes.
+ * 
+ * @var s_base::stdin_back
+ * Backup of the standard input file descriptor.
+ * 
+ * @var s_base::stdout_back
+ * Backup of the standard output file descriptor.
+ * 
+ * @var s_base::path_list
+ * Array of paths derived from the PATH environment variable.
+ * 
+ * @var s_base::lastpid
+ * Process ID of the last executed child process.
+ * 
+ * @var s_base::cmds
+ * Pointer to a linked list of parsed commands (custom structure t_cmd).
+ * 
+ * @var s_base::token
+ * Pointer to a linked list of tokens (custom structure t_token) generated
+ * during input parsing.
+ * 
+ * @var s_base::envir_nb
+ * Number of environment variables stored in the envir linked list.
  */
 typedef struct s_base
 {
 	char			**env;
 	t_var			*envir;
 	char			*input;
-	char *			tild;//cette variable contient une copie de HOME car si home est unset, cd ~ fonctionne quand meme
+	char 			*tild;
 	int				exit_code;
 	int				count_forks;
+	int				stdin_back;
+	int				stdout_back;
 	char			**path_list;
 	pid_t			lastpid;
 	t_cmd			*cmds;

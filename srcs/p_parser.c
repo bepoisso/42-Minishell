@@ -6,6 +6,8 @@ int	parser(char *str, t_base *base)
 
 	if (open_quote(str) != 0)
 		return (ft_error("ERROR\nopen quote", 1, base), 1);
+	if (start_pipe(str, base))
+		return (1);
 	tokens = tokenizer(str, base);
 	base->token = tokens;
 	return (0);

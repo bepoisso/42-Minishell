@@ -91,6 +91,7 @@ void    display_base(t_base *base)
 
 void	print_tokens(t_token *tokens)
 {
+	printf("\n__________TOKEN__________\n");
 	while (tokens)
 	{
 		printf("Token: id : [%d] [%d] [%s]\n", tokens->id, tokens->literal, tokens->data);

@@ -95,7 +95,7 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 	char	*data;
 
 	i = 0;
-	while (token->data[i])
+	while (token && token->data[i])
 	{
 		if (token->data[i] == '$')
 		{
@@ -107,6 +107,8 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 			data = search_env_var(name, base->env);
 			add_dollar(&dollars, name, data, token->literal);
 		}
+		if (!token->data[i])
+			break;
 		i++;
 	}
 }

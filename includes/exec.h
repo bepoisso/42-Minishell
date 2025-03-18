@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/18 09:33:24 by jrinaudo          #+#    #+#             */
+/*   Updated: 2025/03/18 10:39:25 by jrinaudo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXEC_H
 # define EXEC_H
 
@@ -15,7 +27,7 @@
  * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
  *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
  * 
- * ls -la | rev | rev | grep dr | sort > outfile
+ * ls -la | grep dr | sort | rev | cat -e > outfile
  * < infile sort > outfile.txt commande de test
  * cat < infile.txt | sort > out.txt
  * cat < input.txt | sort > out.txt | cat Cette commande n'affiche rien dans
@@ -56,9 +68,17 @@ int     prepare_exec(t_token *actual, t_base *base);
 /**			e_file_redir.c */
 int		file_redir(t_token *tok, t_base *base);
 
-/**			d_print_struct */
+/**			e_utils.c */
+int		ft_strslen(char **strs);
 
-/**			e_env.c */
+/**			e_env_utils.c */
+int		search_var_in_env(char **env, char *search);
+char	*search_data_in_env(char **env, char *search);
+char	**add_var_in_env(char **env, char *data);
+int		search_empty(char **env);
+
+/**			e_env_cpy.c */
 char	**env_cpy(void);
+char	*shlvl_modifier(char **environ, int i);
 
 #endif

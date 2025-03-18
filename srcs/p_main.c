@@ -9,19 +9,25 @@
 int main(void)
 {
 	t_base	base;
+	char 	buff[4096];
+	char	*minitext;
 
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 	ft_memset(&base, 0, sizeof(t_base));
 	base.input = NULL;
 	base.env = env_cpy();
+	cd_dot(&base);
+	base.tild = ft_strdup(search_data_in_env(base.env, "HOME"));
 	header();
 	while (1)
 	{
-		ft_printf(GREEN"Exit code at the beginning : %d\n"RESET, base.exit_code);
-		base.input = readline("🤏🐚> ");
+		getcwd(buff, sizeof(buff));
+		minitext = ft_strjoin(buff, "🤏🐚> ");
+		//ft_printf(GREEN"Exit code at the beginning : %d\n"RESET, base.exit_code);
+		base.input = readline(minitext);
 		if (!base.input)
-			return (free_doubletab(&base.env), ft_printf("exit\n"), 0);
+			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base, 0), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')
 		{
 			free_null((void**)&base.input);
@@ -47,19 +53,20 @@ int main(void)
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (add_history(base.input),ft_printf(GREEN"Exit code in main after exit : %d\n"RESET, base.exit_code), clean_exit(&base, 0), 0);
- 		printf("-----------------------------------------\n");
+ /* 		printf("-----------------------------------------\n");
  		print_tokens(base.token);
 		ft_printf("\n\n\n");
 		print_cmd(&base);
-		ft_printf("-----------------------------------------\n\n");
+		ft_printf("-----------------------------------------\n\n"); */
 		sauron(&base);
 		add_history(base.input);
-		ft_printf("-----------------------------------------\n");
-		print_tokens(base.token);
+	/* 	ft_printf("-----------------------------------------\n");
+		print_tokens(base.token); */
 		free_base(&base);
-		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
+	//	ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
 	free_doubletab(&base.env);
+	rl_clear_history();
 	return (0);
 }
 // ls -la | grep dr | sort | cat -e | rev >outfile

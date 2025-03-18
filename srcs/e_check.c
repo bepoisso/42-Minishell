@@ -81,7 +81,7 @@ int	count_forks(t_base *base)
 	tokcpy = base->token;
 	while (tokcpy)
 	{
-		if (tokcpy->id == 9)
+		if (tokcpy->id == 9 && tokcpy->cmd->builtin == false)
 			base->count_forks ++;
 		tokcpy = tokcpy->next;
 	}

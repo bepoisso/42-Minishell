@@ -25,7 +25,7 @@ char	**extract_paths(t_base *base)
 	i = 0;
 	env_list = NULL;
 	env_listcpy = NULL;
-	env = search_in_env(base->env, "PATH");
+	env = search_data_in_env(base->env, "PATH");
 	//env = getenv("PATH");
 	if (!env)
 		return (NULL);

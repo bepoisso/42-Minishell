@@ -22,11 +22,14 @@ INC_DIR = ./includes
 
 SRC_FILES = e_check.c\
 			e_exec.c\
+			e_env_cpy.c\
+			e_env_utils.c\
 			e_file_redir.c\
 			e_free.c\
 			e_free2.c\
 			e_start_exec.c\
 			e_tolkien.c\
+			e_utils.c\
 			sighand.c\
 			d_print.c\
 			p_parser.c\
@@ -46,7 +49,6 @@ SRC_FILES = e_check.c\
 			b_export.c\
 			b_pwd.c\
 			b_unset.c\
-			test_b_cd.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

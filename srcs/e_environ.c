@@ -1,24 +1,5 @@
 #include "../includes/minishell.h"
 
-/* char **env_cpy(void)
-{
-	extern char	**environ;
-	char		**new_env;
-	int			i;
-
-	i = 0;
-	new_env = (char **)malloc(sizeof(char *) * (ft_strslen(environ) + 1));
-	while (environ[i])
-	{
-		if(ft_strncmp(environ[i], "SHLVL", 5) == 0)
-			new_env[i] = shlvl_modifier(environ, i);
-		else
-			new_env[i] = ft_strdup(environ[i]);
-		i++;
-	}
-	new_env[i] = NULL;
-	return (new_env);
-} */
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
 	new->next = *lst;

@@ -48,13 +48,14 @@ void	free_base(t_base *base)
 	free_doubletab(&base->path_list);
 	base->count_forks = 0;
 	free_null((void **)&base->input);
-	free_doubletab(&base->env);
 }
 
 void	clean_exit(t_base *base, int exit_code)
 {
 	base->exit_code = exit_code;
 	free_base(base);
+	free_null((void **)&base->tild);
 	free_doubletab(&base->env);
+	rl_clear_history();
 	exit (exit_code);
 }

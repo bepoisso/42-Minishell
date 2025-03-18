@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:01:34 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/17 10:59:30 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/18 10:13:22 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	update_env(t_token *tok, int size)
 	i = 0;
 	j = 0;
 	env = tok->base->env;
-	envcpy = ft_calloc(sizeof_db_tab(env), sizeof(char **) * size);
+	envcpy = ft_calloc(ft_strslen(env), sizeof(char **) * size);
 	if (!envcpy)
 		return (1);
 	while (env[i])
@@ -92,7 +92,7 @@ int	builtin_unset(t_token *tok)
 	}
 	if (erased)
 	{
-		if (update_env(tok, sizeof_db_tab(tok->base->env) - erased + 1))
+		if (update_env(tok, ft_strslen(tok->base->env) - erased + 1))
 			return (1);
 	}
 	return (0);

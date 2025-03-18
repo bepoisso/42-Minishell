@@ -6,30 +6,38 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:03:47 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/17 11:20:58 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/17 21:13:47 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 /**
+ * si export sans argument, afichage de env dans l'ordre ascii
  * declare -x COLORTERM="truecolor"
  * 
  */
 
-
-
-/* char	**add_in_env(char **env, char *data, char* name)
+/* 
+char	*change_value(char **env, char **old_data, char *new_data)
 {
-	char	**new_env;
 	int		i;
+	char	*temp;
+	char	*data;
 
-	i = 0;
-	new_env = ft_calloc(sizeof_db_tab(env), sizeof(char *));
-	while ()
+	i = ft_strlen(name) + 1;
+	temp = ft_strjoin(name, "=");
+	if (!temp)
+		return (NULL);
+	data = search_data_in_env(env, "OLDPWD")
+		if (data)
 
-} */
-
+	*old_data -= i;
+	free_null((void **)old_data);
+	*old_data = ft_strjoin(temp, new_data);
+	free_null((void **)&temp);
+	return (NULL);
+}
 
 /**
  * 

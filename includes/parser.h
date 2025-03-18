@@ -24,7 +24,6 @@ typedef struct s_var
 {
 	char			*name;
 	char			*content;
-	bool			error;
 	struct s_var	*next;
 	struct s_var	*prev;
 }	t_var;
@@ -49,6 +48,7 @@ typedef struct s_base
 	char			**env;
 	t_var			*envir;
 	char			*input;
+	char *			tild;//cette variable contient une copie de HOME car si home est unset, cd ~ fonctionne quand meme
 	int				exit_code;
 	int				count_forks;
 	char			**path_list;

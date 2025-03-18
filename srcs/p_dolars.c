@@ -107,6 +107,7 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 			name = ft_strndup(token->data + j + 1, (i - j) - 1);
 			data = search_env_var(name, base->env);
 			add_dollar(&dollars, name, data, token->literal);
+			i--;
 		}
 		if (!token->data[i])
 			break;

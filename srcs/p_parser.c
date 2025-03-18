@@ -61,7 +61,7 @@ t_token	*token_parser(t_token *tokens)
 
 	current = tokens;
 	temp = NULL;
-		print_tokens(tokens);
+	print_tokens(tokens);
 	handling_dollar(tokens, tokens->base);
 	print_dollar(tokens->base);
 	dollar_is_literal(tokens->base->dollars);

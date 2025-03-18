@@ -32,6 +32,8 @@ int main(void)
 			free_null((void**)&base.input);
 			continue;
 		}
+		if (!base.token)
+			continue;
 		identify_token(base.token);
 		print_tokens(base.token);
 		base.token = token_parser(base.token);

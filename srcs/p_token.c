@@ -118,7 +118,7 @@ void	identify_token(t_token *tokens)
 		current->id = get_op_token(current->data, current->id);
 		if ((current->id >= 3 && current->id <= 6))
 			redir = 1;
-		if (current->id >= 1 && current->id <= 7)
+		if (current->id == 7)
 			cmd = 0;
 		if (current->id == -1)
 		{

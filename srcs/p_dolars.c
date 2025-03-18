@@ -20,6 +20,30 @@ char	*search_env_var(char *search, char **env)
 	return (ft_strdup(""));
 }
 
+void	dollar_is_literal(t_dollar *dollars)
+{
+	int		i;
+	char	*temp;
+	t_dollar *current;
+
+	current = dollars;
+	while (current)
+	{
+		if (current->literal == true)
+		{
+			i = 0;
+			temp = malloc(sizeof(char) * ft_strlen(current->name) + 2);
+			temp[i] = '$';
+			while (current->name[++i - 1])
+				temp[i] = current->name[i - 1];
+			temp[i] = '\0';
+			current->data = ft_strdup(temp);
+			free(temp);
+		}
+		current = current->next;
+	}
+}
+
 
 t_dollar	*create_dollar(char *value ,char *name , bool literal)
 {
@@ -79,7 +103,7 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 			i++;
 			while (token->data[i] && ft_isalnum(token->data[i]))
 				i++;
-			name = ft_strndup(token->data + j + 1, i - j);
+			name = ft_strndup(token->data + j + 1, (i - j) - 1);
 			data = search_env_var(name, base->env);
 			add_dollar(&dollars, name, data, token->literal);
 		}
@@ -103,5 +127,6 @@ void	handling_dollar(t_token *tokens, t_base *base)
 		current = current->next;
 	}
 	base->dollars = dollars;
-	print_dollar(base);
+	base->dollars = dollars->next;
+	free(dollars->prev);
 }

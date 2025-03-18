@@ -31,6 +31,7 @@ void	dollar_is_literal(t_dollar *dollars)
 	{
 		if (current->literal == true)
 		{
+			free_null((void **)&current->data);
 			i = 0;
 			temp = malloc(sizeof(char) * ft_strlen(current->name) + 2);
 			temp[i] = '$';
@@ -83,8 +84,8 @@ void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
 		temp->next = new;
 		new->prev = temp;
 	}
-	// free_null((void **)&name);
-	// free_null((void **)&value);
+	free_null((void **)&name);
+	free_null((void **)&value);
 }
 
 void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)

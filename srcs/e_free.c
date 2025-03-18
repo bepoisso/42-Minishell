@@ -57,8 +57,8 @@ void	free_base(t_base *base)
 {
 	free_token_list(base->token);
 	base->token = NULL;
-	// free_dollar_list(base->dollars);
-	// base->dollars = NULL;
+	free_dollar_list(base->dollars);
+	base->dollars = NULL;
 	free_cmd_list(base->cmds);
 	base->cmds = NULL;
 	free_doubletab(&base->path_list);

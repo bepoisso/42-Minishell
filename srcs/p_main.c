@@ -20,7 +20,7 @@ int main(void)
 	{
 		base.input = readline("🤏🐚> ");
 		if (!base.input)
-			return (free_doubletab(&base.env), ft_printf("exit\n"), 0);
+			return (free_doubletab(&base.env), free_base(&base), ft_printf("exit\n"), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')
 		{
 			free_null((void**)&base.input);
@@ -53,6 +53,7 @@ int main(void)
 		ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
 	free_doubletab(&base.env);
+	free_base(&base);
 	rl_clear_history();
 	return (0);
 }

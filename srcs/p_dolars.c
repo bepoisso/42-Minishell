@@ -118,7 +118,7 @@ void	handling_dollar(t_token *tokens, t_base *base)
 {
 	t_dollar	*dollars;
 	t_token		*current;
-
+	
 	free(base->dollars);
 	dollars = malloc(sizeof(t_dollar));
 	ft_memset(dollars, 0, sizeof(t_dollar));
@@ -131,5 +131,5 @@ void	handling_dollar(t_token *tokens, t_base *base)
 	}
 	base->dollars = dollars;
 	base->dollars = dollars->next;
-	free(dollars->prev);
+	free(dollars);
 }

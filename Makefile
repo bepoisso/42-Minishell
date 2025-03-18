@@ -76,7 +76,7 @@ fclean: clean
 
 re: fclean all
 
-val: 
+val:  re
 		valgrind $(VALARGS) ./$(NAME)
 
 exec: re

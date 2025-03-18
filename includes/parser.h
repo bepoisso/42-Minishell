@@ -87,6 +87,7 @@ void	handling_dollar(t_token *tokens, t_base *base);
 int		check_double_pippe(t_token *tokens);
 void	print_dollar(t_base *base);
 void	dollar_is_literal(t_dollar *dollars);
+void	free_dollar_list(t_dollar *dollar);
 
 
 #endif

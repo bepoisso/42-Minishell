@@ -4,7 +4,7 @@ t_cmd	*create_cmd(char **value)
 {
 	t_cmd	*new;
 
-	if (!value || *value == NULL)
+	if (!value || !*value)
 		return (NULL);
 	new = malloc(sizeof(t_cmd));
 	ft_memset(new, 0, sizeof(t_cmd));
@@ -76,9 +76,10 @@ t_cmd	*parsing_cmd(t_base *base)
 		value = ft_calloc((count_args(tokens) + 1), sizeof(char *));
 		if (!value)
 			return (NULL);
-		while (tokens && (tokens->id == 9 || tokens->id == 10 || tokens->id == 11))
+		while (tokens && (tokens->id != 7 && tokens->id != 0))
 		{
-			value[++i] = ft_strdup(tokens->data);
+			if (tokens->id == 9 || tokens->id == 10 || tokens->id == 11)
+				value[++i] = ft_strdup(tokens->data);
 			tokens = tokens->next;
 		}
 		value[++i] = NULL;

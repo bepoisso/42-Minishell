@@ -41,52 +41,17 @@ typedef struct s_token
 	struct s_token	*prev;
 }	t_token;
 
+typedef struct s_dollar
+{
+	char	*name;
+	char	*data;
+	bool	literal;
+	struct s_dollar *prev;
+	struct s_dollar *next;
+}	t_dollar;
 
 /**
- * @struct s_base
- * @brief Represents the main structure for the Minishell project, containing
- *        all necessary data for environment management, command execution,
- *        and shell state tracking.
- * 
- * @var s_base::env
- * Array of environment variables as strings.
- * 
- * @var s_base::envir
- * Pointer to a linked list of environment variables (custom structure t_var).
- * 
- * @var s_base::input
- * Stores the current user input string.
- * 
- * @var s_base::tild
- * Stores the tilde (~) expansion value, typically the home directory.
- * 
- * @var s_base::exit_code
- * Stores the exit code of the last executed command.
- * 
- * @var s_base::count_forks
- * Tracks the number of forked processes.
- * 
- * @var s_base::stdin_back
- * Backup of the standard input file descriptor.
- * 
- * @var s_base::stdout_back
- * Backup of the standard output file descriptor.
- * 
- * @var s_base::path_list
- * Array of paths derived from the PATH environment variable.
- * 
- * @var s_base::lastpid
- * Process ID of the last executed child process.
- * 
- * @var s_base::cmds
- * Pointer to a linked list of parsed commands (custom structure t_cmd).
- * 
- * @var s_base::token
- * Pointer to a linked list of tokens (custom structure t_token) generated
- * during input parsing.
- * 
- * @var s_base::envir_nb
- * Number of environment variables stored in the envir linked list.
+ * Struct for the main things
  */
 typedef struct s_base
 {
@@ -102,6 +67,7 @@ typedef struct s_base
 	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
+	t_dollar		*dollars;
 	int				envir_nb;
 }	t_base;
 
@@ -129,8 +95,11 @@ int		ft_isspace(char c);
 int		start_pipe(char *s, t_base *base);
 int		no_quote(t_token *tokens);
 int		get_redir_io(t_token *token);
-void	search_dolars(t_token *tokens);
+void	handling_dollar(t_token *tokens, t_base *base);
 int		check_double_pippe(t_token *tokens);
+void	print_dollar(t_base *base);
+void	dollar_is_literal(t_dollar *dollars);
+void	free_dollar_list(t_dollar *dollar);
 
 
 #endif

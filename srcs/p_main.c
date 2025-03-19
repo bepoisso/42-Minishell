@@ -33,6 +33,8 @@ int main(void)
 			free_null((void**)&base.input);
 			continue;
 		}
+		if (!base.token)
+			continue;
 		identify_token(base.token);
 		//print_tokens(base.token);
 		base.token = token_parser(base.token);
@@ -53,8 +55,6 @@ int main(void)
 		ft_printf("-----------------------------------------\n\n"); */
 		sauron(&base);
 		add_history(base.input);
-		ft_printf("-----------------------------------------\n");
-		print_tokens(base.token);
 		free_base(&base);
 	//	ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}

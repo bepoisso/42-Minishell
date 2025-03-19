@@ -82,7 +82,7 @@ fclean: clean
 
 re: fclean all
 
-val: 
+val:  re
 		valgrind $(VALARGS) ./$(NAME)
 
 valsilent:

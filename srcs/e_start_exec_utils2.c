@@ -1,30 +1,7 @@
+
 #include "../includes/minishell.h"
 
-char	*add_in_command(t_base *base)
-{
-	char	*line;
-	char	*hrdoc;
-	int		fd;
-
-	fd = open(HRDOC_FILE, O_RDONLY, 0644);
-	hrdoc = get_next_line(fd);
-	if (!hrdoc)
-		return (NULL);
-	while (hrdoc)
-	{
-		line = ft_strjoin(base->input, hrdoc);
-		if (!line)
-			return (NULL);
-		free_null((void **)&hrdoc);
-		free_null((void **)&base->input);
-		base->input = line;
-		hrdoc = get_next_line(fd);
-	}
-	close(fd);
-	return (base->input);
-}
-
-static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
+static int	handle_hrdoc_no_cmd(t_token *tokens, t_base *base)
 {
 	char	*line;
 	int		fd;
@@ -32,8 +9,6 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 
 	line = NULL;
 	hrdoc_size = 0;
-	if (cmd->hrdoc)
-		close(cmd->hrdoc);
 	fd = open(HRDOC_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (fd < 0)
 		return (-1);
@@ -62,14 +37,13 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 			hrdoc_size += ft_strlen(line);
 		}
 	}
-	cmd->hrdoc = fd;
 	close(fd);
 	free_null((void **)&line);
 	base->input = add_in_command(base);
-	return (fd);
+	return (0);
 }
 
-int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
+static int	file_chk_no_command(t_token *token, int type, t_base *base)
 {
 	int		fd;
 	char	*file;
@@ -83,18 +57,37 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 	if (type == 3)
 		fd = open(file, O_RDONLY, 0644);
 	if (type == 5)
-	{
-		if (handle_hrdoc(token, cmd, base) < 0)
-			return (-1);
-		fd = open(HRDOC_FILE, O_RDONLY, 0644);
-	}
+		handle_hrdoc_no_cmd(token, token->base);
 	else if (type == 4)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == 6)
 		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1 && errno == EACCES)
-		return (ft_error("Permission denied\n", 1, base), -1);
+		ft_error("Permission denied\n", 1, base);
 	if (fd == -1 && errno == ENOENT)
-		return (ft_error("No such file or directory\n", 1, base), -1);
+		ft_error("No such file or directory\n", 1, base);
 	return (fd);
+}
+
+int	handle_redirec_alone(t_token *token)
+{
+	t_token	*actual;
+	int		fd;
+
+	actual = token;
+	fd = 0;
+	while(actual && actual->prev && actual->prev->id != 7)
+		actual = actual->prev;
+	while (actual && actual->id != 7)
+	{
+		if (actual->id >= 3 && actual->id <= 6)
+			fd = file_chk_no_command(actual->next, actual->id, actual->base);
+		if (fd > 0)
+		{
+			close(fd);
+			fd = 0;
+		}
+		actual = actual->next;
+	}
+	return (0);
 }

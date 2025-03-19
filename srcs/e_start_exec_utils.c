@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   e_start_exec_utils.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 17:50:07 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 20:33:07 by jrinaudo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
@@ -26,23 +15,27 @@ int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 			if (cmd->input > 0)
 				close(cmd->input);
 			cmd->input = filechk(actual->next, actual->id, base, cmd);
+			if (cmd->input == -1)
+				cmd->bad_fd = 1;
 		}
 		else if (actual->id == 4 || actual->id == 6)
 		{
 			if (cmd->output > 2)
 				close(cmd->output);
 			cmd->output = filechk(actual->next, actual->id, base, cmd);
+			if (cmd->input == -1)
+				cmd->bad_fd = 1;
 		}
-		if (cmd->input < 0 || cmd->output < 0)
-			return (-1);
 		actual = actual->next;
 	}
+	if (cmd->bad_fd == 1)
+		return (-1);
 	return (0);
 }
 
 void	close_inpt_outp(t_cmd *actualcmd)
 {
-	if (actualcmd->input > 2)
+	if (actualcmd->input > 2 && (actualcmd->hrdoc != actualcmd->input))
 	{
 		close(actualcmd->input);
 		actualcmd->input = 0;
@@ -75,7 +68,7 @@ static void	raz_std_fds(t_base *base)
 
 void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
 {
-	if (actualcmd->input > 2)
+	if (actualcmd->input > 2  && (actualcmd->hrdoc != actualcmd->input))
 	{
 		close(actualcmd->input);
 		actualcmd->input = 0;

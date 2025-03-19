@@ -22,14 +22,14 @@ void	close_fds(t_base *base, t_cmd *actualcmd)
 
 static void	exec_redir(t_token *actual)
 {
-	if (actual->cmd->input != 0)
+	if (actual->cmd->input > 0)
 	{
 		dup2(actual->cmd->input, STDIN_FILENO);
 		if (actual->cmd->input < 0)
 			return (ft_error("dup2 failed", 1, actual->base));
 		close(actual->cmd->input);
 	}
-	if (actual->cmd->output != 1)
+	if (actual->cmd->output > 1)
 	{
 		dup2(actual->cmd->output, STDOUT_FILENO);
 		if (actual->cmd->output < 0)
@@ -40,17 +40,7 @@ static void	exec_redir(t_token *actual)
 
 static void	exec_redir_main_process(t_token *actual)
 {
-	if (actual->cmd->input != 0)
-	{
-		actual->base->stdin_back = dup(STDIN_FILENO);
-		if (actual->base->stdin_back < 0)
-			return (ft_error("dup2 failed", 1, actual->base));
-		dup2(actual->cmd->input, STDIN_FILENO);
-		if (actual->cmd->input < 0)
-			return (ft_error("dup2 failed", 1, actual->base));
-		close(actual->cmd->input);
-	}
-	if (actual->cmd->output != 1)
+	if (actual->cmd->output > 1)
 	{
 		actual->base->stdout_back = dup(STDOUT_FILENO);
 		if (actual->base->stdout_back < 0)

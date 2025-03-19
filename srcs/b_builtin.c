@@ -1,29 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   b_builtin.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 09:34:12 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 13:10:29 by jrinaudo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
 
 #include "../includes/minishell.h"
 
 /****************************************************************
 * 					What else to do :							*
 * 																*
-* cd:		TO FINISH	Zef										*
+* cd:		TO FINISH	Zef	tester avec les $					*
 * echo:		ToFix => gérer le -n								*
 * pwd:		Do													*
 * export:	ToDo												*
-* unset:	ToDo												*
-* env:		ToFix => ordre alphabétique ! = Bash				*
-* exec:		ToDo ne fait rien si pas seul						*
+* unset:	Done zeph											*
+* env:		Done Benja											*
+* exit:		ToDo ne fait rien si pas seul fontion vide			*
 * 																*
 ****************************************************************/
 

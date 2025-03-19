@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/18 09:33:24 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/18 17:56:34 by jrinaudo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
@@ -56,7 +45,6 @@ void	sig_quit_handler(int signal);
 /**			e_check.c */
 int		wait_rings(t_base *base);
 char	*check_cmd(t_token *actual, t_base *base);
-int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 int		count_forks(t_base *base);
 
 /**			e_tolkien */
@@ -70,8 +58,14 @@ void	close_inpt_outp(t_cmd *actualcmd);
 int		handle_redirections(t_token *token, t_base *base, t_cmd *cmd);
 void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base);
 
+/**			e_start_exec_utils2.c */
+int		handle_redirec_alone(t_token *token);
+
 /**			e_file_redir.c */
-int		file_redir(t_token *tok, t_base *base);
+char	*add_in_command(t_base *base);
+int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
+
+
 
 /**			e_utils.c */
 int		ft_strslen(char **strs);

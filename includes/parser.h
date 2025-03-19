@@ -16,6 +16,7 @@ typedef struct s_cmd
 	int				input;
 	int				output;
 	int				hrdoc;
+	int				bad_fd;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;

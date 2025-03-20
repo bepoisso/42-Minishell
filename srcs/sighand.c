@@ -24,6 +24,7 @@ void	sig_handler(int signal)
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
+			g_exit_status = 130;
 		}
 	}
 }
@@ -32,49 +33,11 @@ void	sig_quit_handler(int signal)
 	printf("Signal %d reçu\n", signal);
 	if (signal == SIGQUIT)
 	{
-		ft_printf("\\plop\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
-		
-/**
- * sigemptyset(&sa_int.sa_mask)
- * The sigemptyset() function initializes the signal set set to empty, with
- *  all signals excluded from the set.
- * you guarantee that this mask does not contain any signal. The sa_mask field
- *  is used to indicate which signals should be temporarily blocked while the
- *  signal handler is running. By flushing it, you ensure that no signals are
- *  blocked by default while your handler for SIGINT is running. You can then,
- *  if necessary, add specific signals to block using sigaddset.
- */
-/* int	sig_handler(void)
-{
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
-
-	sa_int.sa_flags = SA_RESTART | SA_SIGINFO;
-	sigemptyset(&sa_iemptynt.sa_mask);
-	sa_int.sa_handler = sig_int_handler;
-	if (sigaction(SIGINT, &sa_int, NULL) == -1)
-	{
-		perror("sigaction SIGINT");
-		exit(EXIT_FAILURE);
-	}
-	sa_quit.sa_flags = SA_RESTART | SA_SIGINFO;
-	sigemptyset(&sa_quit.sa_mask);
-	sa_quit.sa_handler = SIG_IGN;
-
-	if (sigaction(SIGQUIT, &sa_quit, NULL) == -1)
-	{
-		perror("sigaction SIGQUIT");
-		exit(EXIT_FAILURE);
-	}
-	while (1)
-		sleep(1);
-	return (0);
-} */
 
 /*struct sigaction {
 	void     (*sa_handler)(int);
@@ -106,25 +69,3 @@ siginfo_t {
 };
 */
 // % cc -g -lreadline sighand.c
-
-/* int	main(void)
-{
-	char	*str;
-
-	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
-	while (1)
-	{
-		str = readline("Enter a string: ");
-		if (!str)
-		{
-			printf("Exit\n");
-			break ;
-		}
-		if (*str)
-			add_history(str);
-		printf("You entered: %s\n", str);
-		free_null((void **)&str);
-	}
-	return (0);
-} */

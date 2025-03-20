@@ -16,22 +16,20 @@ typedef struct s_cmd
 	int				input;
 	int				output;
 	int				hrdoc;
+	int				bad_fd;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;
 
-/**
- * 
- */
 typedef struct s_token
 {
 	int				id;
 	char			*data;
 	struct s_cmd	*cmd;
 	bool			literal;
+	struct s_base	*base;
 	struct s_token	*next;
 	struct s_token	*prev;
-	struct s_base	*base;
 }	t_token;
 
 typedef struct s_dollar
@@ -50,13 +48,17 @@ typedef struct s_base
 {
 	char			**env;
 	char			*input;
+	char 			*tild;
 	int				exit_code;
 	int				count_forks;
+	int				stdin_back;
+	int				stdout_back;
 	char			**path_list;
 	pid_t			lastpid;
 	t_cmd			*cmds;
 	t_token			*token;
 	t_dollar		*dollars;
+	int				envir_nb;
 }	t_base;
 
 

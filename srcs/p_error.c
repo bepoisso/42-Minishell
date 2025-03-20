@@ -4,12 +4,11 @@ void	ft_error(char *s, int code, t_base *base)
 {
 	base->exit_code = code;
 	ft_putstr_fd(s, 2);
-	/*	A supprimer	*/
-	if (base != NULL)
-		ft_printf("\nexit code = %d\n", base->exit_code);
-	/*			 */
 	if (getpid() == 0)
+	{
+		ft_putstr_fd("ERREUR D'UN ENFANT", 2);
 		exit (base->exit_code);
+	}
 }
 
 int	check_only_redirect(t_token *tokens, t_base *base)

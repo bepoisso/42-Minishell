@@ -11,6 +11,7 @@
 # include "exec.h"
 # include "builtins.h"
 
+extern int g_exit_status;
 /* 
 INDEX	TYPE	DESCRIPTION
 0		space	ignore

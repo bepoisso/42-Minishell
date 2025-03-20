@@ -15,3 +15,4 @@ void	handle_env(t_cmd *cmd, t_token *act_tok, t_base *base, char **environ)
 		i++;
 	}
 }
+

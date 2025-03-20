@@ -1,0 +1,58 @@
+$PWD
+
+echo $?
+
+echo $"LOGNAME"
+
+echo $'L'OGNAME
+
+echo $"L"OGNAME
+
+echo $LOGNAMEGNAME
+
+echo $SHELL
+
+echo $LOGNAMESHELL$
+
+echo $LOGNAMESHELL$ju
+
+echo $LOGNAME$SHELL$
+
+echo $LOGNAME$SHELL$tr
+
+echo $"$LOGNAME$SHELL$"
+
+echo $"$LOGNAME$  SHELL $"
+
+echo $"trrt$LOGNAME$  $SHELLtruc SHELL $ $thu"
+
+echo $"trrt$LOGNAME$hyu  $SHELLtruc SHELL $ $thu"
+
+echo $"trrt$LOGNAME$hyufr$SHELLtruc SHELL $ $thu"
+
+echo trrt$LOGNAME$  $SHELLtruc SHELL $ $thu
+
+echo $"trrt$LOGNAME'Mach' $'LOGNAME' $SHELLtruc SHELL $ $thu"
+
+echo $"trrt$LOGNA'Mach' $LOGNAME'Mach'$LOG $'LOGNA'M''E' $SHELLtruc SHELL $ $thu"
+
+echo $"trrt$LOGNA'Mach'p lou$LOGNAME'Mach'$LOG $'LOGNA'M''E'42 $SHELLtruc SHELL $ $thu"
+
+echo $USER
+
+ls $PWD
+
+ls $HOME
+
+ls $HOME | rev
+$LOGNAME$LOGNAME
+
+$LOGNAME $LOGNAME
+
+false || echo $?ki
+
+(( echo ggg && true || echo $? || echo bbb && echo $? ) || echo $?)
+
+(( echo ggg && true || echo $LOGNAME || echo bbb && echo $LOGNAME ) || echo $LOGNAME)
+
+

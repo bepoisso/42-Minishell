@@ -1,3 +1,4 @@
+
 #ifndef EXEC_H
 # define EXEC_H
 
@@ -15,7 +16,7 @@
  * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
  *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
  * 
- * ls -la | rev | rev | grep dr | sort > outfile
+ * ls -la | grep dr | sort | rev | cat -e > outfile
  * < infile sort > outfile.txt commande de test
  * cat < infile.txt | sort > out.txt
  * cat < input.txt | sort > out.txt | cat Cette commande n'affiche rien dans
@@ -35,7 +36,7 @@ void	free_base(t_base *base);
 void	clean_exit(t_base *base, int exit_code);
 
 /**			e_exec.c */
-char	**extract_paths(void);
+char	**extract_paths(t_base *base);
 
 /**			handler.c */
 void	sig_handler(int signal);
@@ -43,19 +44,40 @@ void	sig_quit_handler(int signal);
 
 /**			e_check.c */
 int		wait_rings(t_base *base);
-char	*check_cmd(char **env_list, char *cmd, t_base *base);
-int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
+char	*check_cmd(t_token *actual, t_base *base);
 int		count_forks(t_base *base);
 
 /**			e_tolkien */
 int		sauron(t_base *base);
 
 /**			e_start_exec.c */
-int     prepare_exec(t_token *actual, t_base *base, char **environ);
+int     prepare_exec(t_token *actual, t_base *base);
+
+/**			e_start_exec_utils.c */
+void	close_inpt_outp(t_cmd *actualcmd);
+int		handle_redirections(t_token *token, t_base *base, t_cmd *cmd);
+void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base);
+
+/**			e_start_exec_utils2.c */
+int		handle_redirec_alone(t_token *token);
 
 /**			e_file_redir.c */
-int		file_redir(t_token *tok, t_base *base);
+char	*add_in_command(t_base *base);
+int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 
-/**			d_print_struct */
+
+
+/**			e_utils.c */
+int		ft_strslen(char **strs);
+
+/**			e_env_utils.c */
+int		search_var_in_env(char **env, char *search);
+char	*search_data_in_env(char **env, char *search);
+char	**add_var_in_env(char **env, char *data);
+int		search_empty(char **env);
+
+/**			e_env_cpy.c */
+char	**env_cpy(void);
+char	*shlvl_modifier(char **environ, int i);
 
 #endif

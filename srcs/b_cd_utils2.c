@@ -3,7 +3,7 @@
 int	go_before(t_base *base)
 {
 	char	*path;
-	char	backup[4096];
+	char	backup[PATH_MAX];
 
 	getcwd(backup, sizeof(backup));
 	path = search_data_in_env(base->env, "OLDPWD");

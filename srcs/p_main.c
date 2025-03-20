@@ -5,7 +5,7 @@ int	g_exit_status;
 int main(void)
 {
 	t_base	base;
-	char 	buff[4096];
+	char 	buff[PATH_MAX];
 	char	*minitext;
 
 	minitext = NULL;

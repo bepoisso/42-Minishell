@@ -72,5 +72,7 @@ INDEX	TYPE	DESCRIPTION
 # define RESET "\033[0m"
 
 # define PATH_MAX 4096
+# define DELAY_TIME 2000000
+# define DELAY_DOT 100000000
 
 #endif

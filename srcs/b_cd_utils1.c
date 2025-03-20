@@ -31,7 +31,7 @@ char	*error_message(char *str, ...)
 int	cd_dot(t_base *base)
 {
 	int		i;
-	char	backup[4096];
+	char	backup[PATH_MAX];
 
 	getcwd(backup, sizeof(backup));
  
@@ -87,8 +87,8 @@ int	update_oldpwd(char *new_data, t_base *base)
 
 int	go_back(t_base *base)
 {
-	char	path[4096];
-	char	backup[4096];
+	char	path[PATH_MAX];
+	char	backup[PATH_MAX];
 
 	int		i;
 	getcwd(path, sizeof(path));

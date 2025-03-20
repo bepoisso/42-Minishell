@@ -2,7 +2,7 @@
 
 int	builtin_pwd(t_base *base)
 {
-	char buff[4096];
+	char buff[PATH_MAX];
 
 	if (!getcwd(buff, sizeof(buff)))
 		return(1);

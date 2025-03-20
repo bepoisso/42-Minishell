@@ -71,4 +71,6 @@ INDEX	TYPE	DESCRIPTION
 # define VIOLET "\033[0;35m"
 # define RESET "\033[0m"
 
+# define PATH_MAX 4096
+
 #endif

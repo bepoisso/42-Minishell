@@ -24,7 +24,7 @@
 static int	go_home(t_base *base, char *args)
 {
 	char	*path;
-	char	backup[4096];
+	char	backup[PATH_MAX];
 
 	getcwd(backup, sizeof(backup));
 	path = search_data_in_env(base->env, "HOME");
@@ -42,7 +42,7 @@ static int	go_home(t_base *base, char *args)
 
 static int	go_root(t_base *base)
 {
-	char	backup[4096];
+	char	backup[PATH_MAX];
 
 	getcwd(backup, sizeof(backup));
 	if (chdir("/") == -1)
@@ -54,7 +54,7 @@ static int	go_root(t_base *base)
 
 static int	go_there(t_base *base, t_cmd *act_cmd)
 {
-	char	backup[4096];
+	char	backup[PATH_MAX];
 	char	*path;
 	char	*error;
 

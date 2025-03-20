@@ -7,8 +7,8 @@
  * 
  */
 
-/* 
-char	*change_value(char **env, char **old_data, char *new_data)
+
+/* char	*change_value(char **env, char **old_data, char *new_data)
 {
 	int		i;
 	char	*temp;
@@ -26,7 +26,7 @@ char	*change_value(char **env, char **old_data, char *new_data)
 	*old_data = ft_strjoin(temp, new_data);
 	free_null((void **)&temp);
 	return (NULL);
-}
+} */
 
 /**
  * 
@@ -39,4 +39,5 @@ char	*change_value(char **env, char **old_data, char *new_data)
 int	builtin_export(t_token *actual_tok)
 {
 	(void)actual_tok;
+	return (0);
 }

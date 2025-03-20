@@ -20,16 +20,26 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 INC_DIR = ./includes
 
-SRC_FILES = e_check.c\
-			e_exec.c\
+SRC_FILES = b_builtin.c\
+			b_cd.c\
+			b_cd_utils1.c\
+			b_cd_utils2.c\
+			b_echo.c\
+			b_env.c\
+			b_export.c\
+			b_pwd.c\
+			b_unset.c\
+			e_check.c\
 			e_env_cpy.c\
 			e_env_utils.c\
+			e_exec.c\
 			e_file_redir.c\
 			e_free.c\
 			e_free2.c\
 			e_start_exec.c\
 			e_start_exec_utils.c\
 			e_start_exec_utils2.c\
+			e_the_expansable.c\
 			e_tolkien.c\
 			e_utils.c\
 			sighand.c\
@@ -44,13 +54,6 @@ SRC_FILES = e_check.c\
 			p_main.c\
 			p_header.c\
 			p_dolars.c\
-			b_builtin.c\
-			b_cd.c\
-			b_echo.c\
-			b_env.c\
-			b_export.c\
-			b_pwd.c\
-			b_unset.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

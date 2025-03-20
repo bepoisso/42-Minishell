@@ -21,8 +21,8 @@
  * 			Print: Error bash: cd: *new: No such file or directory RETURN
  */
 
- int	cd_dot(t_base *base)
- {
+int	cd_dot(t_base *base)
+{
 	int		i;
 	char	backup[4096];
 
@@ -40,7 +40,25 @@
 		base->env = add_var_in_env(base->env, backup);
 	}
 	return (0);
- }
+}
+
+static int	update_pwd(char *new_data, t_base *base)
+{
+	int		i;
+
+	i = search_var_in_env(base->env, "PWD");
+	if (i >= 0)
+	{
+		free_null((void **)&base->env[i]);
+		base->env[i] = ft_strjoin("PWD=",new_data);
+		return (0);
+	}
+	else
+	{
+		base->env = add_var_in_env(base->env, new_data);
+	}
+	return (0);
+}
 
 static int	update_oldpwd(char *new_data, t_base *base)
 {
@@ -88,6 +106,7 @@ static int	go_back(t_base *base)
 	if (chdir(path) == -1)
 		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
 	update_oldpwd(backup, base);
+	update_pwd(path, base);
 	return (0);
 }
 
@@ -103,6 +122,7 @@ static int	go_before(t_base *base)
 	if (chdir(path) == -1)
 		return (ft_error("ERROR chdir", 1, base), 1);
 	update_oldpwd(backup, base);
+	update_pwd(path, base);
 	return (0);
 }
 
@@ -121,6 +141,7 @@ static int	go_home(t_base *base, char *args)
 	else if (chdir(path) == -1)
 		return (ft_error("minishell: cd: HOME not set", 1, base), 1);
 	update_oldpwd(backup, base);
+	update_pwd(path, base);
 	return (0);
 }
 
@@ -132,25 +153,24 @@ static int	go_root(t_base *base)
 	if (chdir("/") == -1)
 		return (ft_error("minishell: cd: error cd: /", 1, base), 1);
 	update_oldpwd(backup, base);
+	update_pwd("/", base);
 	return (0);
 }
 
 /**
  * erreur a ecrire
  */
-static int	go_there(t_base *base, t_token *act_tok)
+static int	go_there(t_base *base, t_cmd *act_cmd)
 {
 	char	backup[4096];
 	char	*path;
 
 	getcwd(backup, sizeof(backup));
-	if (act_tok->expanse.content)
-		path = act_tok->expanse.content;
-	else if (!act_tok->expanse.content)
-		path = act_tok->cmd->cmd[1];
+	path = act_cmd->cmd[1];
 	if (chdir(path) == -1)
-	return (ft_error("chdir", 1, base), 1);
+	return (ft_error(error_message("bash: cd: ", path, ": No such file or directory", NULL), 1, base), 1);
 	update_oldpwd(backup, base);
+	update_pwd(path, base);
 	return (0);
 }
 
@@ -190,116 +210,6 @@ int	builtin_cd(t_token *actual_tok, t_base *base)
 	else if (size == 1 && !ft_strncmp(actual_tok->cmd->cmd[1], "..", 2))
 		status = go_back(base);
 	else
-		status = go_there(base, actual_tok);
+		status = go_there(base, actual_tok->cmd);
 	return (status);
 }
-
-/**
- * 
-  */
-/* void	builtin_cd(t_token *actual_tok)
-{
-	char	backup[4096];
-	char	*oldpwd_back;
-	int		size;
-	t_var	*act_envir;
-
-	size = ft_strslen(actual_tok->cmd->cmd);
-	getcwd(backup, sizeof(backup));
-	if (size > 1)
-		return (ft_error("Error minishell: cd: too many arguments\n", 2, actual_tok->base));
-	if (size == 0 || (size == 1 && ft_strncmp(actual_tok->cmd->cmd[0], "#", 2)))
-	{
-		if (chdir(search_in_env(actual_tok->base->env, "HOME")) == -1)
-				return (ft_error("minishell: cd: HOME not set", 1, actual_tok->base));
-		change_val_var(actual_tok->base->env, "OLDPWD", backup);
-	}
-	else if (size == 1 && ft_strncmp(actual_tok->cmd->cmd[0], "-", 2))
-	{
-		if (chdir(search_in_env(actual_tok->base->env, "OLDPWD")) == -1)
-				return (ft_error("minishell: cd: OLDPWD not set", 1, actual_tok->base));
-		change_val_var(actual_tok->base->env, "OLDPWD", backup);
-	}
-	else
-	{
-		if (actual_tok->expanse.content[0] == '\0')
-			//GO HOME A ECRIRE;
-		if (chdir(actual_tok->expanse.content) == -1)
-			return (ft_error("chdir", 1, actual_tok->base));
-		oldpwd_back = search_in_env(actual_tok->base->env, "OLDPWD");
-		if (!oldpwd_back)
-			add_in_env(actual_tok->base->env, backup, "OLDPWD");
-	}
-	return ;
-} */
-
-//fonction qui va chercher si une variable exite et renvoyer son adresse pour en recuperer le contenu ou la modifier
-/* t_var	*search_in_var(t_var *env, char * search)
-{
-	t_var	*act_env;
-
-	act_env = env;
-	while (act_env)
-	{
-		if (ft_strncmp(search, act_env->name, ft_strlen(act_env->name)));
-			return (act_env);
-		act_env= act_env->next;
-	}
-	return (NULL);
-} */
-
-/* void	builtin_cd(t_base *base, t_token *actual_tok)
-{
-	char	backup[4096];
-	int		size;
-	t_var	*act_envir;
-
-	size = ft_strslen(actual_tok->cmd->cmd);
-	getcwd(backup, sizeof(backup));
-	if (size > 1)
-		return (ft_error("Error minishell: cd: too many arguments\n", 2, base));
-	if (size == 0 || (size == 1 && ft_strncmp(actual_tok->cmd->cmd[0], "#", 2)))
-	{
-		act_envir = search_in_var(base->envir, "HOME");
-		if (act_envir)
-		{
-			if (chdir(act_envir->content) == -1)
-				return (ft_error("chdir", 1, base));
-			search_in_var(base->envir, "OLDPWD")->content = backup;
-		}
-		else
-			ft_error("minishell: cd: HOME not set", 1, base);	
-	}
-	else if (size == 0 || (size == 1 && ft_strncmp(actual_tok->cmd->cmd[0], "-", 2)))
-	{
-		act_envir = search_in_var(base->envir, "OLDPWD");
-		if (act_envir)
-		{
-			if (chdir(act_envir->content) == -1)
-				return (ft_error("chdir", 1, base));
-			search_in_var(base->envir, "OLDPWD")->content = backup;
-		}
-		else
-			ft_error("minishell: cd: OLDPWD not set", 1, base);	
-	}
-	else if (actual_tok->cmd->cmd[0][0] != '$')
-	{
-		if (chdir(actual_tok->cmd->cmd[0]) == -1)
-			return (ft_error("chdir", 1, base));
-		free (search_in_var(base->envir, "OLDPWD")->content);
-		search_in_var(base->envir, "OLDPWD")->content = backup;
-	}
-	else if (actual_tok->cmd->cmd[0][0] == '$')
-	{
-		act_envir = search_in_var(base->envir, actual_tok->cmd->cmd[0]);
-		if (act_envir)
-		{
-			if (chdir(act_envir->content) == -1)
-				return (ft_error("chdir", 1, base));
-			search_in_var(base->envir, "OLDPWD")->content = backup;
-		}
-		else
-			ft_error("minishell: cd: HOME not set", 1, base);	
-	}
-	return ;
-} */

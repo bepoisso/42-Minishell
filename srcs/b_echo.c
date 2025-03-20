@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-void	builtin_echo(t_token *actual_tok)
+int	builtin_echo(t_token *actual_tok)
 {
 	int		i;
 	char	**cmd;
@@ -16,4 +16,5 @@ void	builtin_echo(t_token *actual_tok)
 	}
 	ft_putchar('\n');
 	actual_tok->base->exit_code = 0;
+	return (0);
 }

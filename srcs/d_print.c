@@ -138,3 +138,15 @@ void	print_cmd(t_base *base)
 	current = base->cmds;
 }
 
+void	print_dollar(t_base *base)
+{
+	t_dollar *current;
+
+	current = base->dollars;
+	printf("\n__________DOLLARS__________\n");
+	while (current)
+	{
+		printf("Dollar = [%s] [%s] [%d]\n", current->name, current->data, current->literal);
+		current = current->next;
+	}
+}

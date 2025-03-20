@@ -21,21 +21,12 @@ typedef struct s_cmd
 	struct s_cmd	*prev;
 }	t_cmd;
 
-typedef struct s_var
-{
-	char			*name;
-	char			*content;
-	struct s_var	*next;
-	struct s_var	*prev;
-}	t_var;
-
 typedef struct s_token
 {
 	int				id;
 	char			*data;
 	struct s_cmd	*cmd;
 	bool			literal;
-	t_var			expanse;
 	struct s_base	*base;
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -56,7 +47,6 @@ typedef struct s_dollar
 typedef struct s_base
 {
 	char			**env;
-	t_var			*envir;
 	char			*input;
 	char 			*tild;
 	int				exit_code;

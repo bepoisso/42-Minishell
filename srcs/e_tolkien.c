@@ -94,7 +94,6 @@ int	sauron(t_base *base)
 	int			cmd_found;
 	int			redir_found;
 
-
 	cmd_found = 0;
 	redir_found = 0 ;
 	tok = base->token;
@@ -119,9 +118,7 @@ int	sauron(t_base *base)
 				tok = tok->next;
 		}
 		if (redir_found > 0 && cmd_found == 0)
-		{
 			handle_redirec_alone(tok_back);
-		}
 	}
 	wait_rings(base);
 	return (0);

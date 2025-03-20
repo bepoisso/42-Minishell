@@ -36,7 +36,7 @@ char	*change_value(char **env, char **old_data, char *new_data)
  * export A="plop" ajoute une variable contenant Plop
  * 
  */
-void	builtin_export(t_token *actual_tok)
+int	builtin_export(t_token *actual_tok)
 {
 	(void)actual_tok;
 }

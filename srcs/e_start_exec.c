@@ -59,7 +59,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 	if (actual->cmd->builtin)
 	{
 		exec_redir_main_process(actual);
-		exec_builtins(actual);
+		base->exit_code = exec_builtins(actual);
 		close_opend_fds_builtins(actual->cmd, base);
 	}
 	else

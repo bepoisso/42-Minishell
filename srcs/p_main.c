@@ -1,5 +1,7 @@
 #include "../includes/minishell.h"
 
+int	g_exit_status;
+
 int main(void)
 {
 	t_base	base;
@@ -15,6 +17,11 @@ int main(void)
 	header();
 	while (1)
 	{
+		if (g_exit_status)
+		{
+			base.exit_code = g_exit_status;
+			g_exit_status = 0;
+		}
 		free_null((void **)&minitext);
 		getcwd(buff, sizeof(buff));
 		minitext = ft_strjoin(buff, "🤏🐚> ");

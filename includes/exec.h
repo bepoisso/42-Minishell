@@ -15,7 +15,8 @@
  *  plutot que d'arreter
  * valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all
  *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
- * 
+ * valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all
+ *  --log-file=test_valgrind.log ./minishell
  * ls -la | grep dr | sort | rev | cat -e > outfile
  * < infile sort > outfile.txt commande de test
  * cat < infile.txt | sort > out.txt

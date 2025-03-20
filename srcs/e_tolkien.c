@@ -86,27 +86,41 @@ static void	handle_cmd(t_token *tok, t_base *base)
 	}
 }
 
-
+/** */
 int	sauron(t_base *base)
 {
 	t_token		*tok;
-	extern char	**environ;
+	t_token		*tok_back;
+	int			cmd_found;
+	int			redir_found;
 
+	cmd_found = 0;
+	redir_found = 0 ;
 	tok = base->token;
 	handle_cmd(tok, base);
 	create_redir(base);
 	base->count_forks = count_forks(base);
-	base->path_list = extract_paths();
+	base->path_list = extract_paths(base);
 	while (tok)
 	{
-	/* 	if (tok->id == 8)
-			handle_env(actual_cmd, tok, base); */
-		if (tok->id == 9)
-			prepare_exec(tok, base, environ);
-/* 		if (tok->id == 9 && tok->cmd->builtin == 1)
-			handle_env(tok, base); */
-		tok = tok->next;
+		tok_back = tok;
+		while(tok && tok->id != 7)
+		{
+			if (tok->id == 9)
+			{
+				prepare_exec(tok, base);
+				cmd_found++;
+			}
+			else if (tok->id >= 3 && tok->id <= 6)
+				redir_found ++;
+			tok = tok->next;
+			if (tok && tok->id == 7)
+				tok = tok->next;
+		}
+		if (redir_found > 0 && cmd_found == 0)
+			handle_redirec_alone(tok_back);
 	}
 	wait_rings(base);
 	return (0);
 }
+//<<1 ls -la | grep dr | sort | cat -e | rev

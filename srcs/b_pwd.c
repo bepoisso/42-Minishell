@@ -1,10 +1,12 @@
 #include "../includes/minishell.h"
 
-void	builtin_pwd(t_base *base)
+int	builtin_pwd(t_base *base)
 {
 	char buff[4096];
 
-	getcwd(buff, sizeof(buff));
+	if (!getcwd(buff, sizeof(buff)))
+		return(1);
 	ft_putendl_fd(buff, 1);
 	base->exit_code = 0;
+	return (0);
 }

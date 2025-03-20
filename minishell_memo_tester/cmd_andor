@@ -1,0 +1,110 @@
+echo aaa && echo bbb || echo ccc
+
+echo aaa || echo bbb || echo ccc
+
+
+false && echo bbb || echo ccc
+
+false || echo bbb || echo ccc
+
+false && echo bbb && echo ccc
+
+echo aaa && false && echo ccc
+
+false || (echo aaa && false) || echo cc
+
+echo xxx || (echo aaa || false) && echo cc
+
+false || (echo aaa && false) || echo $?
+
+false || (echo aaa && true) || echo $?
+
+false || (echo aaa && false) && echo $?
+
+false || (echo aaa && echo $?) && echo $? //pb
+
+false || (false || echo $?) && echo $?
+
+false || echo aaa && echo $?
+
+false || (echo aaa && false) && echo zzz
+
+false || (echo aaa && true) && echo zzz
+
+false || (echo aaa && false && true) && echo zzz
+
+(( false || echo bbb ) || echo zzz)
+
+(( false || (echo bbb || echo xxx ) || echo zzz) 
+
+ (( false || (echo bbb || echo xxx )) || echo zzz)
+
+ (( true || (echo bbb || echo xxx )) || echo zzz)
+
+ (( false || (echo bbb || echo xxx) ) || echo zzz)
+
+(( false || echo bbb && echo xxx ) || echo zzz)
+
+(( false || echo bbb && echo $? ) || echo zzz)
+
+(( echo ggg && false && (echo bbb && echo $?) ) || echo zzz)
+
+(( echo ggg && false || echo bbb && echo $? ) || echo zzz)
+
+(( echo ggg && true || echo bbb && echo $? ) || echo zzz)
+
+(( echo ggg && true || (echo bbb && echo $?) ) || echo zzz)
+
+(echo "houhou" -n  | rev >myout && echo zzz ) && echo go
+
+(echo "houhou" -n  | rev >myout && echo zzz  && echo go)
+
+(echo aaa && echo bbb) || echo zzz)
+
+(fghf
+
+(echo aaa && (echo bbb && (echo ccc)
+
+(echo test && false || echo$?)
+
+(echo aaa && (echdqfdqf dk))
+
+(( false || (echo bbb || echfo xxx) ) || echo zzz)
+
+echo truc &&(echo troc)
+
+(echo aaa && echo bbb && (echo zzz | echo iii)) && echo$?
+
+(echo aaa && echo bbb && (echo zzz | echo iii)) && echo $?
+
+(echo ttt) || (echo kkk)
+
+( false ) || (echo zz &&( echo kk )&&  echo hhh  )
+
+( false ) || (echo zz &&( echo kk )  echo hhh && )
+
+( false ) || (echo zz &&( echo kk )  echo hhh && ) &&
+
+( false ) || (echo zz &&( echo kk )  echo hhh&& )
+
+( false ) || (echo zz &&( echo kk ) && echo hhh )
+
+( false ) || (echo zz &&( echo kk )&& echo hhh )
+
+( false ) || (echo zz &&( echo kk ) )&&
+
+( false ) || (echo zz &&( echo kk ) &&)
+
+( false ) || (echo zz &&( echo kk )  echo hhh && )
+
+( ( echo bb && echo bb ) && (echo hhh) )&&(echo hh)&& echo truc
+
+( (&& echo bb && echo bb ) && (echo hhh) )&&(echo hh)&& echo truc
+
+(( true || (echo bbb || echo xxx )) || echo zzz)
+
+&& echo aa && echo kk
+
+&& echo aa && echo kk &&
+
+echo aa && echo kk &&

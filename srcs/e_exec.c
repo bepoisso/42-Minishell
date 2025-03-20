@@ -15,7 +15,7 @@
  * @note The returned array must be freed by the caller
  * @note Each path in the returned array ends with a '/' character
  */
-char	**extract_paths(void)
+char	**extract_paths(t_base *base)
 {
 	char	*env;
 	char	**env_list;
@@ -25,7 +25,8 @@ char	**extract_paths(void)
 	i = 0;
 	env_list = NULL;
 	env_listcpy = NULL;
-	env = getenv("PATH");
+	env = search_data_in_env(base->env, "PATH");
+	//env = getenv("PATH");
 	if (!env)
 		return (NULL);
 	env_list = ft_split(env, ':');

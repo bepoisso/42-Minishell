@@ -1,0 +1,11 @@
+test
+Token: id : [9] [0] [echo]
+Token: id : [0] [0] [ ]
+Token: id : [10] [0] [test]
+Token: id : [0] [0] [ ]
+Token: id : [4] [0] [>]
+Token: id : [2] [0] [file1]
+Token: id : [0] [0] [ ]
+Token: id : [6] [0] [>>]
+Token: id : [0] [0] [ ]
+Token: id : [2] [0] [file2]

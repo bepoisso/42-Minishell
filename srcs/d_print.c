@@ -1,7 +1,26 @@
+
+
 #include "../includes/minishell.h"
 
 #include <stdio.h>
 #include <stdbool.h>
+
+void	ft_put_arraystr(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (array)
+	{
+		ft_printf("--------------------------------------------------------------------\n");
+		while (array[i])
+		{
+			ft_printf("\t[%s]\n", array[i]);
+			i++;
+		}
+		ft_printf("--------------------------------------------------------------------\n");
+	}
+}
 
 void	print_cmds(t_base *base)
 {
@@ -91,7 +110,6 @@ void    display_base(t_base *base)
 
 void	print_tokens(t_token *tokens)
 {
-	printf("\n__________TOKEN__________\n");
 	while (tokens)
 	{
 		printf("Token: id : [%d] [%d] [%s]\n", tokens->id, tokens->literal, tokens->data);
@@ -132,4 +150,3 @@ void	print_dollar(t_base *base)
 		current = current->next;
 	}
 }
-

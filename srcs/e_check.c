@@ -81,7 +81,7 @@ int	count_forks(t_base *base)
 	tokcpy = base->token;
 	while (tokcpy)
 	{
-		if (tokcpy->id == 9)
+		if (tokcpy->id == 9 && tokcpy->cmd->builtin == false)
 			base->count_forks ++;
 		tokcpy = tokcpy->next;
 	}
@@ -102,17 +102,17 @@ int	count_forks(t_base *base)
  * @note Dynamically allocates memory for the path string.
  *       Caller must free the returned string when no longer needed.
  */
-char	*check_cmd(char **env_list, char *cmd, t_base *base)
+char	*check_cmd(t_token *actual, t_base *base)
 {
 	char	*path;
 	char	**env_listcpy;
 
-	env_listcpy = env_list;
-	if (env_list)
+	env_listcpy = base->path_list;
+	if (env_listcpy)
 	{
 		while (*env_listcpy)
 		{
-			path = ft_strjoin(*env_listcpy, cmd);
+			path = ft_strjoin(*env_listcpy, actual->cmd->cmd[0]);
 			if (access(path, X_OK) == 0)
 				return (base->exit_code = 0, path);
 			free_null((void *)&path);
@@ -120,16 +120,16 @@ char	*check_cmd(char **env_list, char *cmd, t_base *base)
 		}
 		base->exit_code = 127;
 		ft_putstr_fd(RED"Command '", 2);
-		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd(actual->cmd->cmd[0], 2);
 		ft_putstr_fd("' not found, but can be installed with:", 2);
-		ft_putstr_fd("\nsudo apt install ", 2);
-		ft_putstr_fd(cmd, 2);
+		ft_putstr_fd("\n\tsudo apt install ", 2);
+		ft_putstr_fd(actual->cmd->cmd[0], 2);
 		ft_putstr_fd("\n"RESET, 2);
 		return (NULL);
 	}
 	base->exit_code = 127;
 	ft_putstr_fd(RED"Minishell: ", 2);
-	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(actual->cmd->cmd[0], 2);
 	ft_putstr_fd(": No such file or directory\nRESET", 2);
 	return (NULL);
 }

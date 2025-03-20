@@ -16,7 +16,7 @@ int	bypass_args(char *arg)
 	return (false);
 }
 
-void	builtin_echo(t_base *base, t_token *actual_tok)
+int	builtin_echo(t_base *base, t_token *actual_tok)
 {
 	int		i;
 	char	**cmd;
@@ -43,4 +43,5 @@ void	builtin_echo(t_base *base, t_token *actual_tok)
 	if (line_return)
 		ft_putchar('\n');
 	base->exit_code = 0;
+	return (0);
 }

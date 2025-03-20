@@ -9,7 +9,7 @@ int		exec_builtins(t_token *actual);
 
 int		builtin_env(t_token *actual_tok);
 int		builtin_pwd(t_base *base);
-void	builtin_echo(t_base *base, t_token *actual_tok);
+int	builtin_echo(t_base *base, t_token *actual_tok);
 
 /**				b_export.c */
 int		builtin_export(t_token *actual_tok);

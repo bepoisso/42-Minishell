@@ -7,8 +7,8 @@
  * 
  */
 
-/* 
-char	*change_value(char **env, char **old_data, char *new_data)
+
+/* char	*change_value(char **env, char **old_data, char *new_data)
 {
 	int		i;
 	char	*temp;

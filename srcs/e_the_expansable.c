@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 06:26:29 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/20 07:15:00 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/20 10:32:28 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,30 @@
 * 
 * SAISIE : echo ""'$USER'""blablabla"$PLOP"blablabla'$USER'b""labla"bla"
 * AFFICHE : $USERblablablablablabla$USERblablabla
-*  */
+*  $USER '$USER' "$USER" "'$USER'" '"$USER"'
+
+*/
+
+static int	the_expanse(t_token *act_tok, t_dollar *act_dol)
+{
+
+}
+
+
+int	apply_expanse(t_base *base)
+{
+	t_token		*act_tok;
+	t_dollar	*act_dol;
+
+	act_tok = base->token;
+	act_dol = base->dollars;
+	while (act_tok)
+	{
+		if (ft_strchr(act_tok->data, '#'))
+		{
+			the_expanse(act_tok, act_dol);
+			act_dol = act_dol->next;
+		}
+		act_tok = act_tok->next;
+	}
+}

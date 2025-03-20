@@ -21,111 +21,6 @@
  * 			Print: Error bash: cd: *new: No such file or directory RETURN
  */
 
-int	cd_dot(t_base *base)
-{
-	int		i;
-	char	backup[4096];
-
-	getcwd(backup, sizeof(backup));
- 
-	i = search_var_in_env(base->env, "OLDPWD");
-	if (i >= 0)
-	{
-		free_null((void **)&base->env[i]);
-		base->env[i] = ft_strjoin("OLDPWD=",backup);
-		return (0);
-	}
-	else
-	{
-		base->env = add_var_in_env(base->env, backup);
-	}
-	return (0);
-}
-
-static int	update_pwd(char *new_data, t_base *base)
-{
-	int		i;
-
-	i = search_var_in_env(base->env, "PWD");
-	if (i >= 0)
-	{
-		free_null((void **)&base->env[i]);
-		base->env[i] = ft_strjoin("PWD=",new_data);
-		return (0);
-	}
-	else
-	{
-		base->env = add_var_in_env(base->env, new_data);
-	}
-	return (0);
-}
-
-static int	update_oldpwd(char *new_data, t_base *base)
-{
-	int		i;
-
-	i = search_var_in_env(base->env, "OLDPWD");
-	if (i >= 0)
-	{
-		free_null((void **)&base->env[i]);
-		base->env[i] = ft_strjoin("OLDPWD=",new_data);
-		return (0);
-	}
-	else
-	{
-		base->env = add_var_in_env(base->env, new_data);
-	}
-	return (0);
-}
-
-/* fonction a ecrire qui va utiliser va args pour concatener autant de chaines
- que possible et renvoyer le resultat*/
-/* char *make_err_mess()
-{
-	char *message;
-
-	return (message);
-} */
-/**
- * @attention A message d'erreur a ecrire 
- */
-static int	go_back(t_base *base)
-{
-	char	path[4096];
-	char	backup[4096];
-
-	int		i;
-	getcwd(path, sizeof(path));
-	getcwd(backup, sizeof(backup));
-	if (!path[0])
-		return (1);
-	i = ft_strlen(path) - 1;
-	while (i >= 0 && path[i] != '/')
-		i--;
-	path[i + 1] = '\0';
-	if (chdir(path) == -1)
-		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
-	return (0);
-}
-
-static int	go_before(t_base *base)
-{
-	char	*path;
-	char	backup[4096];
-
-	getcwd(backup, sizeof(backup));
-	path = search_data_in_env(base->env, "OLDPWD");
-	if (!path)
-		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
-	if (chdir(path) == -1)
-		return (ft_error("ERROR chdir", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
-	return (0);
-}
-
 static int	go_home(t_base *base, char *args)
 {
 	char	*path;
@@ -157,18 +52,20 @@ static int	go_root(t_base *base)
 	return (0);
 }
 
-/**
- * erreur a ecrire
- */
 static int	go_there(t_base *base, t_cmd *act_cmd)
 {
 	char	backup[4096];
 	char	*path;
+	char	*error;
 
 	getcwd(backup, sizeof(backup));
 	path = act_cmd->cmd[1];
 	if (chdir(path) == -1)
-	return (ft_error(error_message("bash: cd: ", path, ": No such file or directory", NULL), 1, base), 1);
+	{
+		error = error_message("bash: cd: ", path, ": No such file or directory", NULL);
+		ft_error(error, 1, base), free_null((void **)&error);
+		return (1);
+	}
 	update_oldpwd(backup, base);
 	update_pwd(path, base);
 	return (0);
@@ -185,11 +82,7 @@ static int	is_home(char *path)
 	else
 		return (0);
 }
-/**
- * gere cd . qui remplace le oldpwd par la position actuelle sans changer de dossier
- * 
- * 
- */
+
 int	builtin_cd(t_token *actual_tok, t_base *base)
 {
 	int		size;

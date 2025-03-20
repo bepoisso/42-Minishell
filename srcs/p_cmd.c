@@ -53,7 +53,7 @@ int	count_args(t_token *token)
 		current = current->next;
 	while (current && current->id != 9)
 	{
-		if (current->id == 10)
+		if (current->id == 10 || current->id == 11)
 			count++;
 		current = current->next;
 	}

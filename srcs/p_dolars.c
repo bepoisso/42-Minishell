@@ -1,12 +1,14 @@
 #include "../includes/minishell.h"
 
-char	*search_env_var(char *search, char **env)
+char	*search_env_var(char *search, char **env, t_base *base)
 {
 	int			i;
 	int			j;
 
 	i = 0;
 	j = 0;
+	if (search[i] == '?')
+		return (ft_itoa(base->exit_code));
 	while(env[i])
 	{
 		if (ft_strncmp(search, env[i], ft_strlen(search)) == 0)
@@ -94,18 +96,23 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 	int		j;
 	char	*name;
 	char	*data;
+	bool	check;
 
 	i = 0;
+	check = false;
 	while (token && token->data[i])
 	{
 		if (token->data[i] == '$')
 		{
 			j = i;
 			i++;
-			while (token->data[i] && ft_isalnum(token->data[i]))
+			while (token->data[i] && (ft_isalnum(token->data[i]) || (check == false && token->data[i] == '?')))
+			{
+				check = true;
 				i++;
+			}
 			name = ft_strndup(token->data + j + 1, (i - j) - 1);
-			data = search_env_var(name, base->env);
+			data = search_env_var(name, base->env, base);
 			add_dollar(&dollars, name, data, token->literal);
 			i--;
 		}

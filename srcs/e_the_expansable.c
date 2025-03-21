@@ -6,7 +6,7 @@
 /*   By: jrinaudo <jrinaudo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 06:26:29 by jrinaudo          #+#    #+#             */
-/*   Updated: 2025/03/20 14:07:06 by jrinaudo         ###   ########.fr       */
+/*   Updated: 2025/03/21 11:17:18 by jrinaudo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,10 @@
 * echo 'Bonjour '$USER' Je suis un argument de $USER pas "'$USER'"'
 */
 
-static int	search_dol(const char *s)
+static int	search_dol(const char *s, int i)
 {
-	int	i;
-
-	i = 0;
+	if (!s)
+		return (-2);
 	while (s[i])
 	{
 		if (s[i] == '$')
@@ -89,12 +88,12 @@ static	int	proceed_expanse(t_token *act_tok, t_dollar *act_dol, int dol_begin,  
 	new_data[i_new] = '\0';
 }
 
-static t_dollar	*the_expanse(t_token *act_tok, t_dollar *act_dol, int dol_begin)
+/* static t_dollar	*the_expanse(t_token *act_tok, t_dollar *act_dol, int dol_begin)
 {
 	char	*new_data;
 	int		new_len;
 	int		dol_end;
-	//int		i_new;
+	int		i_new;
 	int		i_dol;
 			
 	new_data = NULL;
@@ -122,7 +121,50 @@ static t_dollar	*the_expanse(t_token *act_tok, t_dollar *act_dol, int dol_begin)
 	act_dol->next;
 
 	return (act_dol);
+} */
+
+static t_dollar	*the_expanse(t_token *act_tok, t_dollar *act_dol, int dol_begin)
+{
+	char	*new_data;
+	int		new_len;
+	int		index;
+	int		i_new;
+	int		i_dol;
+			
+	new_data = NULL;
+	new_len = 0;
+	index = dol_begin + 1;
+	i_new = 0;
+	i_dol = 0;
+
+	while (act_tok->data[index] >= 0)
+	{
+		while (act_tok->data[index] && !is_delim(act_tok->data[index]))
+		{
+			index ++;
+			new_len ++;
+		}
+		index = search_dol(act_tok->data, index) + 1;
+	}
+		
+	while (i_new < dol_begin)
+	{
+		new_data[i_new] = act_tok->data[i_new];
+		i_new++;
+	}
+	
+	while (act_dol->data[i_dol])
+	{
+		new_data[i_new] = act_dol->data[i_dol];
+		i_new++;
+		i_dol++;
+	}
+	new_data[i_new] = '\0';
+	act_dol->next;
+
+	return (act_dol);
 }
+
 
 int	apply_expanse(t_base *base)
 {
@@ -135,7 +177,7 @@ int	apply_expanse(t_base *base)
 	found_dol = 1;
 	while (act_tok && act_dol)
 	{
-		found_dol = search_dol(act_tok->data);
+		found_dol = search_dol(act_tok->data, 0);
 		if (found_dol > 0)
 			act_dol = the_expanse(act_tok, act_dol, found_dol);
 		act_tok = act_tok->next;

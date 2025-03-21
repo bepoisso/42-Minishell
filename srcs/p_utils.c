@@ -22,19 +22,24 @@ int	start_pipe(char *s, t_base *base)
 
 	i = 0;
 	while (s[i] && (s[i] == ' ' || s[i] == '\t'))
-	i++;
+		i++;
 	if (s[i])
 	{
 		if (s[i] == '|' && s[i + 1] == '|')
-			return (ft_error("minishell: syntax error near unexpected token `||'", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `||'", 2, base), 1);
 		else if (s[i] == '|')
-			return (ft_error("minishell: syntax error near unexpected token `|'\n", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `|'\n", 2, base), 1);
 		else if (s[i] == '&' && s[i + 1] == '&')
-			return (ft_error("minishell: syntax error near unexpected token `&&'", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `&&'", 2, base), 1);
 		else if (s[i] == '&')
-			return (ft_error("minishell: syntax error near unexpected token `&'\n", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `&'\n", 2, base), 1);
 		else if (s[i] == ':' || s[i] == '!')
-			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `newline'", 2, base), 1);
 	}
 	return (0);
 }
@@ -55,7 +60,7 @@ int	ft_isop(char c)
 
 int	no_quote(t_token *tokens)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = tokens;
 	while (current)

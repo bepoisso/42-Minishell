@@ -25,6 +25,7 @@ int	builtin_echo(t_base *base, t_token *actual_tok)
 
 	i = 1;
 	printing = false;
+	line_return = true;
 	cmd = actual_tok->cmd->cmd;
 	while (cmd[i])
 	{

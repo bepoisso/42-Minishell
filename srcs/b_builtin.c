@@ -25,8 +25,8 @@ int	exec_builtins(t_token *actual)
 	status = 0;
 	if (ft_strcmp(actual->data, "cd"))
 		status = builtin_cd(actual, actual->base);
-	/*else if (ft_strcmp(actual->data, "echo"))
-		status = builtin_echo(actual); */
+	else if (ft_strcmp(actual->data, "echo"))
+		status = builtin_echo(actual->base, actual);
 	else if (ft_strcmp(actual->data, "pwd"))
 		status = builtin_pwd(actual->base);
 	else if (ft_strcmp(actual->data, "export"))
@@ -35,7 +35,5 @@ int	exec_builtins(t_token *actual)
 		status = builtin_env(actual);
 	else if (ft_strcmp(actual->data, "unset"))
 		status = builtin_unset(actual);
-	// else if (ft_strcmp(actual->data, "exit"))
-	ft_printf(BLUE"\texit code builtins : %d\n"RESET, status);
 	return (status);
 }

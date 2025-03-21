@@ -1,23 +1,5 @@
-
 #include "../includes/minishell.h"
 
-/****************************************************************
-* 					What else to do :							*
-* 																*
-* cd:		TO FINISH	Zef	tester avec les $					*
-* echo:		ToFix => gérer le -n								*
-* pwd:		Do													*
-* export:	ToDo												*
-* unset:	Done zeph											*
-* env:		Done Benja											*
-* exit:		ToDo ne fait rien si pas seul fontion vide			*
-* 																*
-****************************************************************/
-
-/**
- * MODIFIER FONCTIONS EN VOID EN INT POUR VERIFIER LE STATUS DE SORTIE
- * 
- */
 int	exec_builtins(t_token *actual)
 {
 	int	status;

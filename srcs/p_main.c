@@ -51,20 +51,13 @@ int main(void)
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (free_null((void **)&minitext), add_history(base.input),ft_printf(GREEN"Exit code in main after exit : %d\n"RESET, base.exit_code), clean_exit(&base, 0), 0);
- 		/* printf("-----------------------------------------\n");
- 		print_tokens(base.token);
-		ft_printf("\n\n\n");
-		print_cmd(&base);
-		ft_printf("-----------------------------------------\n\n"); */
+			return (free_null((void **)&minitext), add_history(base.input), clean_exit(&base, 0), 0);
 		sauron(&base);
 		add_history(base.input);
 		free_base(&base);
-	//	ft_printf(GREEN"Exit code in main : %d\n"RESET, base.exit_code);
 	}
 	free_doubletab(&base.env);
 	free_null((void **)&minitext);
 	rl_clear_history();
 	return (0);
 }
-// ls -la | grep dr | sort | cat -e | rev >outfile

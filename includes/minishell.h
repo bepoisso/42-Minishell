@@ -63,16 +63,23 @@ INDEX	TYPE	DESCRIPTION
 /*			used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
 
-# define BLUE "\033[0;34m"
-# define RED "\033[0;31m"
-# define GREEN "\033[0;32m"
-# define YELLOW "\033[0;33m"
-# define CYAN "\033[0;36m"
-# define VIOLET "\033[0;35m"
-# define RESET "\033[0m"
+# define BLUE "\001\033[0;34m\002"
+# define RED "\001\033[0;31m\002"
+# define GREEN "\001\033[0;32m\002"
+# define YELLOW "\001\033[0;33m\002"
+# define CYAN "\001\033[0;36m\002"
+# define VIOLET "\001\033[0;35m\002"
+# define RESET "\001\033[0m\002"
+# define BLUE_BOLD "\001\033[1;34m"
+# define RED_BOLD "\001\033[1;31m"
+# define GREEN_BOLD "\001\033[1;32m"
+# define YELLOW_BOLD "\001\033[1;33m"
+# define CYAN_BOLD "\001\033[1;36m"
+# define VIOLET_BOLD "\001\033[1;35m"
+
 
 # define PATH_MAX 4096
-# define DELAY_TIME 2000000
-# define DELAY_DOT 100000000
+# define DELAY_TIME 200000
+# define DELAY_DOT 20000000
 
 #endif

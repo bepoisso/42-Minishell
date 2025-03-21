@@ -5,7 +5,6 @@ int	g_exit_status;
 int main(void)
 {
 	t_base	base;
-	char 	buff[PATH_MAX];
 	char	*minitext;
 
 	minitext = NULL;
@@ -14,7 +13,7 @@ int main(void)
 	ft_memset(&base, 0, sizeof(t_base));
 	base.env = env_cpy();
 	base.tild = ft_strdup(search_data_in_env(base.env, "HOME"));
-	header();
+	// header();
 	while (1)
 	{
 		if (g_exit_status)
@@ -22,9 +21,7 @@ int main(void)
 			base.exit_code = g_exit_status;
 			g_exit_status = 0;
 		}
-		free_null((void **)&minitext);
-		getcwd(buff, sizeof(buff));
-		minitext = ft_strjoin(buff, "🤏🐚> ");
+		minitext = minitext_rl(base.env, &base);
 		ft_printf(GREEN"Exit code at the beginning : %d\n"RESET, base.exit_code);
 		base.input = readline(minitext);
 		if (!base.input)

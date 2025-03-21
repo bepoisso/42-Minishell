@@ -53,6 +53,7 @@ SRC_FILES = b_builtin.c\
 			p_main.c\
 			p_header.c\
 			p_dolars.c\
+			p_readline.c\
 			#e_the_expansable.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))

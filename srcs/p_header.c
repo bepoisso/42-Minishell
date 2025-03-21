@@ -46,7 +46,7 @@ void	print_delay(char *s, long time)
 
 void	ascii(void)
 {
-	print_delay(VIOLET"   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████    ▄█    █▄       ▄████████  ▄█        ▄█       \n", DELAY_TIME);
+	print_delay(VIOLET_BOLD"   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████    ▄█    █▄       ▄████████  ▄█        ▄█       \n", DELAY_TIME);
 	print_delay(" ▄██▀▀▀███▀▀▀██▄ ███  ███▀▀▀██▄ ███    ███    ███   ███    ███     ███    ███ ███       ███       \n", DELAY_TIME);
 	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███    █▀    ███    ███     ███    █▀  ███       ███       \n", DELAY_TIME);
 	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███         ▄███▄▄▄▄███▄▄  ▄███▄▄▄     ███       ███       \n", DELAY_TIME);
@@ -55,7 +55,7 @@ void	ascii(void)
 	print_delay(" ███   ███   ███ ███  ███   ███ ███     ▄█    ███   ███    ███     ███    ███ ███▌    ▄ ███▌    ▄ \n", DELAY_TIME);
 	print_delay("  ▀█   ███   █▀  █▀    ▀█   █▀  █▀    ▄████████▀    ███    █▀      ██████████ █████▄▄██ █████▄▄██ \n", DELAY_TIME);
 	print_delay("            (° ͜ʖ͡°)╭∩╮                                                         ▀         ▀         \n"RESET, DELAY_TIME);
-	print_delay(YELLOW"                                                              By bepoisso 🐟 & jrinaudo 🧌        \n"RESET, DELAY_TIME);
+	print_delay(YELLOW_BOLD"                                                              By bepoisso 🐟 & jrinaudo 🧌        \n"RESET, DELAY_TIME);
 }
 
 void	header(void)
@@ -63,12 +63,12 @@ void	header(void)
 	exec_clear();
 	ft_putstr("Loading : ");
 	print_delay(BLUE"█████", DELAY_DOT);
-	print_delay("█", DELAY_DOT * 5);
+	print_delay("█", DELAY_DOT * 10);
 	print_delay("███", DELAY_DOT);
 	print_delay("███████", DELAY_DOT * 2);
 	print_delay("██", DELAY_DOT);
-	print_delay("██", DELAY_DOT / 2);
-	print_delay("███"RESET, DELAY_DOT / 5);
+	print_delay("███████", DELAY_DOT / 2);
+	print_delay("█████"RESET, DELAY_DOT / 5);
 	exec_clear();
 	ascii();
 }

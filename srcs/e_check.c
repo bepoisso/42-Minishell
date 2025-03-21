@@ -88,25 +88,42 @@ int	count_forks(t_base *base)
 	return (base->count_forks);
 }
 
-/**
- * Checks if a base exists in the PATH environment variable
- * and returns the full path to the base if found.
- *
- * @param env_list Array of possible paths to search in
- * @param cmd base to search for
- *
- * @return Full path to the base if found and executable,
- *         NULL if base not found or not executable.
- *         Prints "base not found" to stdout if base not found.
- *
- * @note Dynamically allocates memory for the path string.
- *       Caller must free the returned string when no longer needed.
- */
+static char	*error_handle(int type, char *cmd)
+{
+	char	*err;
+
+	err = NULL;
+	if (type == 1)
+		err = error_message(RED"Command '", cmd
+			, "' not found, but can be installed with:\n\tsudo apt install "
+			, cmd, "\n"RESET, NULL);
+	else if (type == 2)
+		err = error_message(RED"Minishell: ", cmd
+			, ": No such file or directory\n"RESET, NULL);
+	return (err);
+}
+/* 
+static char	*is_absolute(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd && cmd[i])
+	{
+		if (cmd[i] == '/')
+	}
+
+} */
+
 char	*check_cmd(t_token *actual, t_base *base)
 {
 	char	*path;
+	char	*err;
 	char	**env_listcpy;
 
+	if (ft_strchr(actual->cmd->cmd[0], '/'))
+		return (actual->cmd->cmd[0]);
+	err = NULL;
 	env_listcpy = base->path_list;
 	if (env_listcpy)
 	{
@@ -114,22 +131,15 @@ char	*check_cmd(t_token *actual, t_base *base)
 		{
 			path = ft_strjoin(*env_listcpy, actual->cmd->cmd[0]);
 			if (access(path, X_OK) == 0)
-				return (base->exit_code = 0, path);
+				return (path);
 			free_null((void *)&path);
 			env_listcpy++;
 		}
 		base->exit_code = 127;
-		ft_putstr_fd(RED"Command '", 2);
-		ft_putstr_fd(actual->cmd->cmd[0], 2);
-		ft_putstr_fd("' not found, but can be installed with:", 2);
-		ft_putstr_fd("\n\tsudo apt install ", 2);
-		ft_putstr_fd(actual->cmd->cmd[0], 2);
-		ft_putstr_fd("\n"RESET, 2);
-		return (NULL);
+		err = error_handle(1, actual->cmd->cmd[0]);
+		return (ft_putstr_fd(err, 2), free_null((void **)&err), NULL);
 	}
 	base->exit_code = 127;
-	ft_putstr_fd(RED"Minishell: ", 2);
-	ft_putstr_fd(actual->cmd->cmd[0], 2);
-	ft_putstr_fd(": No such file or directory\nRESET", 2);
-	return (NULL);
+	err = error_handle(2, actual->cmd->cmd[0]);
+	return (ft_putstr_fd(err, 2), free_null((void **)&err), NULL);
 }

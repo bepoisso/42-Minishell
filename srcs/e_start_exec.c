@@ -54,8 +54,6 @@ static void	exec_redir_main_process(t_token *actual)
 
 int	prepare_exec(t_token *actual, t_base *base)
 {
-	int	res;
-
 	if (handle_redirections(actual, base, actual->cmd))
 		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	if (actual->cmd->builtin)
@@ -78,7 +76,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 			if (!actual->cmd->path_cmd)
 			return (close(actual->cmd->input), close(actual->cmd->output)
 			, clean_exit(base), 1);
-			res = execve(actual->cmd->path_cmd, actual->cmd->cmd, base->env);
+			execve(actual->cmd->path_cmd, actual->cmd->cmd, base->env);
 			base->exit_code = errno;
 			clean_exit(base);
 		}

@@ -49,6 +49,7 @@ typedef struct s_base
 	char			**env;
 	char			*input;
 	char 			*tild;
+	int				hrdoc_size;
 	int				exit_code;
 	int				count_forks;
 	int				stdin_back;

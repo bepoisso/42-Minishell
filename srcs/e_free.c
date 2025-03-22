@@ -66,12 +66,11 @@ void	free_base(t_base *base)
 	free_null((void **)&base->input);
 }
 
-void	clean_exit(t_base *base, int exit_code)
+void	clean_exit(t_base *base)
 {
-	base->exit_code = exit_code;
 	free_base(base);
 	free_null((void **)&base->tild);
 	free_doubletab(&base->env);
 	rl_clear_history();
-	exit (exit_code);
+	exit (base->exit_code);
 }

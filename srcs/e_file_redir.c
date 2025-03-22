@@ -9,17 +9,22 @@ char	*add_in_command(t_base *base)
 	fd = open(HRDOC_FILE, O_RDONLY, 0644);
 	hrdoc = get_next_line(fd);
 	if (!hrdoc)
-		return (NULL);
+		return (close(fd), NULL);
+	line = ft_strjoin(base->input, "\n");
+	if (!line)
+		return (close(fd), NULL);
+	free_null((void **)&base->input);
+	base->input = line;
 	while (hrdoc)
 	{
 		line = ft_strjoin(base->input, hrdoc);
 		if (!line)
-			return (NULL);
+			return (close(fd), NULL);
 		free_null((void **)&hrdoc);
 		free_null((void **)&base->input);
 		base->input = line;
 		hrdoc = get_next_line(fd);
-	}
+	} 
 	close(fd);
 	return (base->input);
 }
@@ -28,10 +33,8 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 {
 	char	*line;
 	int		fd;
-	int		hrdoc_size;
 
 	line = NULL;
-	hrdoc_size = 0;
 	if (cmd->hrdoc)
 		close(cmd->hrdoc);
 	fd = open(HRDOC_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
@@ -47,10 +50,11 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 		if (!line)
 		{
 			ft_putstr_fd("minishell: warning: here-document at line \n", 2);
-			ft_putnbr_fd(hrdoc_size, 2);
+			ft_putnbr_fd(base->hrdoc_size, 2);
 			ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
 			ft_putstr_fd(tokens->data, 2);
 			ft_putstr_fd(")\n", 2);
+
 		}
 		else if (line[0] == '\0' || ft_strncmp(line, tokens->data
 				, ft_strlen(tokens->data) + 1))
@@ -59,7 +63,7 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 				return (free_null((void **)line), close(fd), -1);
 			if (write(fd, "\n", 1) < 0)
 				return (close(fd), -1);
-			hrdoc_size += ft_strlen(line);
+			base->hrdoc_size += ft_strlen(line);
 		}
 	}
 	cmd->hrdoc = fd;

@@ -88,7 +88,7 @@ int	count_forks(t_base *base)
 	return (base->count_forks);
 }
 
-static char	*error_handle(int type, char *cmd)
+static void	error_handle(int type, char *cmd)
 {
 	char	*err;
 
@@ -100,46 +100,57 @@ static char	*error_handle(int type, char *cmd)
 	else if (type == 2)
 		err = error_message(RED"Minishell: ", cmd
 			, ": No such file or directory\n"RESET, NULL);
-	return (err);
+	else if (type == 3)
+		err = error_message(RED"Minishell: ", cmd
+		, ": Permission denied\n"RESET, NULL);
+	ft_putstr_fd(err, 2);
+	free_null((void **)&err);
 }
-/* 
-static char	*is_absolute(char *cmd)
+
+static char	*is_absolute(t_token *actual, t_base *base)
 {
-	int	i;
+	int	error;
 
-	i = 0;
-	while (cmd && cmd[i])
+	if (access(actual->cmd->cmd[0], X_OK) == 0)
+		return (actual->cmd->cmd[0]);
+	error = errno;
+	if (error == ENOENT)
 	{
-		if (cmd[i] == '/')
+		error_handle(2, actual->cmd->cmd[0]);
+		base->exit_code = 127;
 	}
-
-} */
+	else if (error == EACCES)
+	{
+		error_handle(3, actual->cmd->cmd[0]);
+		base->exit_code = 126;
+	}
+	return (NULL);
+}
 
 char	*check_cmd(t_token *actual, t_base *base)
 {
 	char	*path;
-	char	*err;
 	char	**env_listcpy;
 
 	if (ft_strchr(actual->cmd->cmd[0], '/'))
-		return (actual->cmd->cmd[0]);
-	err = NULL;
+		return (is_absolute(actual, base));
 	env_listcpy = base->path_list;
+	path = NULL;
 	if (env_listcpy)
 	{
 		while (*env_listcpy)
 		{
 			path = ft_strjoin(*env_listcpy, actual->cmd->cmd[0]);
 			if (access(path, X_OK) == 0)
-				return (path);
+				return (base->exit_code = 0, path);
+			if (errno == EACCES)
+				(base->exit_code = 126, error_handle(3, actual->cmd->cmd[0]));
 			free_null((void *)&path);
 			env_listcpy++;
 		}
 		base->exit_code = 127;
-		err = error_handle(1, actual->cmd->cmd[0]);
-		return (ft_putstr_fd(err, 2), free_null((void **)&err), NULL);
+		return (error_handle(1, actual->cmd->cmd[0]), NULL);
 	}
 	base->exit_code = 127;
-	err = error_handle(2, actual->cmd->cmd[0]);
-	return (ft_putstr_fd(err, 2), free_null((void **)&err), NULL);
+	return (error_handle(2, actual->cmd->cmd[0]), NULL);
 }

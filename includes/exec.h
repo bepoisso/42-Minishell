@@ -34,7 +34,7 @@ void	free_n_tabint(int **tabint, int n);
 void	free_cmd_list(t_cmd *cmd);
 void	free_token_list(t_token *tk);
 void	free_base(t_base *base);
-void	clean_exit(t_base *base, int exit_code);
+void	clean_exit(t_base *base);
 
 /**			e_exec.c */
 char	**extract_paths(t_base *base);

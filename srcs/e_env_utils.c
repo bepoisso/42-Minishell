@@ -60,10 +60,9 @@ char	**add_var_in_env(char **env, char *data)
 	}
 	else
 	{
-
 		new_env = ft_calloc(ft_strslen(env) + 1, sizeof(char *));
 		if (!new_env)
-		exit(EXIT_FAILURE);
+			exit(EXIT_FAILURE);
 		while (env[i])
 		{
 			new_env[i] = env[i];

@@ -84,25 +84,23 @@ char	**add_var_in_env(char **env, char *data)
 	i = search_empty(env);
 	if (i >= 0)
 	{
-		env[i] = ft_strdup(data);
+		free_null((void **)&env[i]);
+		env[i] = data;
 		return (env);
 	}
-	else
+	i = 0;
+	new_env = ft_calloc(ft_strslen(env) + 2, sizeof(char *));
+	if (!new_env)
+		exit(EXIT_FAILURE);
+	while (env[i])
 	{
-		i = 0;
-		new_env = ft_calloc(ft_strslen(env) + 2, sizeof(char *));
-		if (!new_env)
-			exit(EXIT_FAILURE);
-		while (env[i])
-		{
-			new_env[i] = env[i];
-			i++;
-		}
-		env[i] = ft_strdup(data);
-		new_env[i + 1] = NULL;
-		free_null((void **)env);
-		return (new_env);
+		new_env[i] = env[i];
+		i++;
 	}
+	new_env[i] = data;
+	new_env[i + 1] = NULL;
+	free(env);
+	return (new_env);
 }
 
 /**

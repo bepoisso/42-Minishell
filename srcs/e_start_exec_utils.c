@@ -54,15 +54,26 @@ void	close_inpt_outp(t_cmd *actualcmd)
 
 static void	raz_std_fds(t_base *base)
 {
-	if (dup2(base->stdout_back, STDOUT_FILENO) == -1)
+	if (base->stdout_back)
 	{
-		perror("dup2 failed");
-		exit(EXIT_FAILURE);
+		if (dup2(base->stdout_back, STDOUT_FILENO) == -1)
+		{
+			perror("dup2 failed");
+			exit(EXIT_FAILURE);
+		}
+		close(base->stdout_back);
+		base->stdout_back = 0;
 	}
-	if (dup2(base->stdin_back, STDIN_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		exit(EXIT_FAILURE);
+		if (base->stdin_back)
+		{
+			
+			if (dup2(base->stdin_back, STDIN_FILENO) == -1)
+			{
+				perror("dup2 failed");
+			exit(EXIT_FAILURE);
+		}
+		close(base->stdin_back);
+		base->stdin_back = 0;
 	}
 }
 
@@ -84,8 +95,4 @@ void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
 		actualcmd->hrdoc = 0;
 	}
 	raz_std_fds(base);
-	if (base->stdin_back)
-		close(base->stdin_back);
-	if (base->stdout_back)
-	close(base->stdout_back);
 }

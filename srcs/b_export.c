@@ -83,41 +83,19 @@ static int	add_or_updt_var(t_token *tok, t_base *base)
 		free_null((void **)&name);
 		if (i >= 0)
 		{
-			free(base->env[i]);
+			free_null((void **)&base->env[i]);
 			base->env[i] = ft_strdup(act_cmd->cmd[k]);
 			if (!base->env[i])
 				return (ft_putstr_fd("Error : strdup env\n", 2), -1);
 		}
 		else
-			base->env = add_var_in_env(base->env, act_cmd->cmd[k]);
+			base->env = add_var_in_env(base->env, ft_strdup(act_cmd->cmd[k]));
 		k++;
 	}
 	return (0);
 }
-// export PLOP= PLOUF=iouwhefergwergiuwhyerfgiuwyegrweriuhwef WSLENV=189345345
- /* char	*change_value(char **env, char **old_data, char *new_data)
-{
-	int		i;
-	char	*temp;
-	char	*data;
-
-	i = ft_strlen(name) + 1;
-	temp = ft_strjoin(name, "=");
-	if (!temp)
-		return (NULL);
-	data = search_data_in_env(env, "OLDPWD")
-		if (data)
-
-	*old_data -= i;
-	free_null((void **)old_data);
-	*old_data = ft_strjoin(temp, new_data);
-	free_null((void **)&temp);
-	return (NULL);
-}*/
 
 /**
- * 
- * 
  * export sans argument affiche env dans ordre acsii en utilisant strcmp et un bubble sort ou quicksort
  * export A ajoute une variable A vide en env
  * export A="plop" ajoute une variable contenant Plop
@@ -131,9 +109,11 @@ int	builtin_export(t_token *actual_tok)
 		if (add_or_updt_var(actual_tok, actual_tok->base) != 0)
 			return (1);
 		ft_printf(BLUE"Env APRES : %p /n"RESET, actual_tok->base->env);
-		ft_put_arraystr(actual_tok->base->env);
 	}
 	else
+	{
 		ft_putstr("AFFICHAGE DE ENV EN MODE EXPORT\n");
+		ft_put_arraystr(actual_tok->base->env);
+	}
 	return(0);
 }

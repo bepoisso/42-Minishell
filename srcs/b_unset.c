@@ -26,6 +26,7 @@ static int	srch_n_destroy(t_token *tok, char *search)
 			free_null((void **)&tok->base->env[i]);
 			tok->base->env[i] = ft_strdup("");
 			erased++;
+			return (erased);
 		}
 		i++;
 	}

@@ -35,8 +35,8 @@ static int	go_home(t_base *base, char *args)
 	}
 	else if (chdir(path) == -1)
 		return (ft_error("Minishell: cd: HOME not set", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup(path), base);
 	return (0);
 }
 
@@ -47,8 +47,8 @@ static int	go_root(t_base *base)
 	getcwd(backup, sizeof(backup));
 	if (chdir("/") == -1)
 		return (ft_error("Minishell: cd: error cd: /", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd("/", base);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup("/"), base);
 	return (0);
 }
 
@@ -66,8 +66,8 @@ static int	go_there(t_base *base, t_cmd *act_cmd)
 		ft_error(error, 1, base), free_null((void **)&error);
 		return (1);
 	}
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup(path), base);
 	return (0);
 }
 

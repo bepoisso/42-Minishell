@@ -27,6 +27,7 @@ SRC_FILES = b_builtin.c\
 			b_echo.c\
 			b_env.c\
 			b_export.c\
+			b_export_utils.c\
 			b_pwd.c\
 			b_unset.c\
 			e_check.c\

@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-char	*error_message(char *str, ...)
+char	*strnjoin(char *str, ...)
 {
 	char	*full_message;
 	char	*va_tmp;

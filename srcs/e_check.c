@@ -94,14 +94,14 @@ static void	error_handle(int type, char *cmd)
 
 	err = NULL;
 	if (type == 1)
-		err = error_message(RED"Command '", cmd
+		err = strnjoin(RED"Command '", cmd
 			, "' not found, but can be installed with:\n\tsudo apt install "
 			, cmd, "\n"RESET, NULL);
 	else if (type == 2)
-		err = error_message(RED"Minishell: ", cmd
+		err = strnjoin(RED"Minishell: ", cmd
 			, ": No such file or directory\n"RESET, NULL);
 	else if (type == 3)
-		err = error_message(RED"Minishell: ", cmd
+		err = strnjoin(RED"Minishell: ", cmd
 		, ": Permission denied\n"RESET, NULL);
 	ft_putstr_fd(err, 2);
 	free_null((void **)&err);

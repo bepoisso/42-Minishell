@@ -31,12 +31,12 @@ static int	go_home(t_base *base, char *args)
 	if (args && ( *args == '~'))
 	{
 		if (chdir(base->tild) == -1)
-			return (ft_error("minishell: cd: error cd: ~", 1, base), 1);
+			return (ft_error("Minishell: cd: error cd: ~", 1, base), 1);
 	}
 	else if (chdir(path) == -1)
-		return (ft_error("minishell: cd: HOME not set", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
+		return (ft_error("Minishell: cd: HOME not set", 1, base), 1);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup(path), base);
 	return (0);
 }
 
@@ -46,9 +46,9 @@ static int	go_root(t_base *base)
 
 	getcwd(backup, sizeof(backup));
 	if (chdir("/") == -1)
-		return (ft_error("minishell: cd: error cd: /", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd("/", base);
+		return (ft_error("Minishell: cd: error cd: /", 1, base), 1);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup("/"), base);
 	return (0);
 }
 
@@ -62,12 +62,12 @@ static int	go_there(t_base *base, t_cmd *act_cmd)
 	path = act_cmd->cmd[1];
 	if (chdir(path) == -1)
 	{
-		error = error_message("bash: cd: ", path, ": No such file or directory", NULL);
+		error = error_message("Minishell: cd: ", path, ": No such file or directory", NULL);
 		ft_error(error, 1, base), free_null((void **)&error);
 		return (1);
 	}
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
+	update_oldpwd(ft_strdup(backup), base);
+	update_pwd(ft_strdup(path), base);
 	return (0);
 }
 
@@ -91,7 +91,7 @@ int	builtin_cd(t_token *actual_tok, t_base *base)
 	status = 0;
 	size = ft_strslen(actual_tok->cmd->cmd) - 1;
 	if (size > 1)
-		return (ft_error("Error minishell: cd: too many arguments\n", 2, base), 1);
+		return (ft_error("Error Minishell: cd: too many arguments\n", 2, base), 1);
 	else if (size == 0 || (size == 1 && is_home(actual_tok->cmd->cmd[1])))
 		status = go_home(base, actual_tok->cmd->cmd[1]);
 	else if ((size == 1 && !ft_strncmp(actual_tok->cmd->cmd[1], "/", 2)))

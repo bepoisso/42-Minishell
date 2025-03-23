@@ -26,6 +26,10 @@
 
 # define HRDOC_FILE ".hrdoc_temp"
 # define SIZEOFLINE 1000
+# define MAXNAME 1000
+
+
+void	ft_put_arraystr(char **array);
 
 /**			free.c */
 void	free_doubletab(char ***str);

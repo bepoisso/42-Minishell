@@ -2,9 +2,6 @@
 
 #include "../includes/minishell.h"
 
-#include <stdio.h>
-#include <stdbool.h>
-
 void	ft_put_arraystr(char **array)
 {
 	int	i;

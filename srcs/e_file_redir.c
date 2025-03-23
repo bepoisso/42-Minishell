@@ -81,7 +81,7 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 	if (token)
 		file = token->data;
 	else
-		return (ft_error("bash: syntax error near unexpected token\n", 1, base)
+		return (ft_error("Minishell: syntax error near unexpected token\n", 1, base)
 			, -1);
 	fd = 0;
 	if (type == 3)

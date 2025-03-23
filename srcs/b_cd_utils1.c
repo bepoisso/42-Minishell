@@ -58,6 +58,8 @@ int	update_pwd(char *new_data, t_base *base)
 	{
 		free_null((void **)&base->env[i]);
 		base->env[i] = ft_strjoin("PWD=",new_data);
+		if (!base->env[i])
+			return (1);
 		return (0);
 	}
 	else
@@ -76,6 +78,8 @@ int	update_oldpwd(char *new_data, t_base *base)
 	{
 		free_null((void **)&base->env[i]);
 		base->env[i] = ft_strjoin("OLDPWD=",new_data);
+		if (!base->env[i])
+			return (1);
 		return (0);
 	}
 	else
@@ -100,7 +104,7 @@ int	go_back(t_base *base)
 		i--;
 	path[i + 1] = '\0';
 	if (chdir(path) == -1)
-		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
+		return (ft_error("minishell: cd: No such file or directory", 1, base), 1);
 	update_oldpwd(backup, base);
 	update_pwd(path, base);
 	return (0);

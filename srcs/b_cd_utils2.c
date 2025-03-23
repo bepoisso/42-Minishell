@@ -11,7 +11,9 @@ int	go_before(t_base *base)
 		return (ft_error("minishell: cd: OLDPWD not set", 1, base), 1);
 	if (chdir(path) == -1)
 		return (ft_error("ERROR chdir", 1, base), 1);
-	update_oldpwd(backup, base);
-	update_pwd(path, base);
+	if (update_pwd(path, base))
+		return (ft_error("ERROR update_pwd", 1, base), 1);
+	if (update_oldpwd(backup, base))
+		return(ft_error("ERROR update_oldpwd", 1, base), 1);
 	return (0);
 }

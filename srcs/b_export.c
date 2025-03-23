@@ -55,6 +55,17 @@ static char	*xtract_var_name(char *data)
 	return (name);
 }
 
+void debug_fds()
+{
+    for (int i = 0; i < 5; i++)
+    {
+        if (fcntl(i, F_GETFD) != -1)
+            printf("FD %d is open\n", i);
+        else
+            printf("FD %d is closed\n", i);
+    }
+}
+
 static int	add_or_updt_var(t_token *tok, t_base *base)
 {
 	int		i;
@@ -78,12 +89,12 @@ static int	add_or_updt_var(t_token *tok, t_base *base)
 				return (ft_putstr_fd("Error : strdup env\n", 2), -1);
 		}
 		else
-			add_var_in_env(base->env, act_cmd->cmd[k]);
+			base->env = add_var_in_env(base->env, act_cmd->cmd[k]);
 		k++;
 	}
 	return (0);
 }
-
+// export PLOP= PLOUF=iouwhefergwergiuwhyerfgiuwyegrweriuhwef WSLENV=189345345
  /* char	*change_value(char **env, char **old_data, char *new_data)
 {
 	int		i;

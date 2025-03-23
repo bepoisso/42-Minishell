@@ -29,6 +29,8 @@
 # define MAXNAME 1000
 
 
+void	ft_put_arraystr(char **array);
+
 /**			free.c */
 void	free_doubletab(char ***str);
 void	free_null(void	**ptr);

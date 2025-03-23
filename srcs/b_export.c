@@ -121,14 +121,17 @@ static int	add_or_updt_var(t_token *tok, t_base *base)
  * export sans argument affiche env dans ordre acsii en utilisant strcmp et un bubble sort ou quicksort
  * export A ajoute une variable A vide en env
  * export A="plop" ajoute une variable contenant Plop
- * 
+ * ft_put_arraystr
 */
 int	builtin_export(t_token *actual_tok)
 {
+	ft_printf(BLUE"Env AVANT : %p /n"RESET, actual_tok->base->env);
 	if (ft_strslen( actual_tok->cmd->cmd) > 1)
 	{
 		if (add_or_updt_var(actual_tok, actual_tok->base) != 0)
 			return (1);
+		ft_printf(BLUE"Env APRES : %p /n"RESET, actual_tok->base->env);
+		ft_put_arraystr(actual_tok->base->env);
 	}
 	else
 		ft_putstr("AFFICHAGE DE ENV EN MODE EXPORT\n");

@@ -22,10 +22,12 @@ static int	cmd_before(t_token *tok, int fd)
 		if (actual->id == 9)
 		{
 			actual->cmd->output = fd;
+			return (0);
 		}
 		actual = actual->prev;
 	}
-	return (0);
+	close(fd);
+	return (1);
 }
 
 static int	cmd_after(t_token *tok, int fd)
@@ -38,10 +40,12 @@ static int	cmd_after(t_token *tok, int fd)
 		if (actual->id == 9)
 		{
 			actual->cmd->input = fd;
+			return (0);
 		}
 		actual = actual->next;
 	}
-	return (0);
+	close(fd);
+	return (1);
 }
 
 static void	create_redir(t_base *base)

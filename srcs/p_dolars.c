@@ -9,7 +9,7 @@ char	*search_env_var(char *search, char **env, t_base *base)
 	j = 0;
 	if (search[i] == '?')
 		return (ft_itoa(base->exit_code));
-	while(env[i])
+	while (env[i])
 	{
 		if (ft_strncmp(search, env[i], ft_strlen(search)) == 0)
 		{
@@ -24,9 +24,9 @@ char	*search_env_var(char *search, char **env, t_base *base)
 
 void	dollar_is_literal(t_dollar *dollars)
 {
-	int		i;
-	char	*temp;
-	t_dollar *current;
+	int			i;
+	char		*temp;
+	t_dollar	*current;
 
 	current = dollars;
 	while (current)
@@ -47,8 +47,7 @@ void	dollar_is_literal(t_dollar *dollars)
 	}
 }
 
-
-t_dollar	*create_dollar(char *value ,char *name , bool literal)
+t_dollar	*create_dollar(char *value, char *name, bool literal)
 {
 	t_dollar	*new;
 
@@ -66,7 +65,7 @@ t_dollar	*create_dollar(char *value ,char *name , bool literal)
 	return (new);
 }
 
-void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
+void	add_dollar(t_dollar **dollars, char *name, char *value, bool literal)
 {
 	t_dollar	*new;
 	t_dollar	*temp;
@@ -75,7 +74,7 @@ void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
 		return ;
 	new = create_dollar(value, name, literal);
 	if (!new)
-		return;
+		return ;
 	if (!*dollars)
 		*dollars = new;
 	else
@@ -117,7 +116,7 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 			i--;
 		}
 		if (!token->data[i])
-			break;
+			break ;
 		i++;
 	}
 }
@@ -126,12 +125,11 @@ void	handling_dollar(t_token *tokens, t_base *base)
 {
 	t_dollar	*dollars;
 	t_token		*current;
-	
+
 	free(base->dollars);
 	dollars = malloc(sizeof(t_dollar));
 	ft_memset(dollars, 0, sizeof(t_dollar));
 	current = tokens;
-
 	while (current)
 	{
 		get_name_value_dollar(current, dollars, base);

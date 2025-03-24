@@ -71,7 +71,7 @@ t_token	*token_parser(t_token *tokens)
 	{
 		if (!ft_isop(current->data[0]) && current->id != 0)
 		{
-			if (current->next && (current->next->id == 11 || (current->id == 11 && !ft_isop(current->next->data[0]) && current->next->id != 0)) )
+			if (current->next && (current->next->id == 11 || (current->id == 11 && !ft_isop(current->next->data[0]) && current->next->id != 0)))
 			{
 				temp = ft_strdup(current->data);
 				current->id = 11;
@@ -80,7 +80,7 @@ t_token	*token_parser(t_token *tokens)
 				current->data = ft_strjoin(temp, current->next->data);
 				free(temp);
 				rm_node_token(current->next);
-				continue;
+				continue ;
 			}
 		}
 		current = current->next;
@@ -88,17 +88,17 @@ t_token	*token_parser(t_token *tokens)
 	current = tokens;
 	while (1)
 	{
-		 if (!current)
+		if (!current)
 			break ;
 		save = current->next;
 		if (current->id == 0)
 		{
 			if (current == tokens)
-			tokens = tokens->next;
+				tokens = tokens->next;
 			rm_node_token(current);
 		}
 		if (save == NULL)
-			break;
+			break ;
 		current = save;
 	}
 	print_dollar(tokens->base);
@@ -108,4 +108,3 @@ t_token	*token_parser(t_token *tokens)
 	print_tokens(tokens);
 	return (tokens);
 }
-

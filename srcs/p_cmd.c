@@ -72,7 +72,6 @@ t_cmd	*parsing_cmd(t_base *base)
 	while (tokens)
 	{
 		i = -1;
-		//value = malloc(sizeof(char *) * (count_args(tokens) + 1));
 		value = ft_calloc((count_args(tokens) + 1), sizeof(char *));
 		if (!value)
 			return (NULL);

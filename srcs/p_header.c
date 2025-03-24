@@ -46,16 +46,26 @@ void	print_delay(char *s, long time)
 
 void	ascii(void)
 {
-	print_delay(VIOLET_BOLD"   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████    ▄█    █▄       ▄████████  ▄█        ▄█       \n", DELAY_TIME);
-	print_delay(" ▄██▀▀▀███▀▀▀██▄ ███  ███▀▀▀██▄ ███    ███    ███   ███    ███     ███    ███ ███       ███       \n", DELAY_TIME);
-	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███    █▀    ███    ███     ███    █▀  ███       ███       \n", DELAY_TIME);
-	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███         ▄███▄▄▄▄███▄▄  ▄███▄▄▄     ███       ███       \n", DELAY_TIME);
-	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌ ▀███████████ ▀▀███▀▀▀▀███▀  ▀▀███▀▀▀     ███       ███       \n", DELAY_TIME);
-	print_delay(" ███   ███   ███ ███  ███   ███ ███           ███   ███    ███     ███    █▄  ███       ███       \n", DELAY_TIME);
-	print_delay(" ███   ███   ███ ███  ███   ███ ███     ▄█    ███   ███    ███     ███    ███ ███▌    ▄ ███▌    ▄ \n", DELAY_TIME);
-	print_delay("  ▀█   ███   █▀  █▀    ▀█   █▀  █▀    ▄████████▀    ███    █▀      ██████████ █████▄▄██ █████▄▄██ \n", DELAY_TIME);
-	print_delay("            (° ͜ʖ͡°)╭∩╮                                                         ▀         ▀         \n"RESET, DELAY_TIME);
-	print_delay(YELLOW_BOLD"                                                              By bepoisso 🐟 & jrinaudo 🧌        \n"RESET, DELAY_TIME);
+	print_delay(VIOLET_BOLD"   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████\
+    ▄█    █▄       ▄████████  ▄█        ▄█       \n", DELAY_TIME);
+	print_delay(" ▄██▀▀▀███▀▀▀██▄ ███  ███▀▀▀██▄ ███    ███    ███   ███    █\
+██     ███    ███ ███       ███       \n", DELAY_TIME);
+	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███    █▀    ███    █\
+██     ███    █▀  ███       ███       \n", DELAY_TIME);
+	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌   ███         ▄███▄▄▄▄█\
+██▄▄  ▄███▄▄▄     ███       ███       \n", DELAY_TIME);
+	print_delay(" ███   ███   ███ ███▌ ███   ███ ███▌ ▀███████████ ▀▀███▀▀▀▀█\
+██▀  ▀▀███▀▀▀     ███       ███       \n", DELAY_TIME);
+	print_delay(" ███   ███   ███ ███  ███   ███ ███           ███   ███    █\
+██     ███    █▄  ███       ███       \n", DELAY_TIME);
+	print_delay(" ███   ███   ███ ███  ███   ███ ███     ▄█    ███   ███    █\
+██     ███    ███ ███▌    ▄ ███▌    ▄ \n", DELAY_TIME);
+	print_delay("  ▀█   ███   █▀  █▀    ▀█   █▀  █▀    ▄████████▀    ███    █\
+▀      ██████████ █████▄▄██ █████▄▄██ \n", DELAY_TIME);
+	print_delay("            (° ͜ʖ͡°)╭∩╮                                       \
+                  ▀         ▀         \n"RESET, DELAY_TIME);
+	print_delay(YELLOW_BOLD"                                                 \
+             By bepoisso 🐟 & jrinaudo 🧌        \n"RESET, DELAY_TIME);
 }
 
 void	header(void)

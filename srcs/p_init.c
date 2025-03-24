@@ -2,7 +2,7 @@
 
 int	get_redir_io(t_token *token)
 {
-	t_token *current;
+	t_token	*current;
 
 	current = token;
 	while (current)

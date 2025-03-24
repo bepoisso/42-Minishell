@@ -142,4 +142,3 @@ void	identify_token(t_token *tokens)
 		current = current->next;
 	}
 }
-

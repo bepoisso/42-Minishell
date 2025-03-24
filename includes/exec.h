@@ -86,4 +86,7 @@ int		search_empty(char **env);
 char	**env_cpy(void);
 char	*shlvl_modifier(char **environ, int i);
 
+/**			e_expnse.c */
+void	expanse(t_token *tokens, t_dollar *dollars);
+
 #endif

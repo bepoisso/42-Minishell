@@ -28,10 +28,8 @@ static void	change_dollars(t_token *tok, t_dollar *dol)
 	char	*temp;
 	char	*after;
 	int		i;
-	bool	check;
 
 	i = 0;
-	check = false;
 	while (tok->data[i] && tok->data[i] != '$')
 		i++;
 	if (tok->data[i] != '$')

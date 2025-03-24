@@ -1,7 +1,5 @@
 #include "../includes/minishell.h"
 
-//ls -la | grep dr | sort | rev > outfile
-
 void	close_fds(t_base *base, t_cmd *actualcmd)
 {
 	t_cmd	*cmd;
@@ -52,9 +50,23 @@ static void	exec_redir_main_process(t_token *actual)
 	}
 }
 
+static void	child_process(t_base *base, t_token *actual)
+{
+	signal(SIGQUIT, SIG_DFL);
+	exec_redir(actual);
+	close_fds(base, actual->cmd);
+	actual->cmd->path_cmd = check_cmd(actual, base);
+	if (!actual->cmd->path_cmd)
+		return (close(actual->cmd->input), close(actual->cmd->output)
+			, clean_exit(base));
+	execve(actual->cmd->path_cmd, actual->cmd->cmd, base->env);
+	base->exit_code = errno;
+	clean_exit(base);
+}
+
 int	prepare_exec(t_token *actual, t_base *base)
 {
-	if (handle_redirections(actual, base, actual->cmd))
+	if (handle_redirections(actual, actual->cmd))
 		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	if (actual->cmd->builtin)
 	{
@@ -69,16 +81,7 @@ int	prepare_exec(t_token *actual, t_base *base)
 			return (perror("Error: create fork\n"), clean_exit(base), 1);
 		if (base->lastpid == 0)
 		{
-			signal(SIGQUIT, SIG_DFL);
-			exec_redir(actual);
-			close_fds(base, actual->cmd);
-			actual->cmd->path_cmd = check_cmd(actual, base);
-			if (!actual->cmd->path_cmd)
-			return (close(actual->cmd->input), close(actual->cmd->output)
-			, clean_exit(base), 1);
-			execve(actual->cmd->path_cmd, actual->cmd->cmd, base->env);
-			base->exit_code = errno;
-			clean_exit(base);
+			child_process(base, actual);
 		}
 		close_inpt_outp(actual->cmd);
 	}

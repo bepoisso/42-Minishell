@@ -1,7 +1,6 @@
-
 #include "../includes/minishell.h"
 
-int ft_strslen(char **strs)
+int	ft_strslen(char **strs)
 {
 	int	i;
 
@@ -40,4 +39,25 @@ char	*ft_strnjoin(char *str, ...)
 	free_null((void **)&tmp);
 	va_end(message_lst);
 	return (full_message);
+}
+
+char	*ft_strdup_protected(const char *s)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	dest = NULL;
+	if (!s)
+		return (NULL);
+	dest = malloc(sizeof(char) * ft_strlen(s) + 1);
+	if (dest == NULL)
+		return (dest);
+	while (s[i])
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }

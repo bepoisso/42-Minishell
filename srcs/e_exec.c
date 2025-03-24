@@ -1,45 +1,87 @@
 #include "../includes/minishell.h"
 
-/**
- * @brief Extracts and formats PATH environment variable into an array of paths
- * 
- * This function gets the PATH environment variable, splits it into individual
- *  paths,
- * and adds a trailing slash to each path.
- * 
- * @return char** Array of paths with trailing slashes, NULL if:
- *                - PATH environment variable is not found
- *                - Memory allocation fails
- *                - Split operation fails
- * 
- * @note The returned array must be freed by the caller
- * @note Each path in the returned array ends with a '/' character
- */
-char	**extract_paths(t_base *base)
+static int	cmd_before(t_token *tok, int fd)
 {
-	char	*env;
-	char	**env_list;
-	char	*env_listcpy;
-	int		i;
+	t_token	*actual;
 
-	i = 0;
-	env_list = NULL;
-	env_listcpy = NULL;
-	env = ft_strdup(search_data_in_env(base->env, "PATH"));
-	if (!env)
-		return (NULL);
-	env_list = ft_split(env, ':');
-	if (!env_list)
-		return (NULL);
-	free_null((void **)&env);
-	while (env_list[i])
+	actual = tok->prev;
+	while (actual && actual->id != 7)
 	{
-		env_listcpy = ft_strjoin(env_list[i], "/");
-		if (!env_listcpy)
-			return (free_doubletab(&env_list), NULL);
-		free_null((void *)&env_list[i]);
-		env_list[i] = env_listcpy;
-		i++;
+		if (actual->id == 9)
+		{
+			actual->cmd->output = fd;
+			return (0);
+		}
+		actual = actual->prev;
 	}
-	return (env_list);
+	close(fd);
+	return (1);
+}
+
+static int	cmd_after(t_token *tok, int fd)
+{
+	t_token	*actual;
+
+	actual = tok->next;
+	while (actual && actual->id != 7)
+	{
+		if (actual->id == 9)
+		{
+			actual->cmd->input = fd;
+			return (0);
+		}
+		actual = actual->next;
+	}
+	close(fd);
+	return (1);
+}
+
+static void	create_redir(t_base *base)
+{
+	t_token	*actual;
+	int		pipeline[2];
+
+	actual = base->token;
+	while (actual)
+	{
+		if (actual->id == 7)
+		{
+			if (pipe(pipeline) < 0)
+				exit(1);
+			cmd_before(actual, pipeline[1]);
+			cmd_after(actual, pipeline[0]);
+		}
+		actual = actual->next;
+	}
+}
+
+static void	handle_cmd(t_token *tok, t_base *base)
+{
+	t_token	*actual;
+	t_cmd	*actual_cmd;
+
+	actual = tok;
+	actual_cmd = base->cmds;
+	while (actual)
+	{
+		if (actual->id == 9)
+		{
+			actual->cmd = actual_cmd;
+			actual->cmd->input = 0;
+			actual->cmd->output = 1;
+			actual->cmd->hrdoc = 0;
+			actual_cmd = actual_cmd->next;
+		}
+		else
+			actual->cmd = NULL;
+		actual = actual->next;
+	}
+}
+
+void	init_exec(t_base *base)
+{
+	handle_cmd(base->token, base);
+	create_redir(base);
+	base->count_forks = count_forks(base);
+	base->path_list = extract_paths(base);
 }

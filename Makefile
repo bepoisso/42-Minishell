@@ -8,7 +8,7 @@ RESET	= \033[0m
 
 NAME		= minishell
 CC			= cc
-CFLAGS		= -Wall -Wextra -g -I$(INC_DIR) #-Werror#
+CFLAGS		= -Wall -Wextra -g -I$(INC_DIR) -Werror
 LIBS		= -lreadline -lhistory -L./libft -lft
 VALARGS		= --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes -s
 SVALARGS	= --suppressions=./valgrind.sup --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes --show-reachable=yes -s --log-file=test_valgrind.log
@@ -26,8 +26,10 @@ SRC_FILES = b_builtin.c\
 			b_cd_utils2.c\
 			b_echo.c\
 			b_env.c\
+			b_exit.c\
 			b_export.c\
 			b_export_utils.c\
+			b_export_utils2.c\
 			b_pwd.c\
 			b_unset.c\
 			e_check.c\
@@ -40,6 +42,7 @@ SRC_FILES = b_builtin.c\
 			e_start_exec.c\
 			e_start_exec_utils.c\
 			e_start_exec_utils2.c\
+			e_start_exec_utils3.c\
 			e_tolkien.c\
 			e_utils.c\
 			sighand.c\

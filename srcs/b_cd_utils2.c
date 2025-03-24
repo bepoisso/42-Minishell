@@ -15,6 +15,6 @@ int	go_before(t_base *base)
 	if (update_pwd(ft_strdup(path), base))
 		return (ft_error("ERROR update_pwd", 1, base), 1);
 	if (update_oldpwd(ft_strdup(backup), base))
-		return(ft_error("ERROR update_oldpwd", 1, base), 1);
+		return (ft_error("ERROR update_oldpwd", 1, base), 1);
 	return (0);
 }

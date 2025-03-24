@@ -63,9 +63,9 @@ t_token	*token_parser(t_token *tokens)
 
 	current = tokens;
 	temp = NULL;
-	print_tokens(tokens);
+	//print_tokens(tokens);
 	handling_dollar(tokens, tokens->base);
-	print_dollar(tokens->base);
+	//print_dollar(tokens->base);
 	dollar_is_literal(tokens->base->dollars);
 	while (current)
 	{
@@ -101,11 +101,11 @@ t_token	*token_parser(t_token *tokens)
 			break;
 		current = save;
 	}
-	print_dollar(tokens->base);
+	//print_dollar(tokens->base);
 	identify_token(tokens);
 	rm_quote(tokens);
 	identify_token(tokens);
-	print_tokens(tokens);
+	//print_tokens(tokens);
 	return (tokens);
 }
 

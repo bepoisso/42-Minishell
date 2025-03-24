@@ -81,6 +81,7 @@ INDEX	TYPE	DESCRIPTION
 # define PATH_MAX 4096
 # define DELAY_TIME 200000
 # define DELAY_DOT 20000000
+# define BUFF 200000
 
 extern int	g_exit_status;
 

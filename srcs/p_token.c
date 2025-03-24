@@ -58,6 +58,22 @@ void	rm_node_token(t_token *token)
 	free_null((void **)&token);
 }
 
+static void	lexer_args(char *s, int *i, int *start)
+{
+	*start = *i;
+	while (ft_isprint(s[*i]) && !ft_isop(s[*i]) && !ft_isspace(s[*i])
+		&& s[*i] != '\'' && s[*i] != '"')
+		(*i)++;
+}
+
+static void	lexer_quote(char *s, int *i, int *start, bool *literal)
+{
+	if (s[*i] == '\'')
+		*literal = true;
+	*start = *i;
+	*i = skip_quote(s, *i);
+}
+
 t_token	*tokenizer(char *s, t_base *base)
 {
 	int		i;
@@ -66,9 +82,8 @@ t_token	*tokenizer(char *s, t_base *base)
 	bool	literal;
 
 	tokens = NULL;
-	i = 0;
-	while (ft_isspace(s[i]))
-		i++;
+	i = -1;
+	while (ft_isspace(s[++i]))
 	if (!s[i])
 		return (tokens);
 	while (s[i])
@@ -87,19 +102,9 @@ t_token	*tokenizer(char *s, t_base *base)
 				i++;
 		}
 		else if (s[i] == '"' || s[i] == '\'')
-		{
-			if (s[i] == '\'')
-				literal = true;
-			start = i;
-			i = skip_quote(s, i);
-		}
+			lexer_quote(s, &i, &start, &literal);
 		else
-		{
-			start = i;
-			while (ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i])
-				&& s[i] != '\'' && s[i] != '"')
-				i++;
-		}
+			lexer_args(s, &i, &start);
 		add_token(&tokens, ft_strndup(s + start, i - start), literal, base);
 	}
 	return (tokens);
@@ -142,3 +147,4 @@ void	identify_token(t_token *tokens)
 		current = current->next;
 	}
 }
+

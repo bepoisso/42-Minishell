@@ -12,15 +12,19 @@ int	check_only_redirect(t_token *tokens, t_base *base)
 
 	current = tokens;
 	if (ft_strcmp(current->data, "||") && !current->next)
-		return (ft_error("minishel: syntax error near unexpected token `||'", 2, base), 1);
+		return (ft_error("minishel: syntax error near \
+unexpected token `||'", 2, base), 1);
 	else if (current->data[0] == '|' && !current->next)
-		return (ft_error("minishel: syntax error near unexpected token `|'", 2, base), 1);
+		return (ft_error("minishel: syntax error near \
+unexpected token `|'", 2, base), 1);
 	while (current)
 	{
 		if (current->data[0] == '<' && !current->next)
-			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `newline'", 2, base), 1);
 		else if (current->data[0] == '>' && !current->next)
-			return (ft_error("minishell: syntax error near unexpected token `newline'", 2, base), 1);
+			return (ft_error("minishell: syntax error near \
+unexpected token `newline'", 2, base), 1);
 		current = current->next;
 	}
 	return (0);

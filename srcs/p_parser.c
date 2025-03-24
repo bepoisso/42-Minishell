@@ -13,49 +13,6 @@ int	parser(char *str, t_base *base)
 	return (0);
 }
 
-void	rm_quote(t_token *tokens)
-{
-	t_token	*current;
-	char	*temp;
-	int		i;
-	int		j;
-	int		in;
-
-	in = 0;
-	current = tokens;
-	while (current)
-	{
-		j = 0;
-		i = -1;
-		if (current && (ft_strchr(current->data, '\'')
-				|| ft_strchr(current->data, '"')))
-		{
-			temp = malloc(sizeof(char) * (ft_strlen(current->data) + 1));
-			ft_memset(temp, 0, sizeof(char) * (ft_strlen(current->data) + 1));
-			while (current->data[++i])
-			{
-				if (current->data[i] == '"' && in == 0)
-					in = 1;
-				else if (current->data[i] == '\'' && in == 0)
-					in = 2;
-				else if (current->data[i] == '"' && in == 1)
-					in = 0;
-				else if (current->data[i] == '\'' && in == 2)
-					in = 0;
-				else
-				{
-					temp[j] = current->data[i];
-					j++;
-				}
-			}
-			free_null((void **)&current->data);
-			current->data = ft_strdup(temp);
-			free_null((void **)&temp);
-		}
-		current = current->next;
-	}
-}
-
 static void	join_quote(t_token *current)
 {
 	char	*temp;

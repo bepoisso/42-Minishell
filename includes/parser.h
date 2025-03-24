@@ -66,8 +66,9 @@ typedef struct s_base
 int		get_op_token(char *data, int id);
 int		skip_quote(char *s, int i);
 int		get_redir_io(t_token *token);
-t_token	*tokenizer(char *s, t_base *base);
+t_token	*lexer(char *s, t_base *base);
 t_token	*token_parser(t_token *tokens);
+void	add_token(t_token **tokens, char *value, bool literal, t_base *base);
 
 /* PARSER */
 int		parser(char *str, t_base *base);

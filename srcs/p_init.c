@@ -22,6 +22,9 @@ int	get_redir_io(t_token *token)
 
 int	get_op_token(char *data, int id)
 {
+	int	i;
+
+	i = 0;
 	if (!data || !*data)
 		return (-2);
 	if (ft_strncmp(data, "<<", 2) == 0 && id != 11)
@@ -38,7 +41,9 @@ int	get_op_token(char *data, int id)
 		return (11);
 	if (ft_strncmp(data, "\"", 1) == 0)
 		return (11);
-	if (ft_isspace(data[0]))
+	while (ft_isspace(data[i]))
+		i++;
+	if (!data[i])
 		return (0);
 	return (-1);
 }

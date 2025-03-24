@@ -22,7 +22,6 @@ int main(void)
 			g_exit_status = 0;
 		}
 		minitext = minitext_rl(base.env, &base);
-		ft_printf(GREEN"Exit code at the beginning : %d\n"RESET, base.exit_code);
 		base.input = readline(minitext);
 		if (!base.input)
 			return (free_null((void **)&minitext), free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);

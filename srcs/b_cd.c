@@ -15,7 +15,7 @@
  * 3 -> Change pwd to New
  * 		if no error :
  * 			Update env:
- * 				1 : oldpwd = backup PWD
+ * 				1 : oldpwd = apply_expanse PWD
  * 				2 : pwd = new
  * 		if error :
  * 			Print: Error bash: cd: *new: No such file or directory RETURN
@@ -62,7 +62,7 @@ static int	go_there(t_base *base, t_cmd *act_cmd)
 	path = act_cmd->cmd[1];
 	if (chdir(path) == -1)
 	{
-		error = error_message("Minishell: cd: ", path, ": No such file or directory", NULL);
+		error = ft_strnjoin("Minishell: cd: ", path, ": No such file or directory", NULL);
 		ft_error(error, 1, base), free_null((void **)&error);
 		return (1);
 	}

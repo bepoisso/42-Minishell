@@ -23,7 +23,7 @@
 	return (0);
 }*/
 
-static int	namelen(char * arg)
+int	namelen(char * arg)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ static int	namelen(char * arg)
 	return (i);
 }
 
-static char	*xtract_var_name(char *data)
+char	*xtract_var_name(char *data)
 {
 	char	*name;
 	int		i;
@@ -53,17 +53,6 @@ static char	*xtract_var_name(char *data)
 	}
 	name[i] = '\0';
 	return (name);
-}
-
-void debug_fds()
-{
-    for (int i = 0; i < 5; i++)
-    {
-        if (fcntl(i, F_GETFD) != -1)
-            printf("FD %d is open\n", i);
-        else
-            printf("FD %d is closed\n", i);
-    }
 }
 
 static int	add_or_updt_var(t_token *tok, t_base *base)
@@ -103,17 +92,12 @@ static int	add_or_updt_var(t_token *tok, t_base *base)
 */
 int	builtin_export(t_token *actual_tok)
 {
-	ft_printf(BLUE"Env AVANT : %p /n"RESET, actual_tok->base->env);
 	if (ft_strslen( actual_tok->cmd->cmd) > 1)
 	{
 		if (add_or_updt_var(actual_tok, actual_tok->base) != 0)
 			return (1);
-		ft_printf(BLUE"Env APRES : %p /n"RESET, actual_tok->base->env);
 	}
 	else
-	{
-		ft_putstr("AFFICHAGE DE ENV EN MODE EXPORT\n");
-		ft_put_arraystr(actual_tok->base->env);
-	}
+		put_xport(actual_tok->base->env);
 	return(0);
 }

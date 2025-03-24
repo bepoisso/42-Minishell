@@ -21,11 +21,9 @@ int		namelen(char * arg);
 void	put_xport(char **env);
 
 /**				b_cd.c */
-int		ft_strslen(char **array);
 int		builtin_cd(t_token *actual_tok, t_base *base);
 
 /**				b_cd_utils1.c */
-char	*strnjoin(char *str, ...);
 int		go_back(t_base *base);
 int		update_oldpwd(char *new_data, t_base *base);
 int		update_pwd(char *new_data, t_base *base);

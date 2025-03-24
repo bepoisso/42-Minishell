@@ -74,6 +74,7 @@ int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 
 /**			e_utils.c */
 int		ft_strslen(char **strs);
+char	*ft_strnjoin(char *str, ...);
 
 /**			e_env_utils.c */
 int		search_var_in_env(char **env, char *search);

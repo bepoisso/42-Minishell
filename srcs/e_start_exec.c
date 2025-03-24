@@ -66,7 +66,7 @@ static void	child_process(t_base *base, t_token *actual)
 
 int	prepare_exec(t_token *actual, t_base *base)
 {
-	if (handle_redirections(actual, base, actual->cmd))
+	if (handle_redirections(actual, actual->cmd))
 		return (close_inpt_outp(actual->cmd), base->exit_code = 1);
 	if (actual->cmd->builtin)
 	{

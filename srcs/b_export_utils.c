@@ -1,11 +1,50 @@
 #include "../includes/minishell.h"
 
+static int	is_ok(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else if (c >= 'A' && c <= 'Z')
+		return (1);
+	else if (c >= '0' && c <= '9')
+		return (1);
+	else if (c == '_')
+		return (1);
+	return (0);
+}
+
+int	check_xport_arg(char *cmd, char *name, t_base *base)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(cmd[0]))
+	{
+		base->exit_code = 1;
+		return (base->exit_code);
+	}
+	while (cmd[i] && cmd[i] != '=')
+	{
+		if (!is_ok(cmd[i]))
+		{
+			ft_putstr_fd(RED"Minishell: export: `", 2);
+			ft_putstr_fd(name, 2);
+			ft_putstr_fd("': not a valid identifier"RESET, 2);
+			ft_putstr_fd("\n", 2);
+			base->exit_code = 1;
+			break;
+		}
+		else
+			base->exit_code = 0;
+	}
+	return (base->exit_code);
+}
+
 static void	sort_strtab(char **strtab)
 {
 	char	*tmp;
 	int		i;
 	int		last_i;
-
 
 	tmp = NULL;
 	i = 0;
@@ -24,6 +63,22 @@ static void	sort_strtab(char **strtab)
 	}
 }
 
+static char	**dup_s_tab(char **stab)
+{
+	char		**new_env;
+	int			i;
+
+	i = 0;
+	new_env = ft_calloc((ft_strslen(stab) + 1), sizeof(char *));
+	while (stab[i])
+	{
+		new_env[i] = ft_strdup(stab[i]);
+		i++;
+	}
+	new_env[i] = NULL;
+	return (new_env);
+}
+
 void	put_xport(char **env)
 {
 	int		i;
@@ -31,23 +86,22 @@ void	put_xport(char **env)
 	char	**sorted;
 
 	i = 0;
-	sorted = ft_calloc(ft_strslen(env) + 1, sizeof(char *));
-	while (env[i])
-	{
-		sorted[i] = ft_strdup(env[i]);
-		i++;
-	}
-	sorted[i] = NULL;
-	i = 0;
+	sorted = dup_s_tab(env);
 	sort_strtab(sorted);
 	while (sorted[i])
 	{
-		name = xtract_var_name(sorted[i]);
-		if(search_data_in_env(env,name))
-			ft_printf("declare -x %s=\"%s\"\n", name, search_data_in_env(env,name));
-		else
-			ft_printf("declare -x %s\n", name);
-		free_null((void **)&name);
+		if (sorted[i][0] != '\0')
+		{
+			name = xtract_var_name(sorted[i]);
+			if (search_data_in_env(env, name))
+				ft_printf("declare -x %s=\"%s\"\n", name,
+					search_data_in_env(env, name));
+			else if (ft_strchr(sorted[i], '='))
+				ft_printf("declare -x %s=""\n", name);
+			else
+				ft_printf("declare -x %s\n", name);
+			free_null((void **)&name);
+		}
 		i++;
 	}
 	free_doubletab(&sorted);

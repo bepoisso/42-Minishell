@@ -1,6 +1,6 @@
 #include "../includes/minishell.h"
 
-static void	messages_heredeoc(int hrdoc_size, char *data)
+void	messages_heredeoc(int hrdoc_size, char *data)
 {
 	ft_putstr_fd("minishell: warning: here-document at line \n", 2);
 	ft_putnbr_fd(hrdoc_size, 2);

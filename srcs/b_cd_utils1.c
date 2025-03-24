@@ -13,14 +13,14 @@ int	cd_dot(t_base *base)
 int	update_pwd(char *new_data, t_base *base)
 {
 	int		i;
-	char 	*data;
+	char	*data;
 
 	data = NULL;
 	i = search_var_in_env(base->env, "PWD");
 	if (i >= 0)
 	{
 		free_null((void **)&base->env[i]);
-		base->env[i] = ft_strjoin("PWD=",new_data);
+		base->env[i] = ft_strjoin("PWD=", new_data);
 		if (!base->env[i])
 			return (1);
 	}
@@ -36,14 +36,14 @@ int	update_pwd(char *new_data, t_base *base)
 int	update_oldpwd(char *new_data, t_base *base)
 {
 	int		i;
-	char 	*data;
+	char	*data;
 
 	data = NULL;
 	i = search_var_in_env(base->env, "OLDPWD");
 	if (i >= 0)
 	{
 		free_null((void **)&base->env[i]);
-		base->env[i] = ft_strjoin("OLDPWD=",new_data);
+		base->env[i] = ft_strjoin("OLDPWD=", new_data);
 		if (!base->env[i])
 			return (1);
 	}
@@ -60,8 +60,8 @@ int	go_back(t_base *base)
 {
 	char	path[PATH_MAX];
 	char	backup[PATH_MAX];
-
 	int		i;
+
 	getcwd(path, sizeof(path));
 	getcwd(backup, sizeof(backup));
 	if (!path[0])
@@ -71,7 +71,8 @@ int	go_back(t_base *base)
 		i--;
 	path[i + 1] = '\0';
 	if (chdir(path) == -1)
-		return (ft_error("minishell: cd: No such file or directory", 1, base), 1);
+		return (ft_error("minishell: cd: No such file or directory", 1, base),
+			1);
 	update_oldpwd(ft_strdup(backup), base);
 	update_pwd(ft_strdup(path), base);
 	return (0);

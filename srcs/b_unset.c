@@ -1,15 +1,4 @@
-
 #include "../includes/minishell.h"
-
-/**
- * unset doit etre la seule commande pour fonctionner
- * Fonction a tester
- * 
- * A modifier plus tard avec export, pas besoin de update_env, bash supprime la
- *  data mais garde la ligne du tableau pour l'utiliser apres avec export si
- * besoin
- * 
- */
 
 static int	srch_n_destroy(t_token *tok, char *search)
 {
@@ -33,7 +22,7 @@ static int	srch_n_destroy(t_token *tok, char *search)
 	return (erased);
 }
 
-int	update_env(t_token *tok, int size)
+/* int	update_env(t_token *tok, int size)
 {
 	int		i;
 	int		j;
@@ -60,17 +49,11 @@ int	update_env(t_token *tok, int size)
 			}
 		}
 	}
-	free(tok->base->env);
+	free_null((void **)&tok->base->env);
 	tok->base->env = envcpy;
 	return (0);
-}
+} */
 
-/**
- * LESSCLOSE=/usr/bin/lesspipe non geree par minishell
- * LESSOPEN=| /usr/bin/lesspipe non geree par minishell
- * utlise par less, afficheur de texte que l'on utilise pas dans minishell
- * 
- */
 int	builtin_unset(t_token *tok)
 {
 	int		i;
@@ -78,7 +61,7 @@ int	builtin_unset(t_token *tok)
 
 	i = 1;
 	erased = 0;
-	if (tok->base->cmds->next != NULL)
+	if (tok->base->cmds->next || tok->base->cmds->prev)
 		return (0);
 	while (tok->cmd->cmd[i])
 	{
@@ -87,10 +70,5 @@ int	builtin_unset(t_token *tok)
 			return (1);
 		i++;
 	}
-	/* if (erased)
-	{
-		if (update_env(tok, ft_strslen(tok->base->env) - erased + 1))
-			return (1);
-	} */
 	return (0);
 }

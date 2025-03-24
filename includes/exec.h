@@ -49,7 +49,6 @@ void	sig_handler(int signal);
 void	sig_quit_handler(int signal);
 
 /**			e_check.c */
-int		wait_rings(t_base *base);
 char	*check_cmd(t_token *actual, t_base *base);
 int		count_forks(t_base *base);
 
@@ -61,14 +60,19 @@ int     prepare_exec(t_token *actual, t_base *base);
 
 /**			e_start_exec_utils.c */
 void	close_inpt_outp(t_cmd *actualcmd);
-int		handle_redirections(t_token *token, t_base *base, t_cmd *cmd);
+int		handle_redirections(t_token *token, t_cmd *cmd);
 void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base);
 
 /**			e_start_exec_utils2.c */
 int		handle_redirec_alone(t_token *token);
 
-/**			e_start_exec_utils2.c */
-int handle_hrdoc_no_cmd(t_token *tokens, t_base *base);
+/**			e_start_exec_utils3.c */
+void	messages_heredeoc(int hrdoc_size, char *data);
+int	    open_hrdoc_file(void);
+char	*read_heredoc_input(t_token *tokens);
+int	    process_heredoc_input(char *line, t_token *tokens, int fd);
+int     handle_hrdoc_no_cmd(t_token *tokens, t_base *base);
+
 
 /**			e_file_redir.c */
 char	*add_in_command(t_base *base);
@@ -77,6 +81,7 @@ int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 /**			e_utils.c */
 int		ft_strslen(char **strs);
 char	*ft_strnjoin(char *str, ...);
+char	*ft_strdup_protected(const char *s);
 
 /**			e_env_utils.c */
 int		search_var_in_env(char **env, char *search);

@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 /**			CONSTRUCTION PLAN
  * 
@@ -28,7 +27,7 @@ static int	go_home(t_base *base, char *args)
 
 	getcwd(backup, sizeof(backup));
 	path = search_data_in_env(base->env, "HOME");
-	if (args && ( *args == '~'))
+	if (args && (*args == '~'))
 	{
 		if (chdir(base->tild) == -1)
 			return (ft_error("Minishell: cd: error cd: ~", 1, base), 1);
@@ -62,8 +61,10 @@ static int	go_there(t_base *base, t_cmd *act_cmd)
 	path = act_cmd->cmd[1];
 	if (chdir(path) == -1)
 	{
-		error = ft_strnjoin("Minishell: cd: ", path, ": No such file or directory", NULL);
-		ft_error(error, 1, base), free_null((void **)&error);
+		error = ft_strnjoin("Minishell: cd: ", path,
+				": No such file or directory", NULL);
+		ft_error(error, 1, base);
+		free_null((void **)&error);
 		return (1);
 	}
 	update_oldpwd(ft_strdup(backup), base);
@@ -89,9 +90,12 @@ int	builtin_cd(t_token *actual_tok, t_base *base)
 	int		status;
 
 	status = 0;
+	if (actual_tok->base->cmds->next || actual_tok->base->cmds->prev)
+		return (0);
 	size = ft_strslen(actual_tok->cmd->cmd) - 1;
 	if (size > 1)
-		return (ft_error("Error Minishell: cd: too many arguments\n", 2, base), 1);
+		return (ft_error("Error Minishell: cd: too many arguments\n", 2,
+				base), 1);
 	else if (size == 0 || (size == 1 && is_home(actual_tok->cmd->cmd[1])))
 		status = go_home(base, actual_tok->cmd->cmd[1]);
 	else if ((size == 1 && !ft_strncmp(actual_tok->cmd->cmd[1], "/", 2)))

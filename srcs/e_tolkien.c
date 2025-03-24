@@ -11,6 +11,23 @@
 8		$		variable
 9		cmd		commande
 10		args	commande args */
+static int	wait_rings(t_base *base)
+{
+	int		status;
+	int		i;
+	pid_t	pid;
+
+	status = 0;
+	i = 0;
+	while (i < base->count_forks)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == base->lastpid)
+			base->exit_code = WEXITSTATUS(status);
+		i++;
+	}
+	return (0);
+}
 
 void	sauron(t_base *base, int cmd_found, int redir_found)
 {

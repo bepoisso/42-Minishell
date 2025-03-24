@@ -1,7 +1,29 @@
-
 #include "../includes/minishell.h"
 
-int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
+static void	handle_in_out(t_cmd *cmd, t_token *actual)
+{
+	t_base	*base;
+
+	base = actual->base;
+	if (actual->id == 3 || actual->id == 5)
+	{
+		if (cmd->input > 0)
+			close(cmd->input);
+		cmd->input = filechk(actual->next, actual->id, base, cmd);
+		if (cmd->input == -1)
+			cmd->bad_fd = 1;
+	}
+	else if (actual->id == 4 || actual->id == 6)
+	{
+		if (cmd->output > 2)
+			close(cmd->output);
+		cmd->output = filechk(actual->next, actual->id, base, cmd);
+		if (cmd->input == -1)
+			cmd->bad_fd = 1;
+	}
+}
+
+int	handle_redirections(t_token *token, t_cmd *cmd)
 {
 	t_token	*actual;
 
@@ -10,22 +32,7 @@ int	handle_redirections(t_token *token, t_base *base, t_cmd *cmd)
 		actual = actual->prev;
 	while (actual && actual->id != 7)
 	{
-		if (actual->id == 3 || actual->id == 5)
-		{
-			if (cmd->input > 0)
-				close(cmd->input);
-			cmd->input = filechk(actual->next, actual->id, base, cmd);
-			if (cmd->input == -1)
-				cmd->bad_fd = 1;
-		}
-		else if (actual->id == 4 || actual->id == 6)
-		{
-			if (cmd->output > 2)
-				close(cmd->output);
-			cmd->output = filechk(actual->next, actual->id, base, cmd);
-			if (cmd->input == -1)
-				cmd->bad_fd = 1;
-		}
+		handle_in_out(cmd, actual);
 		actual = actual->next;
 	}
 	if (cmd->bad_fd == 1)
@@ -64,12 +71,11 @@ static void	raz_std_fds(t_base *base)
 		close(base->stdout_back);
 		base->stdout_back = 0;
 	}
-		if (base->stdin_back)
+	if (base->stdin_back)
+	{
+		if (dup2(base->stdin_back, STDIN_FILENO) == -1)
 		{
-			
-			if (dup2(base->stdin_back, STDIN_FILENO) == -1)
-			{
-				perror("dup2 failed");
+			perror("dup2 failed");
 			exit(EXIT_FAILURE);
 		}
 		close(base->stdin_back);
@@ -79,7 +85,7 @@ static void	raz_std_fds(t_base *base)
 
 void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
 {
-	if (actualcmd->input > 2  && (actualcmd->hrdoc != actualcmd->input))
+	if (actualcmd->input > 2 && (actualcmd->hrdoc != actualcmd->input))
 	{
 		close(actualcmd->input);
 		actualcmd->input = 0;

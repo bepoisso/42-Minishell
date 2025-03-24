@@ -65,12 +65,3 @@ void	free_base(t_base *base)
 	base->count_forks = 0;
 	free_null((void **)&base->input);
 }
-
-void	clean_exit(t_base *base)
-{
-	free_base(base);
-	free_null((void **)&base->tild);
-	free_doubletab(&base->env);
-	rl_clear_history();
-	exit (base->exit_code);
-}

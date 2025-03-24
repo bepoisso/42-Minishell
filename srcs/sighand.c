@@ -1,22 +1,8 @@
 #include "../includes/minishell.h"
 
-/**
- * @brief Signal handler function for SIGINT (CTRL-C)
- * 
- * This function is called when a SIGINT signal (CTRL-C) is received.
- * It prints a blue-colored message indicating that CTRL-C was received,
- * followed by resetting the color to default.
- * 
- * @return void
- */
-/* void	sig_int_handler(void)
-{
-	printf(""BLUE"Signal CTRL-C received"RESET"\n");
-	exit (0);
-} */
 void	sig_handler(int signal)
 {
-	if (waitpid(-1, NULL, WNOHANG) == - 1)
+	if (waitpid(-1, NULL, WNOHANG) == -1)
 	{
 		if (signal == SIGINT)
 		{
@@ -28,9 +14,9 @@ void	sig_handler(int signal)
 		}
 	}
 }
+
 void	sig_quit_handler(int signal)
 {
-	printf("Signal %d reçu\n", signal);
 	if (signal == SIGQUIT)
 	{
 		rl_on_new_line();
@@ -68,4 +54,3 @@ siginfo_t {
 	int      si_fd;       File descriptor
 };
 */
-// % cc -g -lreadline sighand.c

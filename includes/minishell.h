@@ -11,7 +11,6 @@
 # include "exec.h"
 # include "builtins.h"
 
-extern int g_exit_status;
 /* 
 INDEX	TYPE	DESCRIPTION
 0		space	ignore
@@ -32,7 +31,7 @@ INDEX	TYPE	DESCRIPTION
 /*			used for malloc, free, exit, getenv */
 # include <stdlib.h>
 /*			used for access, fork, read, write, close, getcwd,
- chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot */
+chdir, execve, dup, dup2, pipe, isatty, ttyname, ttyslot */
 # include <unistd.h>
 /*			used for strerror */
 # include <string.h>
@@ -76,10 +75,10 @@ INDEX	TYPE	DESCRIPTION
 # define YELLOW_BOLD "\001\033[1;33m"
 # define CYAN_BOLD "\001\033[1;36m"
 # define VIOLET_BOLD "\001\033[1;35m"
-
-
 # define PATH_MAX 4096
 # define DELAY_TIME 200000
 # define DELAY_DOT 20000000
+
+extern int g_exit_status;
 
 #endif

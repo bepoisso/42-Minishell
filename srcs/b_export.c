@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 
 /**
@@ -23,7 +22,7 @@
 	return (0);
 }*/
 
-int	namelen(char * arg)
+int	namelen(char *arg)
 {
 	int	i;
 
@@ -55,20 +54,38 @@ char	*xtract_var_name(char *data)
 	return (name);
 }
 
-static int	add_or_updt_var(t_token *tok, t_base *base)
+static int	search_equal(const char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (-2);
+	while (s[i])
+	{
+		if (s[i] == '=')
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static int	add_or_updt_var(t_token *tok, t_base *base, int k)
 {
 	int		i;
-	int		k;
 	t_cmd	*act_cmd;
 	char	*name;
 
 	name = NULL;
 	act_cmd = tok->cmd;
-	k = 1;
 	while (act_cmd->cmd && act_cmd->cmd[k])
 	{
 		name = xtract_var_name(act_cmd->cmd[k]);
+		if (check_xport_arg(act_cmd->cmd[k], name, base))
+			return (1);
 		i = search_var_in_env(base->env, name);
+		if (i > 0 && search_equal(act_cmd->cmd[k]) < 0)
+			return (0);
 		free_null((void **)&name);
 		if (i >= 0)
 		{
@@ -84,20 +101,16 @@ static int	add_or_updt_var(t_token *tok, t_base *base)
 	return (0);
 }
 
-/**
- * export sans argument affiche env dans ordre acsii en utilisant strcmp et un bubble sort ou quicksort
- * export A ajoute une variable A vide en env
- * export A="plop" ajoute une variable contenant Plop
- * ft_put_arraystr
-*/
 int	builtin_export(t_token *actual_tok)
 {
-	if (ft_strslen( actual_tok->cmd->cmd) > 1)
+	if (actual_tok->base->cmds->next || actual_tok->base->cmds->prev)
+		return (0);
+	if (ft_strslen(actual_tok->cmd->cmd) > 1)
 	{
-		if (add_or_updt_var(actual_tok, actual_tok->base) != 0)
+		if (add_or_updt_var(actual_tok, actual_tok->base, 1) != 0)
 			return (1);
 	}
 	else
 		put_xport(actual_tok->base->env);
-	return(0);
+	return (0);
 }

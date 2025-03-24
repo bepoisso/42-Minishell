@@ -12,103 +12,17 @@
 9		cmd		commande
 10		args	commande args */
 
-static int	cmd_before(t_token *tok, int fd)
+void	sauron(t_base *base, int cmd_found, int redir_found)
 {
-	t_token	*actual;
+	t_token	*tok;
+	t_token	*tok_back;
 
-	actual = tok->prev;
-	while (actual && actual->id != 7)
-	{
-		if (actual->id == 9)
-		{
-			actual->cmd->output = fd;
-			return (0);
-		}
-		actual = actual->prev;
-	}
-	close(fd);
-	return (1);
-}
-
-static int	cmd_after(t_token *tok, int fd)
-{
-	t_token	*actual;
-
-	actual = tok->next;
-	while (actual && actual->id != 7)
-	{
-		if (actual->id == 9)
-		{
-			actual->cmd->input = fd;
-			return (0);
-		}
-		actual = actual->next;
-	}
-	close(fd);
-	return (1);
-}
-
-static void	create_redir(t_base *base)
-{
-	t_token	*actual;
-	int		pipeline[2];
-
-	actual = base->token;
-	while (actual)
-	{
-		if (actual->id == 7)
-		{
-			if (pipe(pipeline) < 0)
-				exit(1);
-			cmd_before(actual, pipeline[1]);
-			cmd_after(actual, pipeline[0]);
-		}
-		actual = actual->next;
-	}
-}
-
-static void	handle_cmd(t_token *tok, t_base *base)
-{
-	t_token	*actual;
-	t_cmd	*actual_cmd;
-
-	actual = tok;
-	actual_cmd = base->cmds;
-	while (actual)
-	{
-		if (actual->id == 9)
-		{
-			actual->cmd = actual_cmd;
-			actual->cmd->input = 0;
-			actual->cmd->output = 1;
-			actual->cmd->hrdoc = 0;
-			actual_cmd = actual_cmd->next;
-		}
-		else
-			actual->cmd = NULL;
-		actual = actual->next;
-	}
-}
-
-/** */
-int	sauron(t_base *base)
-{
-	t_token		*tok;
-	t_token		*tok_back;
-	int			cmd_found;
-	int			redir_found;
-
-	cmd_found = 0;
-	redir_found = 0 ;
 	tok = base->token;
-	handle_cmd(tok, base);
-	create_redir(base);
-	base->count_forks = count_forks(base);
-	base->path_list = extract_paths(base);
+	init_exec(base);
 	while (tok)
 	{
 		tok_back = tok;
-		while(tok && tok->id != 7)
+		while (tok && tok->id != 7)
 		{
 			if (tok->id == 9)
 			{
@@ -125,6 +39,4 @@ int	sauron(t_base *base)
 			handle_redirec_alone(tok_back);
 	}
 	wait_rings(base);
-	return (0);
 }
-//<<1 ls -la | grep dr | sort | cat -e | rev

@@ -120,3 +120,32 @@ int	search_empty(char **env)
 	}
 	return (-1);
 }
+
+char	**extract_paths(t_base *base)
+{
+	char	*env;
+	char	**env_list;
+	char	*env_listcpy;
+	int		i;
+
+	i = 0;
+	env_list = NULL;
+	env_listcpy = NULL;
+	env = ft_strdup(search_data_in_env(base->env, "PATH"));
+	if (!env)
+		return (NULL);
+	env_list = ft_split(env, ':');
+	if (!env_list)
+		return (NULL);
+	free_null((void **)&env);
+	while (env_list[i])
+	{
+		env_listcpy = ft_strjoin(env_list[i], "/");
+		if (!env_listcpy)
+			return (free_doubletab(&env_list), NULL);
+		free_null((void *)&env_list[i]);
+		env_list[i] = env_listcpy;
+		i++;
+	}
+	return (env_list);
+}

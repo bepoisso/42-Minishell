@@ -23,8 +23,9 @@ int main(void)
 		}
 		minitext = minitext_rl(base.env, &base);
 		base.input = readline(minitext);
+		free_null((void **)&minitext);
 		if (!base.input)
-			return (free_null((void **)&minitext), free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
+			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')
 		{
 			free_null((void**)&base.input);
@@ -50,13 +51,12 @@ int main(void)
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (free_null((void **)&minitext), add_history(base.input), clean_exit(&base), 0);
-		sauron(&base);
+			return (add_history(base.input), clean_exit(&base), 0);
+		sauron(&base, 0, 0);
 		add_history(base.input);
 		free_base(&base);
 	}
 	free_doubletab(&base.env);
-	free_null((void **)&minitext);
 	rl_clear_history();
 	return (0);
 }

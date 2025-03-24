@@ -1,7 +1,6 @@
-
 #include "../includes/minishell.h"
 
-int ft_strslen(char **strs)
+int	ft_strslen(char **strs)
 {
 	int	i;
 

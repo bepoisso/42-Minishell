@@ -27,7 +27,7 @@ void	add_token(t_token **tokens, char *value, bool literal, t_base *base)
 		return ;
 	new = create_token(value, literal, base);
 	if (!new)
-		return;
+		return ;
 	if (!*tokens)
 		*tokens = new;
 	else
@@ -47,7 +47,7 @@ void	rm_node_token(t_token *token)
 	t_token	*prev;
 
 	if (!token)
-		return;
+		return ;
 	free_null((void **)&token->data);
 	next = token->next;
 	prev = token->prev;
@@ -64,7 +64,7 @@ t_token	*tokenizer(char *s, t_base *base)
 	int		start;
 	t_token	*tokens;
 	bool	literal;
-	(void)base;
+
 	tokens = NULL;
 	i = 0;
 	while (ft_isspace(s[i]))
@@ -96,12 +96,29 @@ t_token	*tokenizer(char *s, t_base *base)
 		else
 		{
 			start = i;
-			while(ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i]) && s[i] != '\'' && s[i] != '"')
+			while (ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i])
+				&& s[i] != '\'' && s[i] != '"')
 				i++;
 		}
 		add_token(&tokens, ft_strndup(s + start, i - start), literal, base);
 	}
 	return (tokens);
+}
+
+static void	set_redir_or_cmd(t_token *current, int *redir, int *cmd)
+{
+	if (*redir == 1)
+	{
+		current->id = get_redir_io(current);
+		*redir = 0;
+	}
+	else if (*cmd == 0)
+	{
+		current->id = 9;
+		*cmd = 1;
+	}
+	else if (current->id != 0)
+		current->id = 10;
 }
 
 void	identify_token(t_token *tokens)
@@ -121,20 +138,8 @@ void	identify_token(t_token *tokens)
 		if (current->id == 7)
 			cmd = 0;
 		if (current->id == -1)
-		{
-			if (redir == 1)
-			{
-				current->id = get_redir_io(current);
-				redir = 0;
-			}
-			else if (cmd == 0)
-			{
-				current->id = 9;
-				cmd = 1;
-			}
-			else if (current->id != 0)
-				current->id = 10;
-		}
+			set_redir_or_cmd(current, &redir, &cmd);
 		current = current->next;
 	}
 }
+

@@ -10,8 +10,6 @@
 # include "parser.h"
 # include "exec.h"
 # include "builtins.h"
-
-extern int g_exit_status;
 /* 
 INDEX	TYPE	DESCRIPTION
 0		space	ignore
@@ -63,6 +61,7 @@ INDEX	TYPE	DESCRIPTION
 /*			used for tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <term.h>
 
+/* Color */
 # define BLUE "\001\033[0;34m\002"
 # define RED "\001\033[0;31m\002"
 # define GREEN "\001\033[0;32m\002"
@@ -70,6 +69,7 @@ INDEX	TYPE	DESCRIPTION
 # define CYAN "\001\033[0;36m\002"
 # define VIOLET "\001\033[0;35m\002"
 # define RESET "\001\033[0m\002"
+/* BOLD */
 # define BLUE_BOLD "\001\033[1;34m"
 # define RED_BOLD "\001\033[1;31m"
 # define GREEN_BOLD "\001\033[1;32m"
@@ -77,9 +77,11 @@ INDEX	TYPE	DESCRIPTION
 # define CYAN_BOLD "\001\033[1;36m"
 # define VIOLET_BOLD "\001\033[1;35m"
 
-
+/* MACRO */
 # define PATH_MAX 4096
 # define DELAY_TIME 200000
 # define DELAY_DOT 20000000
+
+extern int	g_exit_status;
 
 #endif

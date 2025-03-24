@@ -1,16 +1,12 @@
 #include "../includes/minishell.h"
 
-static int	is_ok(int c)
+static void	put_error(t_base *base, char *name)
 {
-	if (c >= 'a' && c <= 'z')
-		return (1);
-	else if (c >= 'A' && c <= 'Z')
-		return (1);
-	else if (c >= '0' && c <= '9')
-		return (1);
-	else if (c == '_')
-		return (1);
-	return (0);
+	ft_putstr_fd(RED"Minishell: export: `", 2);
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd("': not a valid identifier"RESET, 2);
+	ft_putstr_fd("\n", 2);
+	base->exit_code = 1;
 }
 
 int	check_xport_arg(char *cmd, char *name, t_base *base)
@@ -19,23 +15,14 @@ int	check_xport_arg(char *cmd, char *name, t_base *base)
 
 	i = 0;
 	if (ft_isdigit(cmd[0]))
-	{
-		base->exit_code = 1;
-		return (base->exit_code);
-	}
+		return (put_error(base, name), 1);
 	while (cmd[i] && cmd[i] != '=')
 	{
 		if (!is_ok(cmd[i]))
-		{
-			ft_putstr_fd(RED"Minishell: export: `", 2);
-			ft_putstr_fd(name, 2);
-			ft_putstr_fd("': not a valid identifier"RESET, 2);
-			ft_putstr_fd("\n", 2);
-			base->exit_code = 1;
-			break;
-		}
+			return (put_error(base, name), 1);
 		else
 			base->exit_code = 0;
+		i++;
 	}
 	return (base->exit_code);
 }

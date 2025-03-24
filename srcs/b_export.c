@@ -1,78 +1,56 @@
 #include "../includes/minishell.h"
 
-/**
- * si export sans argument, afichage de env dans l'ordre ascii
- * declare -x COLORTERM="truecolor"
- * 
-*/
-
-/*static int	update_var(char *new_data, char ** env, int index)
+int	should_skip_update(char *cmd, char *name, t_base *base)
 {
+	int	i;
 
-	if (index >= 0)
+	if (check_xport_arg(cmd, name, base))
 	{
-		free_null((void **)&env[index]);
-		env[index] = ft_strjoin("PWD=",new_data);
-		return (0);
+		return (1);
 	}
-	else
+	i = search_var_in_env(base->env, name);
+	if (i > 0 && search_equal(cmd) < 0)
 	{
-		env = add_var_in_env(env, new_data);
+		return (1);
 	}
 	return (0);
-}*/
+}
 
-int	namelen(char *arg)
+int	update_existing_var(char *cmd, char *name, t_base *base)
 {
 	int	i;
 
-	i = 0;
-	while (arg && arg[i])
+	i = search_var_in_env(base->env, name);
+	if (i >= 0)
 	{
-		if (arg[i] == '=')
-			return (i);
-		i++;
-	}
-	return (i);
-}
-
-char	*xtract_var_name(char *data)
-{
-	char	*name;
-	int		i;
-
-	i = 0;
-	name = ft_calloc(namelen(data) + 1, sizeof(char));
-	if (!name)
-		return (ft_putstr_fd("Error: calloc", 2), NULL);
-	while (data && data[i] && data[i] != '=')
-	{
-		name[i] = data[i];
-		i++;
-	}
-	name[i] = '\0';
-	return (name);
-}
-
-static int	search_equal(const char *s)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (-2);
-	while (s[i])
-	{
-		if (s[i] == '=')
-			return (i);
-		i++;
+		free_null((void **)&base->env[i]);
+		base->env[i] = ft_strdup(cmd);
+		if (!base->env[i])
+		{
+			ft_putstr_fd("Error : strdup env\n", 2);
+			return (-1);
+		}
+		return (0);
 	}
 	return (-1);
 }
 
+int	add_new_var(char *cmd, t_base *base)
+{
+	char	*duplicated_data;
+
+	duplicated_data = ft_strdup(cmd);
+	if (!duplicated_data)
+	{
+		ft_putstr_fd("Error : strdup env\n", 2);
+		return (-1);
+	}
+	base->env = add_var_in_env(base->env, duplicated_data);
+	return (0);
+}
+
 static int	add_or_updt_var(t_token *tok, t_base *base, int k)
 {
-	int		i;
 	t_cmd	*act_cmd;
 	char	*name;
 
@@ -80,30 +58,66 @@ static int	add_or_updt_var(t_token *tok, t_base *base, int k)
 	act_cmd = tok->cmd;
 	while (act_cmd->cmd && act_cmd->cmd[k])
 	{
-		name = xtract_var_name(act_cmd->cmd[k]);
-		if (check_xport_arg(act_cmd->cmd[k], name, base))
-			return (1);
-		i = search_var_in_env(base->env, name);
-		if (i > 0 && search_equal(act_cmd->cmd[k]) < 0)
-			return (0);
 		free_null((void **)&name);
-		if (i >= 0)
+		name = xtract_var_name(act_cmd->cmd[k]);
+		if (should_skip_update(act_cmd->cmd[k], name, base))
 		{
-			free_null((void **)&base->env[i]);
-			base->env[i] = ft_strdup(act_cmd->cmd[k]);
-			if (!base->env[i])
-				return (ft_putstr_fd("Error : strdup env\n", 2), -1);
+			k++;
+			continue ;
 		}
-		else
-			base->env = add_var_in_env(base->env, ft_strdup(act_cmd->cmd[k]));
+		if (update_existing_var(act_cmd->cmd[k], name, base) == 0)
+		{
+			k++;
+			continue ;
+		}
+		if (add_new_var(act_cmd->cmd[k], base) != 0)
+			return (-1);
 		k++;
 	}
+	free_null((void **)&name);
 	return (0);
 }
+// static int	add_or_updt_var(t_token *tok, t_base *base, int k)
+// {
+// 	int		i;
+// 	t_cmd	*act_cmd;
+// 	char	*name;
+
+// 	name = NULL;
+// 	act_cmd = tok->cmd;
+// 	while (act_cmd->cmd && act_cmd->cmd[k])
+// 	{
+// 		free_null((void **)&name);
+// 		name = xtract_var_name(act_cmd->cmd[k]);
+// 		if (check_xport_arg(act_cmd->cmd[k], name, base))
+// 		{
+// 			k++;
+// 			continue ;
+// 		}
+// 		i = search_var_in_env(base->env, name);
+// 		if (i > 0 && search_equal(act_cmd->cmd[k]) < 0)
+// 		{
+// 			k++;
+// 			continue ;
+// 		}
+// 		if (i >= 0)
+// 		{
+// 			free_null((void **)&base->env[i]);
+// 			base->env[i] = ft_strdup(act_cmd->cmd[k]);
+// 			if (!base->env[i])
+// 				return (ft_putstr_fd("Error : strdup env\n", 2), -1);
+// 		}
+// 		else
+// 			base->env = add_var_in_env(base->env, ft_strdup(act_cmd->cmd[k]));
+// 		k++;
+// 	}
+// 	free_null((void **)&name);
+// 	return (0);
+// }
 
 int	builtin_export(t_token *actual_tok)
 {
-	if (actual_tok->base->cmds->next || actual_tok->base->cmds->prev)
+	if (actual_tok->base->cmds->prev)
 		return (0);
 	if (ft_strslen(actual_tok->cmd->cmd) > 1)
 	{

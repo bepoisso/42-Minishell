@@ -50,8 +50,8 @@ int main(void)
 		}
 		base.cmds = parsing_cmd(&base);
 		identify_builtin(base.cmds);
-		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (add_history(base.input), clean_exit(&base), 0);
+		// if (ft_strcmp(base.token->data, "exit") && !base.token->next)
+		// 	return (add_history(base.input), clean_exit(&base), 0);
 		sauron(&base, 0, 0);
 		add_history(base.input);
 		free_base(&base);

@@ -17,5 +17,7 @@ int	exec_builtins(t_token *actual)
 		status = builtin_env(actual);
 	else if (ft_strcmp(actual->data, "unset"))
 		status = builtin_unset(actual);
+	else if (ft_strcmp(actual->data, "exit"))
+		status = builtin_exit(actual);
 	return (status);
 }

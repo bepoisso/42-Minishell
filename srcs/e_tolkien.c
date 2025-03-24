@@ -49,11 +49,12 @@ void	sauron(t_base *base, int cmd_found, int redir_found)
 			else if (tok->id >= 3 && tok->id <= 6)
 				redir_found ++;
 			tok = tok->next;
-			if (tok && tok->id == 7)
-				tok = tok->next;
 		}
 		if (redir_found > 0 && cmd_found == 0)
 			handle_redirec_alone(tok_back);
+		if (tok)
+			tok = tok->next;
+		tok_back = tok;
 	}
 	wait_rings(base);
 }

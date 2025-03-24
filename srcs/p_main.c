@@ -27,7 +27,6 @@ int main(void)
 		free_null((void **)&minitext);
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
-			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')
 		{
 			free_null((void**)&base.input);
@@ -54,7 +53,7 @@ int main(void)
 		identify_builtin(base.cmds);
 		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
 			return (add_history(base.input), clean_exit(&base), 0);
-		sauron(&base);
+		sauron(&base, 0, 0);
 		add_history(base.input);
 		free_base(&base);
 	}

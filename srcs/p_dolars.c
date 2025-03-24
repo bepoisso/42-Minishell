@@ -105,7 +105,8 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 		{
 			j = i;
 			i++;
-			while (token->data[i] && (ft_isalnum(token->data[i]) || (check == false && token->data[i] == '?')))
+			while (token->data[i] && (ft_isalnum(token->data[i])
+					|| (check == false && token->data[i] == '?')))
 			{
 				check = true;
 				i++;

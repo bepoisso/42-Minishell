@@ -75,6 +75,7 @@ int		parser(char *str, t_base *base);
 void	identify_token(t_token *tokens);
 void	identify_builtin(t_cmd *cmd);
 t_cmd	*parsing_cmd(t_base *base);
+void	rm_quote(t_token *tokens);
 
 /* UTILS */
 int		ft_strcmp(char *s1, char *s2);

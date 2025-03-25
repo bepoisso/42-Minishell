@@ -1,32 +1,10 @@
 #include "../includes/minishell.h"
 
-char	*search_env_var(char *search, char **env, t_base *base)
-{
-	int			i;
-	int			j;
-
-	i = 0;
-	j = 0;
-	if (search[i] == '?')
-		return (ft_itoa(base->exit_code));
-	while(env[i])
-	{
-		if (ft_strncmp(search, env[i], ft_strlen(search)) == 0)
-		{
-			j = ft_strlen(search);
-			if (env[i][j] == '=')
-				return (ft_strdup(env[i] + (j + 1)));
-		}
-		i++;
-	}
-	return (ft_strdup(""));
-}
-
 void	dollar_is_literal(t_dollar *dollars)
 {
-	int		i;
-	char	*temp;
-	t_dollar *current;
+	int			i;
+	char		*temp;
+	t_dollar	*current;
 
 	current = dollars;
 	while (current)
@@ -47,8 +25,7 @@ void	dollar_is_literal(t_dollar *dollars)
 	}
 }
 
-
-t_dollar	*create_dollar(char *value ,char *name , bool literal)
+t_dollar	*create_dollar(char *value, char *name, bool literal)
 {
 	t_dollar	*new;
 
@@ -66,7 +43,7 @@ t_dollar	*create_dollar(char *value ,char *name , bool literal)
 	return (new);
 }
 
-void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
+void	add_dollar(t_dollar **dollars, char *name, char *value, bool literal)
 {
 	t_dollar	*new;
 	t_dollar	*temp;
@@ -75,7 +52,7 @@ void	add_dollar(t_dollar **dollars,char *name, char *value, bool literal)
 		return ;
 	new = create_dollar(value, name, literal);
 	if (!new)
-		return;
+		return ;
 	if (!*dollars)
 		*dollars = new;
 	else
@@ -105,19 +82,16 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 		if (token->data[i] == '$')
 		{
 			j = i;
-			i++;
-			while (token->data[i] && (ft_isalnum(token->data[i]) || (check == false && token->data[i] == '?')))
-			{
+			while (token->data[++i] && (ft_isalnum(token->data[i])
+					|| (check == false && token->data[i] == '?')))
 				check = true;
-				i++;
-			}
 			name = ft_strndup(token->data + j + 1, (i - j) - 1);
 			data = search_env_var(name, base->env, base);
 			add_dollar(&dollars, name, data, token->literal);
 			i--;
 		}
 		if (!token->data[i])
-			break;
+			break ;
 		i++;
 	}
 }
@@ -126,12 +100,11 @@ void	handling_dollar(t_token *tokens, t_base *base)
 {
 	t_dollar	*dollars;
 	t_token		*current;
-	
+
 	free(base->dollars);
 	dollars = malloc(sizeof(t_dollar));
 	ft_memset(dollars, 0, sizeof(t_dollar));
 	current = tokens;
-
 	while (current)
 	{
 		get_name_value_dollar(current, dollars, base);

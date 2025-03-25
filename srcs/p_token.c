@@ -58,53 +58,6 @@ void	rm_node_token(t_token *token)
 	free_null((void **)&token);
 }
 
-t_token	*tokenizer(char *s, t_base *base)
-{
-	int		i;
-	int		start;
-	t_token	*tokens;
-	bool	literal;
-
-	tokens = NULL;
-	i = 0;
-	while (ft_isspace(s[i]))
-		i++;
-	if (!s[i])
-		return (tokens);
-	while (s[i])
-	{
-		literal = false;
-		if (ft_isspace(s[i]))
-		{
-			start = i;
-			while (ft_isspace(s[i]))
-				i++;
-		}
-		else if (ft_isop(s[i]))
-		{
-			start = i;
-			while (ft_isop(s[i]))
-				i++;
-		}
-		else if (s[i] == '"' || s[i] == '\'')
-		{
-			if (s[i] == '\'')
-				literal = true;
-			start = i;
-			i = skip_quote(s, i);
-		}
-		else
-		{
-			start = i;
-			while (ft_isprint(s[i]) && !ft_isop(s[i]) && !ft_isspace(s[i])
-				&& s[i] != '\'' && s[i] != '"')
-				i++;
-		}
-		add_token(&tokens, ft_strndup(s + start, i - start), literal, base);
-	}
-	return (tokens);
-}
-
 static void	set_redir_or_cmd(t_token *current, int *redir, int *cmd)
 {
 	if (*redir == 1)
@@ -142,4 +95,3 @@ void	identify_token(t_token *tokens)
 		current = current->next;
 	}
 }
-

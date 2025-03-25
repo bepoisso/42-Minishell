@@ -66,14 +66,15 @@ typedef struct s_base
 int		get_op_token(char *data, int id);
 int		skip_quote(char *s, int i);
 int		get_redir_io(t_token *token);
-t_token	*tokenizer(char *s, t_base *base);
+t_token	*lexer(char *s, t_base *base);
 t_token	*token_parser(t_token *tokens);
+void	add_token(t_token **tokens, char *value, bool literal, t_base *base);
 
 /* PARSER */
 int		parser(char *str, t_base *base);
 void	identify_token(t_token *tokens);
-void	identify_builtin(t_cmd *cmd);
 t_cmd	*parsing_cmd(t_base *base);
+void	rm_quote(t_token *tokens);
 
 /* UTILS */
 int		ft_strcmp(char *s1, char *s2);

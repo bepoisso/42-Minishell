@@ -117,7 +117,7 @@ static int	add_or_updt_var(t_token *tok, t_base *base, int k)
 
 int	builtin_export(t_token *actual_tok)
 {
-	if (actual_tok->base->cmds->prev)
+	if (actual_tok->base->cmds->prev || actual_tok->base->cmds->next)
 		return (0);
 	if (ft_strslen(actual_tok->cmd->cmd) > 1)
 	{

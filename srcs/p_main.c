@@ -10,10 +10,7 @@ int	main(void)
 	minitext = NULL;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	ft_memset(&base, 0, sizeof(t_base));
-	base.env = env_cpy();
-	base.tild = ft_strdup(search_data_in_env(base.env, "HOME"));
-	// header();
+	base_init(&base);
 	while (1)
 	{
 		if (g_exit_status)

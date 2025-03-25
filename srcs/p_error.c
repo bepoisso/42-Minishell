@@ -33,15 +33,20 @@ unexpected token `newline'", 2, base), 1);
 void	print_double(int id, t_base *base)
 {
 	if (id == 3)
-		ft_error("minishell: syntax error near unexpected token `<'", 2, base);
+		ft_error("minishell: syntax error near unexpected token `<'\n",
+			2, base);
 	else if (id == 4)
-		ft_error("minishell: syntax error near unexpected token `>'", 2, base);
+		ft_error("minishell: syntax error near unexpected token `>'\n",
+			2, base);
 	else if (id == 5)
-		ft_error("minishell: syntax error near unexpected token `<<'", 2, base);
+		ft_error("minishell: syntax error near unexpected token `<<'\n",
+			2, base);
 	else if (id == 6)
-		ft_error("minishell: syntax error near unexpected token `>>'", 2, base);
+		ft_error("minishell: syntax error near unexpected token `>>'\n",
+			2, base);
 	else if (id == 7)
-		ft_error("minishell: syntax error near unexpected token `|'", 2, base);
+		ft_error("minishell: syntax error near unexpected token `|'\n",
+			2, base);
 }
 
 int	check_double_pippe(t_token *tokens)

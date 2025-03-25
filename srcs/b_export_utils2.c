@@ -35,7 +35,7 @@ char	*xtract_var_name(char *data)
 	i = 0;
 	name = ft_calloc(namelen(data) + 1, sizeof(char));
 	if (!name)
-		return (ft_putstr_fd("Error: calloc", 2), NULL);
+		return (ft_putstr_fd(RED"Error: calloc\n"RESET, 2), NULL);
 	while (data && data[i] && data[i] != '=')
 	{
 		name[i] = data[i];

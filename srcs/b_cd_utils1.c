@@ -1,9 +1,11 @@
 #include "../includes/minishell.h"
 
-int	cd_dot(t_base *base)
+int	cd_dot(t_base *base, t_cmd *act_cmd)
 {
 	char	backup[PATH_MAX];
 
+	if (act_cmd->next || act_cmd->prev)
+		return (0);
 	getcwd(backup, sizeof(backup));
 	if (update_oldpwd(ft_strdup(backup), base))
 		return (1);
@@ -56,7 +58,7 @@ int	update_oldpwd(char *new_data, t_base *base)
 	return (0);
 }
 
-int	go_back(t_base *base)
+int	go_back(t_base *base, t_cmd *act_cmd)
 {
 	char	path[PATH_MAX];
 	char	backup[PATH_MAX];
@@ -66,6 +68,8 @@ int	go_back(t_base *base)
 	getcwd(backup, sizeof(backup));
 	if (!path[0])
 		return (1);
+	if (act_cmd->next || act_cmd->prev)
+		return (0);
 	i = ft_strlen(path) - 1;
 	while (i >= 0 && path[i] != '/')
 		i--;

@@ -31,13 +31,14 @@ int		search_equal(const char *s);
 int		builtin_cd(t_token *actual_tok, t_base *base);
 
 /**				b_cd_utils1.c */
-int		go_back(t_base *base);
+int		go_back(t_base *base, t_cmd *act_cmd);
 int		update_oldpwd(char *new_data, t_base *base);
 int		update_pwd(char *new_data, t_base *base);
-int		cd_dot(t_base *base);
+int		cd_dot(t_base *base, t_cmd *act_cmd);
 
 /**				b_cd_utils2.c */
-int		go_before(t_base *base);
+int		go_before(t_base *base, t_cmd *act_cmd);
+int		check_repertory(char *path, t_base *base);
 
 /**				b_unset.c */
 int		builtin_unset(t_token *actual_tok);

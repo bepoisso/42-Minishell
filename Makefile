@@ -42,7 +42,6 @@ SRC_FILES = b_builtin.c\
 			e_start_exec.c\
 			e_start_exec_utils.c\
 			e_start_exec_utils2.c\
-			e_start_exec_utils3.c\
 			e_tolkien.c\
 			e_utils.c\
 			sighand.c\

@@ -11,16 +11,16 @@
 8		$		variable
 9		cmd		commande
 10		args	commande args */
-int	is_last_cmd(pid_t pid, t_cmd *actual)
+static int	is_last_cmd(pid_t pid, t_cmd *actual)
 {
 	t_cmd	*cmd;
 
 	cmd = actual;
-	while (actual)
+	while (cmd)
 	{
-		if (actual->last_cmd == 1 && actual->pid == pid)
+		if (cmd->last_cmd == 1 && cmd->pid == pid)
 			return (1);
-		actual = actual->next;
+		cmd = cmd->next;
 	}
 	return (0);
 }

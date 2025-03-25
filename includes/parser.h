@@ -87,10 +87,10 @@ char	*minitext_rl(char **env, t_base *base);
 void	rm_node_token(t_token *token);
 void	print_cmd(t_base *base);
 void	print_tokens(t_token *tokens);
-void	display_base(t_base *base);
 void	header(void);
 void	print_dollar(t_base *base);
 void	free_dollar_list(t_dollar *dollar);
+void	base_init(t_base *base);
 
 /* ERROR */
 int		start_pipe(char *s, t_base *base);

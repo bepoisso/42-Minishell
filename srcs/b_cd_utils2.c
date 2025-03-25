@@ -40,3 +40,41 @@ int	check_repertory(char *path, t_base *base)
 	}
 	return (0);
 }
+
+static void	handle_pwd(t_base *base, char *path, char *backup)
+{
+	update_oldpwd(ft_strdup(backup), base);
+	if (path)
+		update_pwd(ft_strdup(path), base);
+	else
+		update_pwd(ft_strdup(base->tild), base);
+}
+
+int	go_home(t_base *bs, t_cmd *act_cmd)
+{
+	char	*path;
+	char	backup[PATH_MAX];
+
+	getcwd(backup, sizeof(backup));
+	path = search_data_in_env(bs->env, "HOME");
+	if (act_cmd->next || act_cmd->prev)
+	{
+		if (!path && !act_cmd->cmd[1])
+			ft_error(RED"Minishell: cd: HOME not set\n"RESET, 0, bs);
+		return (0);
+	}
+	if (act_cmd->cmd[1] && (act_cmd->cmd[1][0] == '~'))
+	{
+		if (chdir(bs->tild) == -1)
+			return (ft_error(RED"Minishell: cd: error cd~\n"RESET, 1, bs), 1);
+	}
+	else
+	{
+		if (!path)
+			return (ft_error(RED"Minishell: cd: HOME no set\n"RESET, 1, bs), 1);
+		if (chdir(path) == -1)
+			return (ft_error(RED"error: chdir cd HOME\n"RESET, 1, bs), 1);
+	}
+	handle_pwd(bs, path, backup);
+	return (0);
+}

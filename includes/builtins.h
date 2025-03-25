@@ -39,6 +39,7 @@ int		cd_dot(t_base *base, t_cmd *act_cmd);
 /**				b_cd_utils2.c */
 int		go_before(t_base *base, t_cmd *act_cmd);
 int		check_repertory(char *path, t_base *base);
+int		go_home(t_base *base, t_cmd *act_cmd);
 
 /**				b_unset.c */
 int		builtin_unset(t_token *actual_tok);

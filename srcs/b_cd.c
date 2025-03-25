@@ -20,34 +20,6 @@
  * 			Print: Error bash: cd: *new: No such file or directory RETURN
  */
 
-static int	go_home(t_base *base, t_cmd *act_cmd)
-{
-	char	*path;
-	char	backup[PATH_MAX];
-
-	getcwd(backup, sizeof(backup));
-	path = search_data_in_env(base->env, "HOME");
-	if (act_cmd->next || act_cmd->prev)
-	{
-		if (!path && !act_cmd->cmd[1])
-			ft_error(RED"Minishell: cd: HOME not set\n"RESET, 0, base);
-		return (0);
-	}
-	if (act_cmd->cmd[1] && (act_cmd->cmd[1][0] == '~'))
-	{
-		if (chdir(base->tild) == -1)
-			return (ft_error(RED"Minishell: cd: error cd~\n"RESET, 1, base), 1);
-	}
-	else if (chdir(path) == -1)
-		return (ft_error(RED"Minishell: cd: HOME not set\n"RESET, 1, base), 1);
-	update_oldpwd(ft_strdup(backup), base);
-	if (path)
-		update_pwd(ft_strdup(path), base);
-	else
-		update_pwd(ft_strdup(base->tild), base);
-	return (0);
-}
-
 static int	go_root(t_base *base, t_cmd *act_cmd)
 {
 	char	backup[PATH_MAX];

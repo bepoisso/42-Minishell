@@ -76,10 +76,10 @@ int	prepare_exec(t_token *actual, t_base *base)
 	}
 	else
 	{
-		base->lastpid = fork();
-		if (base->lastpid == -1)
+		actual->cmd->pid = fork();
+		if (actual->cmd->pid == -1)
 			return (perror("Error: create fork\n"), clean_exit(base), 1);
-		if (base->lastpid == 0)
+		if (actual->cmd->pid == 0)
 		{
 			child_process(base, actual);
 		}

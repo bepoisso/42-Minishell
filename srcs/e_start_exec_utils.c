@@ -42,7 +42,7 @@ int	handle_redirections(t_token *token, t_cmd *cmd)
 
 void	close_inpt_outp(t_cmd *actualcmd)
 {
-	if (actualcmd->input > 2 && (actualcmd->hrdoc != actualcmd->input))
+	if (actualcmd->input > 2)
 	{
 		close(actualcmd->input);
 		actualcmd->input = 0;
@@ -51,11 +51,6 @@ void	close_inpt_outp(t_cmd *actualcmd)
 	{
 		close(actualcmd->output);
 		actualcmd->output = 1;
-	}
-	if (actualcmd->hrdoc > 2)
-	{
-		close(actualcmd->hrdoc);
-		actualcmd->hrdoc = 0;
 	}
 }
 
@@ -85,7 +80,7 @@ static void	raz_std_fds(t_base *base)
 
 void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
 {
-	if (actualcmd->input > 2 && (actualcmd->hrdoc != actualcmd->input))
+	if (actualcmd->input > 2)
 	{
 		close(actualcmd->input);
 		actualcmd->input = 0;
@@ -94,11 +89,6 @@ void	close_opend_fds_builtins(t_cmd *actualcmd, t_base *base)
 	{
 		close(actualcmd->output);
 		actualcmd->output = 1;
-	}
-	if (actualcmd->hrdoc > 2)
-	{
-		close(actualcmd->hrdoc);
-		actualcmd->hrdoc = 0;
 	}
 	raz_std_fds(base);
 }

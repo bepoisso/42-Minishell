@@ -29,7 +29,57 @@ char	*add_in_command(t_base *base)
 	return (base->input);
 }
 
-static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
+static t_here	*init_hrdoc(void)
+{
+	t_here	*hrdoc;
+
+	hrdoc = ft_calloc(1, sizeof(t_here));
+	hrdoc->line = NULL;
+	hrdoc->fd = open(HRDOC_FILE, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (hrdoc->fd < 0)
+		return (NULL);
+	hrdoc->line = strdup("");
+	if (!hrdoc->line)
+		return (close(hrdoc->fd), NULL);
+	return (hrdoc);
+}
+
+static void	close_hrdoc(t_here *hrdoc)
+{
+	close(hrdoc->fd);
+	free(hrdoc->line);
+	free(hrdoc);
+}
+
+int	handle_hrdoc(t_token *tokens, t_base *base)
+{
+	t_here	*hrdoc;
+
+	hrdoc = init_hrdoc();
+	if (!hrdoc)
+		return (-1);
+	while (hrdoc->line && ft_strncmp(hrdoc->line, tokens->data,
+			ft_strlen(tokens->data) + 1))
+	{
+		free_null((void **)&hrdoc->line);
+		hrdoc->line = readline(BLUE">"RESET);
+		if (!hrdoc->line)
+			messages_heredeoc(base->hrdoc_size, tokens->data);
+		else if (hrdoc->line[0] == '\0' || ft_strncmp(hrdoc->line, tokens->data
+				, ft_strlen(tokens->data) + 1))
+		{
+			if (write(hrdoc->fd, hrdoc->line, ft_strlen(hrdoc->line)) < 0)
+				return (free_null((void **)hrdoc->line), close(hrdoc->fd), -1);
+			if (write(hrdoc->fd, "\n", 1) < 0)
+				return (close(hrdoc->fd), -1);
+			base->hrdoc_size += ft_strlen(hrdoc->line);
+		}
+	}
+	close_hrdoc(hrdoc);
+	return (0);
+}
+
+/* static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 {
 	char	*line;
 	int		fd;
@@ -63,13 +113,13 @@ static int	handle_hrdoc(t_token *tokens, t_cmd *cmd, t_base *base)
 	close(fd);
 	free_null((void **)&line);
 	return (fd);
-}
-
+} */
 
 int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 {
 	int		fd;
 
+	(void)cmd;
 	if (!token->data)
 		return (ft_error("Minishell: syntax error near unexpected token\n", 1
 				, base), -1);
@@ -78,7 +128,7 @@ int	filechk(t_token *token, int type, t_base *base, t_cmd *cmd)
 		fd = open(token->data, O_RDONLY, 0644);
 	if (type == 5)
 	{
-		if (handle_hrdoc(token, cmd, base) < 0)
+		if (handle_hrdoc(token, base) < 0)
 			return (-1);
 		fd = open(HRDOC_FILE, O_RDONLY, 0644);
 		base->input = add_in_command(base);

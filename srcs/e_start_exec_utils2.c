@@ -14,7 +14,7 @@ static int	file_chk_no_command(t_token *token, int type, t_base *base)
 	if (type == 3)
 		fd = open(file, O_RDONLY, 0644);
 	if (type == 5)
-		handle_hrdoc_no_cmd(token, token->base);
+		handle_hrdoc(token, token->base);
 	else if (type == 4)
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (type == 6)

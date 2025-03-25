@@ -15,6 +15,8 @@ typedef struct s_cmd
 	int				output;
 	int				hrdoc;
 	int				bad_fd;
+	int				last_cmd;
+	pid_t			pid;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 }	t_cmd;

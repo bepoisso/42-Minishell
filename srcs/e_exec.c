@@ -69,7 +69,8 @@ static void	handle_cmd(t_token *tok, t_base *base)
 			actual->cmd = actual_cmd;
 			actual->cmd->input = 0;
 			actual->cmd->output = 1;
-			actual->cmd->hrdoc = 0;
+			if (actual_cmd->next == NULL)
+				actual_cmd->last_cmd = 1;
 			actual_cmd = actual_cmd->next;
 		}
 		else

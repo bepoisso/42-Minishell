@@ -38,7 +38,7 @@ static char	*is_absolute(t_token *actual, t_base *base)
 	int	error;
 
 	if (access(actual->cmd->cmd[0], X_OK) == 0)
-		return (actual->cmd->cmd[0]);
+		return (ft_strdup(actual->cmd->cmd[0]));
 	error = errno;
 	if (error == ENOENT)
 	{

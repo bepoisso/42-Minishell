@@ -30,7 +30,12 @@
 # define SIZEOFLINE 1000
 # define MAXNAME 1000
 
-void	ft_put_arraystr(char **array);
+typedef struct s_here
+{
+	int				fd;
+	char			*line;
+}	t_here;
+
 
 /**			free.c */
 void	free_doubletab(char ***str);
@@ -73,12 +78,14 @@ char	*read_heredoc_input(t_token *tokens);
 int	    process_heredoc_input(char *line, t_token *tokens, int fd);
 int     handle_hrdoc_no_cmd(t_token *tokens, t_base *base);
 
-
 /**			e_file_redir.c */
 char	*add_in_command(t_base *base);
+int	    handle_hrdoc(t_token *tokens, t_base *base);
+
 int		filechk(t_token *token, int type, t_base *base, t_cmd *cmd);
 
 /**			e_utils.c */
+void	ft_put_arraystr(char **array);
 int		ft_strslen(char **strs);
 char	*ft_strnjoin(char *str, ...);
 char	*ft_strdup_protected(const char *s);

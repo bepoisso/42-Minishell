@@ -10,6 +10,14 @@ int	parser(char *str, t_base *base)
 		return (1);
 	tokens = lexer(str, base);
 	base->token = tokens;
+	identify_token(base->token);
+	base->token = token_parser(base->token);
+	if (check_double_pippe(base->token)
+			|| check_only_redirect(base->token, base))
+		return (1);
+	expanse(base->token, base->dollars);
+	base->cmds = parsing_cmd(base);
+	identify_builtin(base->cmds);
 	return (0);
 }
 

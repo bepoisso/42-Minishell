@@ -2,7 +2,7 @@
 
 int	g_exit_status;
 
-int main(void)
+int	main(void)
 {
 	t_base	base;
 	char	*minitext;
@@ -24,10 +24,9 @@ int main(void)
 		minitext = minitext_rl(base.env, &base);
 		base.input = readline(minitext);
 		free_null((void **)&minitext);
-		free_null((void **)&minitext);
 		if (!base.input)
-			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
-			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
+			return (free_doubletab(&base.env), ft_printf("exit\n"),
+				clean_exit(&base), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')
 		{
 			free_null((void **)&base.input);
@@ -41,20 +40,7 @@ int main(void)
 		}
 		if (!base.token)
 			continue ;
-		identify_token(base.token);
-		base.token = token_parser(base.token);
-		if (check_double_pippe(base.token) || check_only_redirect(base.token, &base))
-		{
-			add_history(base.input);
-			free_null((void **)&base.input);
-			continue ;
-		}
-		expanse(base.token, base.dollars);
-		base.cmds = parsing_cmd(&base);
-		identify_builtin(base.cmds);
-		if (ft_strcmp(base.token->data, "exit") && !base.token->next)
-			return (add_history(base.input), clean_exit(&base), 0);
-		sauron(&base);
+		sauron(&base, 0, 0);
 		add_history(base.input);
 		free_base(&base);
 	}

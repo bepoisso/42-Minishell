@@ -24,7 +24,6 @@ int main(void)
 		minitext = minitext_rl(base.env, &base);
 		base.input = readline(minitext);
 		free_null((void **)&minitext);
-		free_null((void **)&minitext);
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"), clean_exit(&base), 0);
 		if (base.input[0] == '\0' || base.input[0] == '\n')

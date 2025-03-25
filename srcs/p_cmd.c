@@ -60,14 +60,14 @@ int	count_args(t_token *token)
 	return (count);
 }
 
-void	end_parsing_cmd(t_cmd **cmds, t_token *tokens, char ***value)
+void	end_parsing_cmd(t_cmd **cmds, t_token **tokens, char ***value)
 {
 	if (*value[0])
 		add_cmd(cmds, *value);
 	else
 		free_doubletab(value);
-	if (tokens && tokens->id != 9 && tokens->id != 10)
-		tokens = tokens->next;
+	if (*tokens && (*tokens)->id != 9 && (*tokens)->id != 10)
+		*tokens = (*tokens)->next;
 }
 
 t_cmd	*parsing_cmd(t_base *base)
@@ -92,7 +92,7 @@ t_cmd	*parsing_cmd(t_base *base)
 			tokens = tokens->next;
 		}
 		value[++i] = NULL;
-		end_parsing_cmd(&cmds, tokens, &value);
+		end_parsing_cmd(&cmds, &tokens, &value);
 	}
 	return (cmds);
 }

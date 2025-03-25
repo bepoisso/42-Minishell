@@ -6,6 +6,7 @@
 
 /**				b_builtins.c */
 int		exec_builtins(t_token *actual);
+void	identify_builtin(t_cmd *cmd);
 
 int		builtin_env(t_token *actual_tok);
 int		builtin_pwd(t_base *base);

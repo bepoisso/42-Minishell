@@ -57,6 +57,7 @@ SRC_FILES = b_builtin.c\
 			p_readline.c\
 			e_expans.c\
 			p_lexer.c\
+			p_env.c\
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))

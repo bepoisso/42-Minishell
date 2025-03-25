@@ -60,6 +60,16 @@ int	count_args(t_token *token)
 	return (count);
 }
 
+void	end_parsing_cmd(t_cmd **cmds, t_token *tokens, char ***value)
+{
+	if (*value[0])
+		add_cmd(cmds, *value);
+	else
+		free_doubletab(value);
+	if (tokens && tokens->id != 9 && tokens->id != 10)
+		tokens = tokens->next;
+}
+
 t_cmd	*parsing_cmd(t_base *base)
 {
 	t_cmd	*cmds;
@@ -82,32 +92,7 @@ t_cmd	*parsing_cmd(t_base *base)
 			tokens = tokens->next;
 		}
 		value[++i] = NULL;
-		if (value[0])
-			add_cmd(&cmds, value);
-		else
-			free_doubletab(&value);
-		if (tokens && tokens->id != 9 && tokens->id != 10)
-			tokens = tokens->next;
+		end_parsing_cmd(&cmds, tokens, &value);
 	}
 	return (cmds);
-}
-
-void	identify_builtin(t_cmd *cmd)
-{
-	t_cmd	*current;
-
-	current = cmd;
-	while (current)
-	{
-		if (ft_strcmp("echo", current->cmd[0])
-			|| ft_strcmp("cd", current->cmd[0])
-			|| ft_strcmp("pwd", current->cmd[0])
-			|| ft_strcmp("export", current->cmd[0])
-			|| ft_strcmp("unset", current->cmd[0])
-			|| ft_strcmp("env", current->cmd[0]))
-			current->builtin = true;
-		else
-			current->builtin = false;
-		current = current->next;
-	}
 }

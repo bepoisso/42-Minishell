@@ -13,7 +13,7 @@ int	parser(char *str, t_base *base)
 	identify_token(base->token);
 	base->token = token_parser(base->token);
 	if (check_double_pippe(base->token)
-			|| check_only_redirect(base->token, base))
+		|| check_only_redirect(base->token, base))
 		return (1);
 	expanse(base->token, base->dollars);
 	base->cmds = parsing_cmd(base);

@@ -61,7 +61,7 @@ static void	change_dollars(t_token *tok, t_dollar *current,
 				buff[j++] = current->data[k++];
 			current = current->next;
 			i++;
-			while (ft_isalnum(tok->data[i]) || ft_is_only(tok->data, i))
+			while (ft_isalnum(tok->data[i])  || tok->data[i] == '_' || ft_is_only(tok->data, i))
 				i++;
 		}
 		else

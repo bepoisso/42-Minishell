@@ -24,24 +24,9 @@ int	main(void)
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"),
 				clean_exit(&base), 0);
-		if (base.input[0] == '\0' || base.input[0] == '\n')
-		{
-			free_null((void **)&base.input);
-			continue ;
-		}
-		if (parser(base.input, &base))
-		{
-			add_history(base.input);
-			free_null((void **)&base.input);
-			continue ;
-		}
-		if (!base.token)
+		if (handling_error(&base))
 			continue ;
 		sauron(&base, 0, 0);
-		add_history(base.input);
-		free_base(&base);
 	}
-	free_doubletab(&base.env);
-	rl_clear_history();
-	return (0);
+	return (free_doubletab(&base.env), rl_clear_history(), 0);
 }

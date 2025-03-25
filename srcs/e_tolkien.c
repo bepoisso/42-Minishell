@@ -75,4 +75,6 @@ void	sauron(t_base *base, int cmd_found, int redir_found)
 		tok_back = tok;
 	}
 	wait_rings(base);
+	add_history(base->input);
+	free_base(base);
 }

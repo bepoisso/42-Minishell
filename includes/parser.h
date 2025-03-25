@@ -99,6 +99,7 @@ int		check_only_redirect(t_token *tokens, t_base *base);
 int		no_quote(t_token *tokens);
 int		check_double_pippe(t_token *tokens);
 void	ft_error(char *s, int code, t_base *base);
+int		handling_error(t_base *base);
 
 /* EXPANSER */
 char	*search_env_var(char *search, char **env, t_base *base);

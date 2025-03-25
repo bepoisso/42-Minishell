@@ -75,14 +75,15 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 	char	*data;
 	bool	check;
 
-	i = 0;
+	i = -1;
 	check = false;
-	while (token && token->data[i])
+	while (token && token->data[++i])
 	{
 		if (token->data[i] == '$')
 		{
 			j = i;
-			while (token->data[++i] && (ft_isalnum(token->data[i]) || token->data[i] == '_'
+			while (token->data[++i] && (ft_isalnum(token->data[i])
+					|| token->data[i] == '_'
 					|| (check == false && token->data[i] == '?')))
 				check = true;
 			name = ft_strndup(token->data + j + 1, (i - j) - 1);
@@ -92,7 +93,6 @@ void	get_name_value_dollar(t_token *token, t_dollar *dollars, t_base *base)
 		}
 		if (!token->data[i])
 			break ;
-		i++;
 	}
 }
 

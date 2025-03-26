@@ -26,20 +26,20 @@ int	start_pipe(char *s, t_base *base)
 	if (s[i])
 	{
 		if (s[i] == '|' && s[i + 1] == '|')
-			return (ft_error("minishell: syntax error near \
-unexpected token `||'", 2, base), 1);
+			return (ft_error(RED"minishell: syntax error near \
+unexpected token `||'\n"RESET, 2, base), 1);
 		else if (s[i] == '|')
-			return (ft_error("minishell: syntax error near \
-unexpected token `|'\n", 2, base), 1);
+			return (ft_error(RED"minishell: syntax error near \
+unexpected token `|'\n"RESET, 2, base), 1);
 		else if (s[i] == '&' && s[i + 1] == '&')
-			return (ft_error("minishell: syntax error near \
-unexpected token `&&'", 2, base), 1);
+			return (ft_error(RED"minishell: syntax error near \
+unexpected token `&&'\n"RESET, 2, base), 1);
 		else if (s[i] == '&')
-			return (ft_error("minishell: syntax error near \
-unexpected token `&'\n", 2, base), 1);
+			return (ft_error(RED"minishell: syntax error near \
+unexpected token `&'\n"RESET, 2, base), 1);
 		else if (s[i] == ':' || s[i] == '!')
-			return (ft_error("minishell: syntax error near \
-unexpected token `newline'", 2, base), 1);
+			return (ft_error(RED"minishell: syntax error near \
+unexpected token `newline'\n"RESET, 2, base), 1);
 	}
 	return (0);
 }

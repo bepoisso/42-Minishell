@@ -53,5 +53,5 @@ void	base_init(t_base *base)
 	ft_memset(base, 0, sizeof(t_base));
 	base->env = env_cpy();
 	base->tild = ft_strdup(search_data_in_env(base->env, "HOME"));
-	// header();
+	header();
 }

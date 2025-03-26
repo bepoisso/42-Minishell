@@ -13,13 +13,13 @@ int	main(void)
 	base_init(&base);
 	while (1)
 	{
+		minitext = minitext_rl(base.env, &base);
+		base.input = readline(minitext);
 		if (g_exit_status)
 		{
 			base.exit_code = g_exit_status;
 			g_exit_status = 0;
 		}
-		minitext = minitext_rl(base.env, &base);
-		base.input = readline(minitext);
 		free_null((void **)&minitext);
 		if (!base.input)
 			return (free_doubletab(&base.env), ft_printf("exit\n"),

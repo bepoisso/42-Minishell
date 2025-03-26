@@ -9,7 +9,7 @@ char	*add_in_command(t_base *base)
 	fd = open(HRDOC_FILE, O_RDONLY, 0644);
 	hrdoc = get_next_line(fd);
 	if (!hrdoc)
-		return (close(fd), NULL);
+		return (close(fd), base->input);
 	line = ft_strjoin(base->input, "\n");
 	if (!line)
 		return (close(fd), NULL);

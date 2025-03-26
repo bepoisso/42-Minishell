@@ -14,7 +14,6 @@ detected\n"RESET, 1, base), 1);
 		return (1);
 	base->token = tokens;
 	identify_token(base->token);
-	expanse(base->token, base->dollars);
 	base->token = token_parser(base->token);
 	if (check_double_pippe(base->token)
 		|| check_only_redirect(base->token, base))
@@ -69,6 +68,7 @@ t_token	*token_parser(t_token *tokens)
 	current = tokens;
 	handling_dollar(tokens, tokens->base);
 	dollar_is_literal(tokens->base->dollars);
+	expanse(tokens, tokens->base->dollars);;
 	while (current)
 	{
 		if (!ft_isop(current->data[0]) && current->id != 0)

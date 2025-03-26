@@ -16,8 +16,7 @@
  *  --trace-children=yes --track-fds=yes --suppressions=./valgrind.sup
  * valgrind --leak-check=full --show-leak-kinds=all --gen-suppressions=all
  *  --log-file=test_valgrind.log ./minishell
- * <<1 cat -e | <<2 ls -la  |  grep dr  | sort | cat -e | rev | cat -e >
- *  outfile > outfile2
+ * <<1 cat -e | <<2 ls -la  |  grep dr  | sort | cat -e | rev | cat -e >  outfile > outfile2
  */
 
 # define HRDOC_FILE ".hrdoc_temp"

@@ -12,9 +12,9 @@ detected\n"RESET, 1, base), 1);
 	tokens = lexer(str, base);
 	if (!tokens)
 		return (1);
-	expanse(base->token, base->dollars);
 	base->token = tokens;
 	identify_token(base->token);
+	expanse(base->token, base->dollars);
 	base->token = token_parser(base->token);
 	if (check_double_pippe(base->token)
 		|| check_only_redirect(base->token, base))

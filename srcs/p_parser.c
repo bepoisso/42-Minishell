@@ -5,7 +5,8 @@ int	parser(char *str, t_base *base)
 	t_token	*tokens;
 
 	if (open_quote(str) != 0)
-		return (ft_error(RED"ERROR\nopen quote"RESET, 1, base), 1);
+		return (ft_error(RED"minishell : open quote \
+detected\n"RESET, 1, base), 1);
 	if (start_pipe(str, base))
 		return (1);
 	tokens = lexer(str, base);

@@ -10,7 +10,6 @@ int	main(void)
 	minitext = NULL;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	ft_memset(&base, 0, sizeof(t_base));
 	base_init(&base);
 	while (1)
 	{

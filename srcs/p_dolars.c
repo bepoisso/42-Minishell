@@ -107,11 +107,13 @@ void	handling_dollar(t_token *tokens, t_base *base)
 	dollars = malloc(sizeof(t_dollar));
 	ft_memset(dollars, 0, sizeof(t_dollar));
 	current = tokens;
+	print_tokens(tokens); // a suppre
 	while (current)
 	{
 		get_name_value_dollar(current, dollars, base);
 		current = current->next;
 	}
+	print_dollar(base);
 	base->dollars = dollars;
 	base->dollars = dollars->next;
 	free(dollars);

@@ -11,6 +11,10 @@ Minishell is a project that involves creating a simple shell-like program. It wi
   <img height="200" src="https://raw.githubusercontent.com/Benjamin-poisson/My_image_bank/refs/heads/main/minishell_success.png"  />
 </div>
 
+<div align="center">
+  <img src="https://raw.githubusercontent.com/Benjamin-poisson/My_image_bank/refs/heads/main/minishell_exp.png"  />
+</div>
+
 ## Objectives
 
 The goal of this project is to create a shell program that can read user commands, parse them, execute the appropriate system calls, and manage processes, all while providing features like environment variable handling, input/output redirection, and command piping.

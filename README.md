@@ -11,6 +11,7 @@ Minishell is a project that involves creating a simple shell-like program. It wi
   <img height="200" src="https://raw.githubusercontent.com/Benjamin-poisson/My_image_bank/refs/heads/main/minishell_success.png"  />
 </div>
 
+## Exemple
 <div align="center">
   <img src="https://raw.githubusercontent.com/Benjamin-poisson/My_image_bank/refs/heads/main/minishell_exp.png"  />
 </div>
